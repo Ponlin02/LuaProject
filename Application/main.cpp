@@ -3,7 +3,7 @@
 #include <string>
 #include <Windows.h>
 
-#include "lua.hpp"
+#include "lua.hpp"s
 
 void DumpError(lua_State* L)
 {
