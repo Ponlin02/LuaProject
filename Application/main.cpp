@@ -4,6 +4,7 @@
 #include <Windows.h>
 
 #include "lua.hpp"
+#include "graphics/rayLibTest.hpp"
 
 void DumpError(lua_State* L)
 {
@@ -36,8 +37,11 @@ int main()
 
 	std::thread consoleThread(ConsoleThreadFunction, L);
 
+	rayLib raylib;
+	raylib.run();
+
 	bool running = true;
-	while (running)
+	while (!running)
 	{
 		//Update game
 		//Render game
