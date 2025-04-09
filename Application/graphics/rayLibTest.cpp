@@ -11,6 +11,10 @@ void rayLib::run()
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
+
+        Color color = { 255, 0, 0, 255 };
+        DrawCircle(400, 225, 100.0f, color);
+
         DrawText("Running separately from Lua!", 180, 200, 20, DARKGRAY);
         EndDrawing();
     }
