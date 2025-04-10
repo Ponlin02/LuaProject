@@ -400,4 +400,4 @@ FodyWeavers.xsd
 # Custom ignores
 bin/
 int/
-lib/
+LuaLib/lib/
