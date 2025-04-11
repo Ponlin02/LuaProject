@@ -5,6 +5,7 @@
 
 #include "lua.hpp"
 #include "graphics/rayLibTest.hpp"
+#include "gameloop/gameloop.hpp"
 
 void DumpError(lua_State* L)
 {
@@ -37,8 +38,11 @@ int main()
 
 	std::thread consoleThread(ConsoleThreadFunction, L);
 
-	rayLib raylib;
-	raylib.run();
+	//rayLib raylib;
+	//raylib.run();
+
+	gameloop mazegame;
+	mazegame.run();
 
 	bool running = true;
 	while (!running)

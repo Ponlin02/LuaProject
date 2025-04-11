@@ -22,10 +22,14 @@
     <ClCompile Include="gameloop\gameloop.cpp" />
     <ClCompile Include="graphics\rayLibTest.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="maze\maze.cpp" />
+    <ClCompile Include="player\player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameloop\gameloop.hpp" />
     <ClInclude Include="graphics\rayLibTest.hpp" />
+    <ClInclude Include="maze\maze.hpp" />
+    <ClInclude Include="player\player.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
