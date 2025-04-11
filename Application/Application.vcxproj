@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="gameloop\gameloop.cpp" />
     <ClCompile Include="graphics\rayLibTest.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="gameloop\gameloop.hpp" />
     <ClInclude Include="graphics\rayLibTest.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
