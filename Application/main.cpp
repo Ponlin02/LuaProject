@@ -41,11 +41,14 @@ int main()
 	//rayLib raylib;
 	//raylib.run();
 
-	gameloop mazegame;
-	mazegame.run();
+	//gameloop mazegame;
+	//mazegame.run();
+
+	std::cout << "[C++] Hello C++!" << std::endl;
+	luaL_dostring(L, "print('[Lua] Hello Lua!')");
 
 	bool running = true;
-	while (!running)
+	while (running)
 	{
 		//Update game
 		//Render game
