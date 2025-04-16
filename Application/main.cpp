@@ -44,14 +44,32 @@ int main()
 	//gameloop mazegame;
 	//mazegame.run();
 
+	//Some lua chunks
 	std::cout << "[C++] Hello C++!" << std::endl;
 	luaL_dostring(L, "print('[Lua] Hello Lua!')");
+	//luaL_dostring(L, "dofile('fizzbuzz.lua')");
+	lua_pushnumber(L, 3.14159f);
+	lua_setglobal(L, "Pi");
+	lua_pushnumber(L, 1.41421f);
+	lua_setglobal(L, "SqrtOfTwo");
+	lua_pushnumber(L, 1.61803f);
+	lua_setglobal(L, "Phi");
+	lua_pushnumber(L, 2.71828f);
+	lua_setglobal(L, "Euler");
+	lua_pushnumber(L, 0.56714f);
+	lua_setglobal(L, "Omega");
+	lua_pushnumber(L, 0.83462f);
+	lua_setglobal(L, "Gauss");
+	luaL_dofile(L, "ex2.lua");
 
 	bool running = true;
 	while (running)
 	{
 		//Update game
 		//Render game
+		
+		
+		//luaL_dostring(L, "dofile('loop.lua')");
 	}
 	
 	return 0;
