@@ -78,9 +78,45 @@ int main()
 
 	//ex 4
 	luaL_dofile(L, "populate.lua");
+
+	//species
+	lua_getglobal(L, "dino_species");
+	std::cout << lua_tostring(L, 1) << std::endl;
+	lua_pop(L, 1);
+
+	//name
 	lua_getglobal(L, "dino_name");
 	std::cout << lua_tostring(L, 1) << std::endl;
 	lua_pop(L, 1);
+
+	//has wings?
+	lua_getglobal(L, "dino_wings");
+	std::cout << lua_toboolean(L, 1) << std::endl;
+	lua_pop(L, 1);
+
+	//noise function
+	lua_getglobal(L, "dino_getnoise");
+
+	if (lua_isfunction(L, -1))
+	{
+		lua_pushnumber(L, 7);
+		if (lua_pcall(L, 1, 1, 0) != LUA_OK)
+		{
+			std::cerr << "Fel vid anrop: " << lua_tostring(L, -1) << std::endl;
+		}
+		else
+		{
+			std::cout << "Resultatet blev: " << lua_tostring(L, -1) << std::endl;
+		}
+		lua_pop(L, 1);
+	}
+	else 
+	{
+		std::cout << "'dino_getnoise' is not a function!" << std::endl;
+		lua_pop(L, 1);
+	}
+
+	std::cout << "Size: " << lua_gettop(L) << std::endl;
 
 
 
