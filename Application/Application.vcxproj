@@ -25,6 +25,10 @@
   <ItemGroup>
     <ClInclude Include="graphics\rayLibTest.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="vector-demo.lua" />
+    <None Include="vector.lua" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
