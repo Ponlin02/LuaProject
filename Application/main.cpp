@@ -36,7 +36,6 @@ int main()
 	lua_State* L = luaL_newstate();
 	luaL_openlibs(L);
 
-	std::thread consoleThread(ConsoleThreadFunction, L);
 
 	//rayLib raylib;
 	//raylib.run();
@@ -60,7 +59,32 @@ int main()
 	lua_setglobal(L, "Omega");
 	lua_pushnumber(L, 0.83462f);
 	lua_setglobal(L, "Gauss");
-	luaL_dofile(L, "ex2.lua");
+	//luaL_dofile(L, "ex2.lua");
+
+
+
+	//ex 3
+	//std::cout << "Before: " << lua_gettop(L) << std::endl;
+	//luaL_dofile(L, "fail.lua");
+	//std::cout << "After: " << lua_gettop(L) << std::endl;
+
+	/*lua_pushboolean(L, false);
+	lua_pushnil(L);
+	lua_pushstring(L, "Hello!");
+	lua_pushnumber(L, 3.14f);
+	lua_pushvalue(L, -2);*/
+
+
+
+	//ex 4
+	luaL_dofile(L, "populate.lua");
+	lua_getglobal(L, "dino_name");
+	std::cout << lua_tostring(L, 1) << std::endl;
+	lua_pop(L, 1);
+
+
+
+	//std::thread consoleThread(ConsoleThreadFunction, L);
 
 	bool running = true;
 	while (running)
