@@ -14,6 +14,128 @@ struct Vector3
 		X(x), Y(y), Z(z) {}
 };
 
+struct Transform
+{
+	Vector3 Position;
+	Vector3 Rotation;
+	Vector3 Scale;
+	Transform(Vector3 position = Vector3(), 
+		Vector3 rotation = Vector3(), 
+		Vector3 scale = Vector3()) :
+		Position(position),
+		Rotation(rotation),
+		Scale(scale) {}
+};
+/* *
+* In Lua, a ’transform’ table has the following layout:
+*
+* transform = {
+* position = { x , y , z } ,
+* rotation = { x , y , z } ,
+* scale = { x , y , z } ,
+* }
+*/
+
+// Pops a ’transform’ table from the stack and returns an instance
+// the the type Transform .
+Transform lua_totransform(lua_State* L, int index)
+{
+	//sanity check
+	if (!lua_istable(L, index))
+	{
+		throw "lua_totransform: table expected.";
+	}
+
+	Transform transform;
+	lua_getfield(L, index, "position");
+	transform.Position = lua_tovector(L, -1);
+	lua_getfield(L, index, "rotation");
+	transform.Rotation = lua_tovector(L, -1);
+	lua_getfield(L, index, "scale");
+	transform.Scale = lua_tovector(L, -1);
+
+	return transform;
+}
+
+// Pushes an ’transform’ table to the stack , based on
+// values from a given Transform instance .
+void lua_pushtransform(lua_State* L, const Transform& transform)
+{
+	lua_newtable(L); // Push transform table
+
+	lua_pushvector(L, transform.Position);
+	lua_setfield(L, -2, "position");
+	lua_pushvector(L, transform.Rotation);
+	lua_setfield(L, -2, "rotation");
+	lua_pushvector(L, transform.Scale);
+	lua_setfield(L, -2, "scale");
+}
+
+/* *
+* Prints a ’transform’ table .
+* Input in stack:
+*	1 | table		the ’transform’ table to print
+*/
+int PrintTransform(lua_State* L)
+{
+	Transform transform = lua_totransform(L, 1);
+
+	std::cout << "Transform:" << std::endl;
+
+	std::cout << "	Position("
+		<< transform.Position.X << ", "
+		<< transform.Position.Y << ", "
+		<< transform.Position.Z << ")"
+		<< std::endl;
+
+	std::cout << "	Rotation("
+		<< transform.Rotation.X << ", "
+		<< transform.Rotation.Y << ", "
+		<< transform.Rotation.Z << ")"
+		<< std::endl;
+
+	std::cout << "	Scale("
+		<< transform.Scale.X << ", "
+		<< transform.Scale.Y << ", "
+		<< transform.Scale.Z << ")"
+		<< std::endl;
+
+	return 0;
+}
+
+/* *
+* Creates and returns a new ’transform’ table with
+* all x , y , z fields randomized between given floor
+* and roof values .
+*
+* Input in stack :
+* 2 | number roof for randomized values
+* 1 | number floor for randomized values
+*/
+int RandomTransform(lua_State* L)
+{
+	lua_newtable(L); // Push an empty table
+
+	lua_pushvalue(L, 1); // Push copy of argument
+	lua_pushvalue(L, 2); // Push copy of argument
+	RandomVector(L); // Push random position
+	lua_setfield(L, -2, "position");
+
+	lua_pushvalue(L, 1); // Push copy of argument
+	lua_pushvalue(L, 2); // Push copy of argument
+	RandomVector(L); // Push random position
+	lua_setfield(L, -2, "rotation");
+
+	lua_pushvalue(L, 1); // Push copy of argument
+	lua_pushvalue(L, 2); // Push copy of argument
+	RandomVector(L); // Push random position
+	lua_setfield(L, -2, "scale");
+
+	return 1;
+}
+
+
+
 Vector3 lua_tovector(lua_State* L, int index)
 {
 	//check if it is a table
@@ -239,6 +361,16 @@ int main()
 
 	//function that uses my new functinos and prints 2 random vectors :D
 	luaL_dofile(L, "vector-demo.lua");
+
+
+
+	//ex 6
+	luaL_dostring(L, "print(' ')");
+	luaL_dostring(L, "print('Ex 6')");
+
+	luaL_dofile(L, "vector.lua");
+	lua_pop(L, 1);
+	std::cout << "Size: " << lua_gettop(L) << std::endl;
 
 
 
