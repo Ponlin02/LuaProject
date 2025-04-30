@@ -26,6 +26,98 @@ struct Transform
 		Rotation(rotation),
 		Scale(scale) {}
 };
+
+
+
+Vector3 lua_tovector(lua_State* L, int index)
+{
+	//check if it is a table
+	if (!lua_istable(L, index))
+	{
+		throw "lua_tovector: table expected.";
+	}
+
+	Vector3 vector;
+
+	lua_getfield(L, index, "x"); //Push x to stack
+	vector.X = lua_tonumber(L, -1);
+	lua_pop(L, 1); //pop x
+
+	lua_getfield(L, index, "y"); //Push y to stack
+	vector.Y = lua_tonumber(L, -1);
+	lua_pop(L, 1); //pop y
+
+	lua_getfield(L, index, "z"); //Push z to stack
+	vector.Z = lua_tonumber(L, -1);
+	lua_pop(L, 1); //pop z
+
+	return vector;
+}
+
+/*
+Lua arguments in table:
+	1 | table		| -1
+1: a table representing the vector
+Return values : none
+*/
+int PrintVector(lua_State* L)
+{
+	Vector3 vector = lua_tovector(L, 1);
+
+	std::cout << "[C++] Vector("
+		<< vector.X << ", "
+		<< vector.Y << ", "
+		<< vector.Z << ")"
+		<< std::endl;
+
+	//no return values
+	return 0;
+}
+
+void lua_pushvector(lua_State* L, const Vector3& vector)
+{
+	lua_newtable(L);
+
+	lua_pushnumber(L, vector.X);
+	lua_setfield(L, -2, "x");
+
+	lua_pushnumber(L, vector.Y);
+	lua_setfield(L, -2, "y");
+
+	lua_pushnumber(L, vector.Z);
+	lua_setfield(L, -2, "z");
+}
+
+/*
+Lua arguments in table :
+	2 | number		| -1
+	1 | number		| -2
+1: floor of the randomized values
+2: roof of the randomize values
+
+Return values :
+	A table representing the
+	randomized vector .
+*/
+int RandomVector(lua_State* L)
+{
+	//Sanity check
+	if (!lua_isnumber(L, 1) || !lua_isnumber(L, 2))
+	{
+		return 0;
+	}
+
+	int min = lua_tonumber(L, 1);
+	int max = lua_tonumber(L, 2);
+	int diff = max - min;
+	lua_pop(L, 2);
+
+	Vector3 vector(rand() % diff + min, rand() % diff + min, rand() % diff + min);
+
+	lua_pushvector(L, vector);
+	return 1;
+}
+
 /* *
 * In Lua, a ’transform’ table has the following layout:
 *
@@ -131,97 +223,6 @@ int RandomTransform(lua_State* L)
 	RandomVector(L); // Push random position
 	lua_setfield(L, -2, "scale");
 
-	return 1;
-}
-
-
-
-Vector3 lua_tovector(lua_State* L, int index)
-{
-	//check if it is a table
-	if (!lua_istable(L, index))
-	{
-		throw "lua_tovector: table expected.";
-	}
-
-	Vector3 vector;
-
-	lua_getfield(L, index, "x"); //Push x to stack
-	vector.X = lua_tonumber(L, -1);
-	lua_pop(L, 1); //pop x
-
-	lua_getfield(L, index, "y"); //Push y to stack
-	vector.Y = lua_tonumber(L, -1);
-	lua_pop(L, 1); //pop y
-
-	lua_getfield(L, index, "z"); //Push z to stack
-	vector.Z = lua_tonumber(L, -1);
-	lua_pop(L, 1); //pop z
-
-	return vector;
-}
-
-/*
-Lua arguments in table:
-	1 | table		| -1
-1: a table representing the vector
-Return values : none
-*/
-int PrintVector(lua_State* L)
-{
-	Vector3 vector = lua_tovector(L, 1);
-
-	std::cout << "[C++] Vector("
-		<< vector.X << ", "
-		<< vector.Y << ", "
-		<< vector.Z << ")"
-		<< std::endl;
-
-	//no return values
-	return 0;
-}
-
-void lua_pushvector(lua_State* L, const Vector3& vector)
-{
-	lua_newtable(L);
-
-	lua_pushnumber(L, vector.X);
-	lua_setfield(L, -2, "x");
-
-	lua_pushnumber(L, vector.Y);
-	lua_setfield(L, -2, "y");
-
-	lua_pushnumber(L, vector.Z);
-	lua_setfield(L, -2, "z");
-}
-
-/*
-Lua arguments in table :
-	2 | number		| -1
-	1 | number		| -2
-1: floor of the randomized values
-2: roof of the randomize values
-
-Return values :
-	A table representing the
-	randomized vector .
-*/
-int RandomVector(lua_State* L)
-{
-	//Sanity check
-	if (!lua_isnumber(L, 1) || !lua_isnumber(L, 2))
-	{
-		return 0;
-	}
-
-	int min = lua_tonumber(L, 1);
-	int max = lua_tonumber(L, 2);
-	int diff = max - min;
-	lua_pop(L, 2);
-
-	Vector3 vector(rand() % diff + min, rand() % diff + min, rand() % diff + min);
-
-	lua_pushvector(L, vector);
 	return 1;
 }
 
@@ -345,6 +346,9 @@ int main()
 
 
 	//ex 5
+	luaL_dostring(L, "print(' ')");
+	luaL_dostring(L, "print('Ex 5')");
+
 	luaL_dofile(L, "vector.lua");
 	lua_pop(L, 1);
 	std::cout << "Size: " << lua_gettop(L) << std::endl;
@@ -371,6 +375,20 @@ int main()
 	luaL_dofile(L, "vector.lua");
 	lua_pop(L, 1);
 	std::cout << "Size: " << lua_gettop(L) << std::endl;
+
+	//print transform function to lua
+	lua_pushcfunction(L, PrintTransform);
+	lua_setglobal(L, "PrintTransform");
+	std::cout << "Size: " << lua_gettop(L) << std::endl;
+
+	//random transform function to lua
+	lua_pushcfunction(L, RandomTransform);
+	lua_setglobal(L, "RandomTransform");
+	std::cout << "Size: " << lua_gettop(L) << std::endl;
+
+	//functions that uses my new functions and prints 2 random transforms :D
+	luaL_dofile(L, "transform-demo.lua");
+	DumpError(L);
 
 
 

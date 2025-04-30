@@ -16,11 +16,11 @@ local vector = require("vector")
 -- p : position, a vector
 -- r : rotation, a vector
 -- s : scale, a vector
-fucntion transfrom.new(p, r, s)
+function transform.new(p, r, s)
     local t = {
         postion = p or vector.new(),    -- set default vector if p is nil
         rotation = r or vector.new (),  -- set default vector if r is nil
-        sclae = s or vector.new()       -- set default vector if s is nil
+        scale = s or vector.new()       -- set default vector if s is nil
     }
     return t
 end
