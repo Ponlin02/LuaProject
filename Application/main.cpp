@@ -65,6 +65,15 @@ struct Vector3
 		X(x), Y(y), Z(z) { }
 };
 
+struct Transform
+{
+	Vector3 Position;
+	Vector3 Rotation;
+	Vector3 Scale;
+	Transform(Vector3 position = Vector3(), Vector3 rotation = Vector3(), Vector3 scale = Vector3()) :
+		Position(position), Rotation(rotation), Scale(scale) {}
+};
+
 Vector3 lua_tovector(lua_State* L, int index)
 {
 	Vector3 vector;
@@ -92,7 +101,54 @@ static int PrintVector(lua_State* L)
 		<< hej.Z << ")"
 		<< std::endl;
 
-	return -1;
+	return 0;
+}
+
+static int lua_pushvector(lua_State* L, const Vector3& vector)
+{
+	lua_newtable(L);
+
+
+	//lua_pushstring(L, "x");
+	lua_pushnumber(L, vector.X);
+	lua_setfield(L, -2, "x");
+
+	//lua_pushstring(L, "y");
+	lua_pushnumber(L, vector.Y);
+	lua_setfield(L, -2, "y");
+	DumpStack(L);
+
+	//lua_pushstring(L, "z");
+	lua_pushnumber(L, vector.Z);
+	lua_setfield(L, -2, "z");
+
+	return 0;
+}
+
+static int lua_totransform(lua_State* L, int index) 
+{
+	Transform transform;
+	lua_getfield(L, index, "position");
+	transform.Position = lua_tovector(L, -1);
+
+	lua_getfield(L, index, "rotation");
+	transform.Rotation = lua_tovector(L, -1);
+
+	lua_getfield(L, index, "scale");
+	transform.Scale = lua_tovector(L, -1);
+}
+
+static int lua_pushtransform(lua_State* L, Transform& transform)
+{
+	lua_newtable(L);
+
+	lua_pushvector(L, transform.Position);
+	lua_setfield(L, -2, "position");	
+	lua_pushvector(L, transform.Rotation);
+	lua_setfield(L, -2, "rotation");	
+	lua_pushvector(L, transform.Scale);
+	lua_setfield(L, -2, "scale");
+
 }
 
 int main()
@@ -103,10 +159,11 @@ int main()
 	luaL_dostring(L, "print('hello from lua')");
 
 	
+	Vector3 vector = { 1,1,1 };
 
-	lua_newtable(L);
-
-	lua_pushstring(L, "x");
+	lua_pushvector(L, vector);
+	
+	/*lua_pushstring(L, "x");
 	lua_pushnumber(L, 1);
 	lua_settable(L, -3);
 
@@ -118,12 +175,14 @@ int main()
 	lua_pushstring(L, "z");
 	lua_pushnumber(L, 3);
 	lua_settable(L, -3);
+	*/
 	DumpStack(L);
 
 	//PrintVector(L);
-	lua_pushcfunction(L, PrintVector);
+	
+	/*lua_pushcfunction(L, PrintVector);
 	lua_setglobal(L, "PrintVector");
-	luaL_dofile(L, "vector-demo.lua");
+	luaL_dofile(L, "vector-demo.lua");*/
 
 
 	std::thread consoleThread(ConsoleThreadFunction, L);

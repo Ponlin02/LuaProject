@@ -30,5 +30,6 @@
   <ItemGroup>
     <None Include="vector.lua" />
     <None Include="vector-demo.lua" />
+    <None Include="transform.lua" />
   </ItemGroup>
 </Project>
