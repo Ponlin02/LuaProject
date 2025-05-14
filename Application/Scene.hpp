@@ -1,13 +1,13 @@
 #include "entt.hpp"
-
+#include <iostream>
 class Scene
 {
 
 entt::registry m_registry;
 
 public: 
-	Scene();
-	~Scene();
+	Scene() = default;
+	~Scene() = default;
 
 	int GetEntityCount();
 

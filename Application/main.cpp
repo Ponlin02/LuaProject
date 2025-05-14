@@ -1,9 +1,9 @@
 #include "entt.hpp"
-#pragma message("Using EnTt from: "__FILE__)
 #include "lua.hpp"
 #include <iostream>
 #include <thread>
 #include <string>
+#include "Scene.hpp"
 
 #include <stdlib.h>
 #include <time.h>
@@ -274,7 +274,10 @@ int main()
 	}
 	
 
-	
+	Scene scene;
+	scene.CreateEntity();
+
+	std::cout << scene.GetEntityCount() << std::endl;
 
 	rayLib raylib;
 	raylib.run();
