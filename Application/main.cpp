@@ -1,9 +1,15 @@
+#include "entt.hpp"
+#pragma message("Using EnTt from: "__FILE__)
+#include "lua.hpp"
 #include <iostream>
 #include <thread>
 #include <string>
+
+#include <stdlib.h>
+#include <time.h>
+
 #include <Windows.h>
 
-#include "lua.hpp"
 #include "graphics/rayLibTest.hpp"
 
 void DumpError(lua_State* L)
@@ -151,6 +157,20 @@ static int lua_pushtransform(lua_State* L, Transform& transform)
 
 }
 
+// EnTT saker
+
+struct Health
+{
+	float Value;
+	Health(float value) : Value(value) {}
+};
+
+struct Poison
+{
+	float TickDamage;
+	Poison(float tickDamage) : TickDamage(tickDamage) {}
+};
+
 int main()
 {
 	lua_State* L = luaL_newstate();
@@ -187,7 +207,74 @@ int main()
 
 	std::thread consoleThread(ConsoleThreadFunction, L);
 
+	// Create all entites and their tickdamage!
 
+	entt::registry registry;
+	srand(time(NULL));
+	for (int i = 0; i < 100; i++) {
+
+		auto entity = registry.create();
+		
+		//std::cout << "Entity ID: " << (int)entity << "\n";
+
+		registry.emplace<Health>(entity, 100);
+
+		float tickDamage = static_cast<float>(rand() % 10 + 1); 
+		registry.emplace<Poison>(entity, tickDamage);
+
+	}
+
+	int iterations = 0;
+	while (!registry.view<Health>().empty() && iterations < 10000)
+	{
+		{
+			auto view = registry.view<Health, Poison>();
+
+			view.each([](Health& health, const Poison& poison) {
+				health.Value -= poison.TickDamage;
+				}); 
+		}
+
+		{
+
+		auto view = registry.view<Health>();
+
+		view.each([&](entt::entity entity, const Health& health) {
+			if (health.Value <= 0.f)
+			{
+				registry.destroy(entity);
+			}
+			});
+		}
+
+		{
+			float saveChance = rand() % 20;
+			if (saveChance == 0)
+			{
+				registry.clear<Poison>();
+
+				std::cout << "Entity Saved!" << std::endl;
+			}
+
+		}
+
+		auto curedView = registry.view<Health>(entt::exclude<Poison>);
+
+		for (auto entity : curedView) {
+			float tickDamage = static_cast<float>(rand() % 10 + 1);
+			registry.emplace<Poison>(entity, tickDamage);
+
+			std::cout << "Enitty inflicted" << std::endl;
+		}
+
+		iterations++;
+		std::cout << "Iteration " << iterations
+			<< ", entities alive: " << registry.view<Health>().size()
+			<< std::endl;
+	}
+	
+
+	
 
 	rayLib raylib;
 	raylib.run();

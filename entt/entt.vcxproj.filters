@@ -15,27 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="graphics\rayLibTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="graphics\rayLibTest.hpp">
+    <ClInclude Include="..\..\..\..\Downloads\entt-master\entt-master\src\entt\fwd.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.hpp">
+    <ClInclude Include="..\..\..\..\Downloads\entt-master\entt-master\single_include\entt\entt.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="vector.lua" />
-    <None Include="vector-demo.lua" />
-    <None Include="transform.lua" />
   </ItemGroup>
 </Project>
