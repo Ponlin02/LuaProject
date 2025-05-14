@@ -1,10 +1,11 @@
+#include "entt.hpp"
+#include "lua.hpp"
+#include "graphics/rayLibTest.hpp"
+
 #include <iostream>
 #include <thread>
 #include <string>
 #include <Windows.h>
-
-#include "lua.hpp"
-#include "graphics/rayLibTest.hpp"
 
 void DumpError(lua_State* L)
 {
@@ -39,6 +40,8 @@ int main()
 
 	rayLib raylib;
 	raylib.run();
+
+	entt::registry registry;
 
 	bool running = true;
 	while (!running)
