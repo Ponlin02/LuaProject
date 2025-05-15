@@ -19,11 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="entt_test.cpp" />
+    <ClCompile Include="ecs_demo.cpp" />
     <ClCompile Include="graphics\rayLibTest.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ecs_demo.h" />
     <ClInclude Include="graphics\rayLibTest.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

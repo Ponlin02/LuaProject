@@ -1,6 +1,7 @@
 #include "entt/entt.hpp"
 #include "lua.hpp"
 #include "graphics/rayLibTest.hpp"
+#include "ecs_demo.h"
 
 #include <iostream>
 #include <thread>
@@ -38,10 +39,11 @@ int main()
 
 	std::thread consoleThread(ConsoleThreadFunction, L);
 
-	rayLib raylib;
-	raylib.run();
+	//rayLib raylib;
+	//raylib.run();
 
 	//entt::registry registry;
+	run_ecs_demo();
 
 	bool running = true;
 	while (!running)

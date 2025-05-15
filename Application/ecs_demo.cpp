@@ -1,5 +1,6 @@
 #include <iostream>
 #include "entt/entt.hpp"
+#include "ecs_demo.h"
 
 //Våra komponenter
 struct Position
@@ -12,7 +13,8 @@ struct Velocity
 	float dx, dy;
 };
 
-int myEnttTest()
+
+void run_ecs_demo()
 {
 	entt::registry registry;
 
@@ -23,13 +25,13 @@ int myEnttTest()
 
 	//Simulera ett system: uppdatera position med velocity
 	auto view = registry.view<Position, Velocity>();
-	view.each([](auto entity, Position& pos, Velocity& vel)
-	{
+	for (auto entity : view) {
+		auto& pos = view.get<Position>(entity);
+		auto& vel = view.get<Velocity>(entity);
+
 		pos.x += vel.dx;
 		pos.y += vel.dy;
 
 		std::cout << "Ny position: (" << pos.x << ", " << pos.y << ")\n";
-	});
-
-	return 0;
+	}
 }
