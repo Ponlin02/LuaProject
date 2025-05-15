@@ -159,17 +159,7 @@ static int lua_pushtransform(lua_State* L, Transform& transform)
 
 // EnTT saker
 
-struct Health
-{
-	float Value;
-	Health(float value) : Value(value) {}
-};
 
-struct Poison
-{
-	float TickDamage;
-	Poison(float tickDamage) : TickDamage(tickDamage) {}
-};
 
 int main()
 {
@@ -276,6 +266,8 @@ int main()
 
 	Scene scene;
 	scene.CreateEntity();
+	scene.CreateSystem<PoisonSystem>(5);
+	scene.UpdateSystems(1);
 
 	std::cout << scene.GetEntityCount() << std::endl;
 
