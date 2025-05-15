@@ -28,6 +28,7 @@
     <ClInclude Include="Scene.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="sceneDemo.lua" />
     <None Include="transform.lua" />
     <None Include="vector-demo.lua" />
     <None Include="vector.lua" />

@@ -264,7 +264,7 @@ int main()
 	}
 	
 
-	Scene scene;
+	Scene scene(L);
 	scene.CreateEntity();
 	scene.CreateSystem<PoisonSystem>(5);
 	scene.UpdateSystems(1);

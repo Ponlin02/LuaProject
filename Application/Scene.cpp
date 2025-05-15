@@ -43,5 +43,52 @@ void Scene::UpdateSystems(float delta)
 			delete (*it);
 			it = m_systems.erase(it);
 		}
+		else
+		{
+			it++;
+		}
 	}
+}
+
+Scene* Scene::lua_GetSceneUpValue(lua_State* L)
+{
+	Scene* scene = nullptr;
+	if (lua_isuserdata(L, lua_upvalueindex(1)))
+	{
+		scene = (Scene*)lua_touserdata(L, lua_upvalueindex(1));
+	}
+	return scene;
+}
+
+int Scene::lua_GetEntityCount(lua_State* L)
+{
+	Scene* scene = lua_GetSceneUpValue(L);
+	int count = scene->GetEntityCount();
+	lua_pushinteger(L, count);
+	return 1;
+}
+
+int Scene::lua_CreateEntity(lua_State* L)
+{
+	Scene* scene = lua_GetSceneUpValue(L);
+	int entity = scene->CreateEntity();
+	lua_pushinteger(L, entity);
+	return 1;
+}
+
+int Scene::lua_IsEntity(lua_State* L)
+{
+	Scene* scene = lua_GetSceneUpValue(L);
+	int entity = lua_tointeger(L, 1);
+	bool alive = scene->IsEntity(entity);
+	lua_pushboolean(L, alive);
+	return 1;
+}
+
+int Scene::lua_RemoveEntity(lua_State* L)
+{
+	Scene* scene = lua_GetSceneUpValue(L);
+	int entity = lua_tointeger(L, 1);
+	scene->RemoveEntity(entity);
+	return 0;
 }

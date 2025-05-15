@@ -1,6 +1,7 @@
 #include "entt.hpp"
 #include <iostream>
 #include <stdlib.h>
+#include "lua.hpp"
 
 #include <Windows.h>
 
@@ -58,6 +59,21 @@ public:
 	void CreateSystem(Args ... args);
 
 	void UpdateSystems(float delta);
+
+private: 
+	// Lua funktioner så att lua kan skapa en scen
+	// Or "make a scene" :D
+	static Scene* lua_GetSceneUpValue(lua_State* L);
+
+	static int lua_GetEntityCount(lua_State* L);
+	static int lua_CreateEntity(lua_State* L);
+	static int lua_IsEntity(lua_State* L);
+	static int lua_RemoveEntity(lua_State* L);
+
+	static int lua_HasComponent(lua_State* L);
+	static int lua_GetComponent(lua_State* L);
+	static int lua_SetComponent(lua_State* L);
+	static int lua_RemoveComponent(lua_State* L);
 };
 
 
@@ -74,6 +90,43 @@ public:
 			});
 
 		return (--m_lifetime) <= 0;
+	}
+};
+
+class CleanupSystem : public System
+{
+public:
+	bool OnUpdate(entt::registry& registry, float delta) final 
+	{
+		auto view = registry.view<Health>();
+		view.each([&](entt::entity entity, const Health& health) {
+			if (health.Value <= 0.f) {
+				registry.destroy(entity);
+			}
+			});
+		return false;
+	}
+};
+
+class InfoSystem : public System
+{
+	int m_updateCounter = 0;
+public: 
+	InfoSystem() = default;
+	bool OnUpdate(entt::registry& registry, float delta) final
+	{
+		int count = 0;
+
+		auto view = registry.view<entt::entity>();
+		view.each([&](entt::entity) {
+			count++;
+			});
+		auto healthView = registry.view<Health>();
+		auto poisonView = registry.view<Poison>();
+		printf("\n-- Update %i -- \n", ++m_updateCounter);
+		printf(" Living entities: \t%i\n",healthView.size());
+		printf("\n-- Poisoned entities: \t%i\n ", poisonView.size());
+		return false;
 	}
 };
 
