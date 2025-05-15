@@ -41,7 +41,7 @@ int main()
 	rayLib raylib;
 	raylib.run();
 
-	entt::registry registry;
+	//entt::registry registry;
 
 	bool running = true;
 	while (!running)

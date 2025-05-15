@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="entt_test.cpp" />
     <ClCompile Include="graphics\rayLibTest.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

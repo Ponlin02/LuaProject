@@ -21,6 +21,9 @@
     <ClCompile Include="graphics\rayLibTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="entt_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\rayLibTest.hpp">
