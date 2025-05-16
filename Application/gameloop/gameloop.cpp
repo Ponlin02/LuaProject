@@ -3,36 +3,49 @@
 
 #include "maze/maze.hpp" 
 #include "player/player.hpp"
+#include "placeholder/main_menu.hpp"
+#include "placeholder/game.hpp"
+#include "placeholder/paused.hpp"
 
 void gameloop::run()
 {
     //Preparing stuff
-    InitWindow(800, 450, "Maze Game!");
+    InitWindow(1280, 720, "Maze Game!");
     SetTargetFPS(60);
+    SetExitKey(KEY_NULL);
 
-    Camera camera = { 0 };
-    camera.position = { 0.0f, 2.0f, 6.0f };
-    camera.target = { 0.0f, 1.0f, 0.0f };
-    camera.up = { 0.0f, 1.0f, 0.0f };
-    camera.fovy = 45.0f;
-    camera.projection = CAMERA_PERSPECTIVE;
+    GameState currentState = MAIN_MENU;
 
-    maze maze;
-    player player;
+    main_menu main_menu;
+    game game;
+    paused paused;
 
     //The gameloop
-    while (!WindowShouldClose())
+    while (!WindowShouldClose() && currentState != GameState::QUIT)
     {
-        //Update values
-        player.update();
-
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        BeginMode3D(camera);
-        maze.draw();
-        player.draw();
-        EndMode3D();
+        switch (currentState)
+        {
+        case MAIN_MENU:
+            currentState = main_menu.draw();
+            break;
+
+        case PLAYING:
+            game.run();
+            break;
+
+        case PAUSED:
+            currentState = paused.draw();
+            break;
+
+        case WIN:
+            break;
+
+        default:
+            break;
+        }
 
         EndDrawing();
     }

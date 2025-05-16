@@ -50,6 +50,8 @@ int main()
 		//Update game
 		//Render game
 	}
+
+	consoleThread.detach();
 	
 	return 0;
 }
