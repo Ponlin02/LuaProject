@@ -1,8 +1,8 @@
 #include "gameloop.hpp"
 #include "raylib.h"
 
-#include "../maze/maze.hpp" 
-#include "../player/player.hpp"
+#include "maze/maze.hpp" 
+#include "player/player.hpp"
 
 void gameloop::run()
 {
