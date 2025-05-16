@@ -1,6 +1,9 @@
+#pragma once
 #include "entt.hpp"
+#include "Transform.hpp"
 #include <iostream>
 #include <stdlib.h>
+#include <cstring>
 #include "lua.hpp"
 
 #include <Windows.h>
@@ -17,6 +20,20 @@ struct Poison
 	Poison(float tickDamage) : TickDamage(tickDamage) {}
 };
 
+struct BehaviourComponent 
+{
+	char ScriptPath[64];
+	int LuaRef;
+
+	BehaviourComponent(const char* path, int luaRef) : LuaRef(luaRef)
+	{
+		memset(ScriptPath, '\0', 64);
+		strcpy_s(ScriptPath, path);
+	}
+
+	BehaviourComponent() = default;
+};
+
 class System
 {
 public:
@@ -24,14 +41,17 @@ public:
 };
 
 
+
 class Scene
 {
 
 	entt::registry m_registry;
 	std::vector<System*> m_systems;
+	lua_State* m_luaState;
 
 public: 
 	Scene() = default;
+	Scene(lua_State* L);
 	~Scene();
 
 	int GetEntityCount();
@@ -60,6 +80,9 @@ public:
 
 	void UpdateSystems(float delta);
 
+	static void lua_openscene(lua_State* L, Scene* scene);
+
+
 private: 
 	// Lua funktioner så att lua kan skapa en scen
 	// Or "make a scene" :D
@@ -74,6 +97,8 @@ private:
 	static int lua_GetComponent(lua_State* L);
 	static int lua_SetComponent(lua_State* L);
 	static int lua_RemoveComponent(lua_State* L);
+	
+	static int RefAndPushBehaviour(lua_State* L, int entity, const char* path);
 };
 
 

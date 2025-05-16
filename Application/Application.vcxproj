@@ -22,12 +22,18 @@
     <ClCompile Include="graphics\rayLibTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\entt\entt\entt.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="graphics\rayLibTest.hpp" />
     <ClInclude Include="Scene.hpp" />
+    <ClInclude Include="Transform.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="monster.lua" />
     <None Include="sceneDemo.lua" />
     <None Include="transform.lua" />
     <None Include="vector-demo.lua" />
