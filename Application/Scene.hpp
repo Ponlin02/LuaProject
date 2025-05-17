@@ -12,6 +12,8 @@ struct Health
 {
 	float Value;
 	Health(float value) : Value(value) {}
+
+	Health() = default;
 };
 
 struct Poison

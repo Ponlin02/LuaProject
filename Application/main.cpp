@@ -285,7 +285,7 @@ int main()
 	Scene scene;
 	Scene::lua_openscene(L, &scene);
 	
-	scene.CreateSystem<PoisonSystem>(5);
+	scene.CreateSystem<PoisonSystem>(15);
 	scene.CreateSystem<CleanupSystem>();
 	scene.CreateSystem<InfoSystem>();
 	scene.CreateSystem<BehaviourSystem>(L);
@@ -304,11 +304,14 @@ int main()
 	//		std::cout << "Enitty inflicted" << std::endl;
 	//	}
 		
+	
 
-	scene.SetComponent<BehaviourComponent>(entity, "monster.lua");
+
+	//scene.SetComponent<BehaviourComponent>(entity, "monster.lua");
+	luaL_dofile(L, "test.lua");
 
 	
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		scene.UpdateSystems(1);
 	}

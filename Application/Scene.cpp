@@ -211,7 +211,7 @@ int Scene::lua_SetComponent(lua_State* L)
 		lua_pushvalue(L, -2);
 		lua_pcall(L, 1, 0, 0);
 
-		//scene->SetComponent<BehaviourComponent>(entity, path, ref);
+		scene->SetComponent<BehaviourComponent>(entity, path, ref);
 		return 1;
 
 	}

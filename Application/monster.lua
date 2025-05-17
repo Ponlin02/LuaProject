@@ -1,5 +1,5 @@
 local monster = {}
-
+print("hello from monster file")
 monster.lifespan = 3
 
 function monster:OnCreate()
@@ -13,6 +13,7 @@ function monster:OnUpdate(delta)
 
 	if self.lifespan <= 0 then
 		scene.RemoveEntity(self.ID)
+		print("I dieded")
 	end
 end
 

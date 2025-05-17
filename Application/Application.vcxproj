@@ -35,6 +35,7 @@
   <ItemGroup>
     <None Include="monster.lua" />
     <None Include="sceneDemo.lua" />
+    <None Include="test.lua" />
     <None Include="transform.lua" />
     <None Include="vector-demo.lua" />
     <None Include="vector.lua" />

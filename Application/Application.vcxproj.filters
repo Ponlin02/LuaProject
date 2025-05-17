@@ -48,5 +48,6 @@
     <None Include="transform.lua" />
     <None Include="sceneDemo.lua" />
     <None Include="monster.lua" />
+    <None Include="test.lua" />
   </ItemGroup>
 </Project>
