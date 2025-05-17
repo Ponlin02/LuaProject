@@ -14,7 +14,7 @@ void gameloop::run()
     SetTargetFPS(60);
     SetExitKey(KEY_NULL);
 
-    GameState currentState = MAIN_MENU;
+    GameState currentState = PLAYING;
 
     main_menu main_menu;
     game game;
@@ -33,6 +33,7 @@ void gameloop::run()
             break;
 
         case PLAYING:
+            //currentState = game.run();
             game.run();
             break;
 
