@@ -8,6 +8,10 @@ void rayLib::run()
 {
     InitWindow(800, 450, "raylib separated!");
     SetTargetFPS(60);
+
+    
+
+
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
