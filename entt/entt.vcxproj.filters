@@ -21,5 +21,11 @@
     <ClInclude Include="..\..\..\..\Downloads\entt-master\entt-master\single_include\entt\entt.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="entt\entt.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="single_include\entt\entt.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

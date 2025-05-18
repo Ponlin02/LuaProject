@@ -134,6 +134,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Downloads\entt-master\entt-master\single_include\entt\entt.hpp" />
     <ClInclude Include="..\..\..\..\Downloads\entt-master\entt-master\src\entt\fwd.hpp" />
+    <ClInclude Include="entt\entt.hpp" />
+    <ClInclude Include="single_include\entt\entt.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

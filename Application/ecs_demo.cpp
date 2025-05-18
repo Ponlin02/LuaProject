@@ -1,5 +1,5 @@
 #include <iostream>
-#include "entt/entt.hpp"
+#include "entt.hpp"
 #include "ecs_demo.h"
 
 //Våra komponenter

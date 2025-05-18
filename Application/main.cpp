@@ -1,4 +1,4 @@
-#include "entt/entt.hpp"
+#include "entt.hpp"
 #include "lua.hpp"
 #include "graphics/rayLibTest.hpp"
 #include "ecs_demo.h"

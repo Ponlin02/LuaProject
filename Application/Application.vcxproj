@@ -26,9 +26,6 @@
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\entt\entt\entt.hpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="graphics\rayLibTest.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Transform.hpp" />
