@@ -1,16 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="ecs_demo.cpp" />
     <ClCompile Include="graphics\rayLibTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="gameloop\gameloop.cpp" />
+    <ClCompile Include="gameloop\maze\maze.cpp" />
+    <ClCompile Include="gameloop\placeholder\game.cpp" />
+    <ClCompile Include="gameloop\placeholder\main_menu.cpp" />
+    <ClCompile Include="gameloop\placeholder\paused.cpp" />
+    <ClCompile Include="gameloop\player\player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\rayLibTest.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Transform.hpp" />
+    <ClInclude Include="gameloop\gameloop.hpp" />
+    <ClInclude Include="gameloop\maze\maze.hpp" />
+    <ClInclude Include="gameloop\placeholder\game.hpp" />
+    <ClInclude Include="gameloop\placeholder\gamestate.hpp" />
+    <ClInclude Include="gameloop\placeholder\main_menu.hpp" />
+    <ClInclude Include="gameloop\placeholder\paused.hpp" />
+    <ClInclude Include="gameloop\player\player.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="monster.lua" />
@@ -25,48 +37,9 @@
     <ClCompile Include="graphics\rayLibTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gameloop\gameloop.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gameloop\maze\maze.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gameloop\player\player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gameloop\placeholder\main_menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gameloop\placeholder\game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="gameloop\placeholder\paused.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\rayLibTest.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gameloop\gameloop.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gameloop\maze\maze.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gameloop\player\player.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gameloop\placeholder\main_menu.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gameloop\placeholder\game.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gameloop\placeholder\paused.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gameloop\placeholder\gamestate.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

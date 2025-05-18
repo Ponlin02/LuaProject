@@ -1,7 +1,6 @@
 #include "entt.hpp"
 #include "lua.hpp"
 #include "graphics/rayLibTest.hpp"
-#include "ecs_demo.h"
 
 #include <iostream>
 #include <thread>
@@ -230,7 +229,6 @@ int main()
 	//raylib.run();
 
 	//entt::registry registry;
-	run_ecs_demo();
 	// Create all entites and their tickdamage!
 
 	//entt::registry registry;
@@ -327,8 +325,9 @@ int main()
 
 	//std::cout << scene.GetEntityCount() << std::endl;
 
-	rayLib raylib;
-	raylib.run();
+	//rayLib raylib;
+	//raylib.run();
+
 	gameloop mazegame;
 	mazegame.run();
 
