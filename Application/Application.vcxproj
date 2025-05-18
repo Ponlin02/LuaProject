@@ -19,13 +19,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ecs_demo.cpp" />
+    <ClCompile Include="gameloop\gameloop.cpp" />
+    <ClCompile Include="gameloop\maze\maze.cpp" />
+    <ClCompile Include="gameloop\placeholder\game.cpp" />
+    <ClCompile Include="gameloop\placeholder\main_menu.cpp" />
+    <ClCompile Include="gameloop\placeholder\paused.cpp" />
+    <ClCompile Include="gameloop\player\player.cpp" />
     <ClCompile Include="graphics\rayLibTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="gameloop\gameloop.hpp" />
+    <ClInclude Include="gameloop\maze\maze.hpp" />
+    <ClInclude Include="gameloop\placeholder\game.hpp" />
+    <ClInclude Include="gameloop\placeholder\gamestate.hpp" />
+    <ClInclude Include="gameloop\placeholder\main_menu.hpp" />
+    <ClInclude Include="gameloop\placeholder\paused.hpp" />
+    <ClInclude Include="gameloop\player\player.hpp" />
     <ClInclude Include="graphics\rayLibTest.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Transform.hpp" />

@@ -14,6 +14,7 @@
 #include <Windows.h>
 
 #include "graphics/rayLibTest.hpp"
+#include "gameloop/gameloop.hpp"
 
 //void DumpError(lua_State* L)
 //{
@@ -328,6 +329,8 @@ int main()
 
 	rayLib raylib;
 	raylib.run();
+	gameloop mazegame;
+	mazegame.run();
 
 	bool running = true;
 	while (!running)
@@ -335,6 +338,8 @@ int main()
 		//Update game
 		//Render game
 	}
+
+	consoleThread.detach();
 	
 	return 0;
 }
