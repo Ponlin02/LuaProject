@@ -44,6 +44,15 @@ struct Floor
 	Floor() = default;
 };
 
+struct Wall
+{
+	float PosX;
+	float PosZ;
+	Wall(float posx, float posz) : PosX(posx), PosZ(posz) {}
+	Wall() = default;
+};
+
+
 class System
 {
 public:

@@ -24,6 +24,7 @@ void maze::InitializeMaze(lua_State* L, bool& isInitialized)
 	//scene.SetComponent(entity3, floor3);
 	
 	scene.CreateSystem<FloorSystem>();
+	scene.CreateSystem<WallSystem>();
 	
 	isInitialized = true;
 
@@ -90,7 +91,5 @@ void maze::draw()
 
 	scene.UpdateSystems(1);
 	int count = scene.GetEntityCount();
-	
-	//std::cout << "Antal floor entities: " << count << std::endl;
 
 }

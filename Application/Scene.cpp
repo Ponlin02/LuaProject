@@ -122,6 +122,9 @@ int Scene::lua_HasComponent(lua_State* L)
 	else if (type == "floor") {
 		hasComponent = scene->HasComponents<Floor>(entity);
 	}
+	else if (type == "wall") {
+		hasComponent = scene->HasComponents<Wall>(entity);
+	}
 
 	lua_pushboolean(L, hasComponent);
 	return 1;
@@ -173,6 +176,13 @@ int Scene::lua_GetComponent(lua_State* L)
 		lua_pushnumber(L, floor.PosZ);
 		return 1;
 	}
+	else if (type == "wall" && scene->HasComponents<Floor>(entity))
+	{
+		Wall& wall = scene->GetComponent<Wall>(entity);
+		lua_pushnumber(L, wall.PosX);
+		lua_pushnumber(L, wall.PosZ);
+		return 1;
+	}
 
 }
 
@@ -203,6 +213,12 @@ int Scene::lua_SetComponent(lua_State* L)
 		float posx = lua_tonumber(L, 3);
 		float posz = lua_tonumber(L, 4);
 		scene->SetComponent<Floor>(entity, posx, posz);
+	}
+	else if (type == "wall")
+	{
+		float posx = lua_tonumber(L, 3);
+		float posz = lua_tonumber(L, 4);
+		scene->SetComponent<Wall>(entity, posx, posz);
 	}
 	else if (type == "behaviour")
 	{
@@ -249,7 +265,8 @@ int Scene::lua_RemoveComponent(lua_State* L)
 		scene->RemoveComponent<SelfTransform>(entity);
 	else if (type == "floor")
 		scene->RemoveComponent<Floor>(entity);
-
+	else if (type == "wall")
+		scene->RemoveComponent<Wall>(entity);
 	return 0;
 }
 

@@ -32,6 +32,21 @@ public:
 			});
 		return false;
 	};
-	
+};
 
+class WallSystem : public System
+{
+	int hej = 0;
+
+public:
+	WallSystem() = default;
+	bool OnUpdate(entt::registry& registry, float delta)
+	{
+		maze Maze;
+		auto view = registry.view<Wall>();
+		view.each([&](Wall& wall) {
+			Maze.makeFullWall(wall.PosX, wall.PosZ);
+			});
+		return false;
+	};
 };
