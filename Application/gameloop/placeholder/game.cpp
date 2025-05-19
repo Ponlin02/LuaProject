@@ -9,12 +9,16 @@ game::game()
     this->camera.projection = CAMERA_PERSPECTIVE;
 }
 
-GameState game::run()
+GameState game::run(lua_State* L)
 {
     //Update values
     this->player.update();
 
     ClearBackground(RAYWHITE);
+
+    if (!isInitialized) {
+        maze.InitializeMaze(L, isInitialized);
+    }
 
     BeginMode3D(this->camera);
     this->maze.draw();

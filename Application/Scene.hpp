@@ -6,7 +6,7 @@
 #include <cstring>
 #include "lua.hpp"
 
-#include <Windows.h>
+//#include <Windows.h>
 
 struct Health
 {
@@ -34,6 +34,14 @@ struct BehaviourComponent
 	}
 
 	BehaviourComponent() = default;
+};
+
+struct Floor 
+{
+	float PosX;
+	float PosZ;
+	Floor(float posx, float posz) : PosX(posx), PosZ(posz){}
+	Floor() = default;
 };
 
 class System
@@ -156,6 +164,23 @@ public:
 		return false;
 	}
 };
+
+//class FloorSystem : public System
+//{
+//	int hej = 0;
+//
+//public:
+//	FloorSystem() = default;
+//	bool OnUpdate(entt::registry& registry, float delta);
+//	/*{
+//		auto view = registry.view<Floor>();
+//		view.each([&](entt::entity) {
+//			makeFloor();
+//			})
+//	}*/
+//	
+//};
+
 
 
 template <typename ... Args>

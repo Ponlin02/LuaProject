@@ -8,10 +8,11 @@ class game
 {
 public:
 	game();
-	GameState run();
+	GameState run(lua_State* L);
 
 private:
 	Camera camera = { 0 };
 	maze maze;
 	player player;
+	bool isInitialized = false;
 };

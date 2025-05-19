@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="graphics\rayLibTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -11,6 +10,7 @@
     <ClCompile Include="gameloop\placeholder\main_menu.cpp" />
     <ClCompile Include="gameloop\placeholder\paused.cpp" />
     <ClCompile Include="gameloop\player\player.cpp" />
+    <ClCompile Include="GammalKod.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\rayLibTest.hpp" />
@@ -34,9 +34,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="graphics\rayLibTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <None Include="createfloor.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\rayLibTest.hpp">

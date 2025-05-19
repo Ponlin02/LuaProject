@@ -25,7 +25,7 @@
     <ClCompile Include="gameloop\placeholder\main_menu.cpp" />
     <ClCompile Include="gameloop\placeholder\paused.cpp" />
     <ClCompile Include="gameloop\player\player.cpp" />
-    <ClCompile Include="graphics\rayLibTest.cpp" />
+    <ClCompile Include="GammalKod.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -38,11 +38,14 @@
     <ClInclude Include="gameloop\placeholder\main_menu.hpp" />
     <ClInclude Include="gameloop\placeholder\paused.hpp" />
     <ClInclude Include="gameloop\player\player.hpp" />
-    <ClInclude Include="graphics\rayLibTest.hpp" />
+    <ClInclude Include="graphics\rayLibTest.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Transform.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="createfloor.lua" />
     <None Include="monster.lua" />
     <None Include="sceneDemo.lua" />
     <None Include="test.lua" />
@@ -178,6 +181,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)entt/entt;$(SolutionDir)LuaLib/src</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
