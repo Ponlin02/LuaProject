@@ -8,6 +8,7 @@ class game
 {
 public:
 	game();
+	bool playerWallCollide();
 	GameState run();
 
 private:

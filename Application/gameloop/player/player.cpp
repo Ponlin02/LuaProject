@@ -20,3 +20,29 @@ void player::draw()
 {
 	DrawSphere(this->position, 0.5, BLUE);
 }
+
+BoundingBox player::getBoundingBox()
+{
+	BoundingBox box = {
+		Vector3{
+			this->position.x - this->size.x / 2,
+			this->position.y - this->size.y / 2,
+			this->position.z - this->size.z / 2},
+
+		Vector3{
+			this->position.x + this->size.x / 2,
+			this->position.y + this->size.y / 2,
+			this->position.z + this->size.z / 2}
+	};
+	return box;
+}
+
+Vector3 player::getPosition()
+{
+	return this->position;
+}
+
+void player::setPosition(Vector3& position)
+{
+	this->position = position;
+}
