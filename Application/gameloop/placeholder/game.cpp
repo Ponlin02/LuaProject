@@ -35,7 +35,15 @@ GameState game::run()
     }
 
     ClearBackground(RAYWHITE);
-    BeginMode3D(this->camera);
+
+    if (!IsKeyDown(KEY_B))
+    {
+        BeginMode3D(this->player.getCamera());
+    }
+    else
+    {
+        BeginMode3D(this->camera);
+    }
     //UpdateCamera(&this->camera, CAMERA_FIRST_PERSON);
     //SetMousePosition(GetScreenWidth() / 2, GetScreenHeight() / 2);
 
