@@ -8,11 +8,14 @@ public:
 	void makeFloor(float posX, float posZ);
 	void makeSlabWall(float posX, float posZ);
 	void makeFullWall(float posX, float posZ);
+	void makeTunnel(float posX, float posZ, bool north, bool south, bool east, bool west, float time);
 	void draw();
 
 private:
 	float wallHeight = 4.0f;
 	float tileSize = 5.0f;
+
+	float wallTime = 1.f;
 
 	Scene scene;
 };

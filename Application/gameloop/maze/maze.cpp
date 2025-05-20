@@ -70,6 +70,51 @@ void maze::makeFullWall(float posX, float posZ)
 	}
 }
 
+void maze::makeTunnel(float posX, float posZ, bool north, bool south, bool east, bool west, float time)
+{
+	float halfSize = this->tileSize / 2.0f;
+	float wallThickness = this->tileSize * 0.1f * time; // thin wall edges
+	if (wallThickness >= halfSize)
+		wallThickness = halfSize;
+	float wallHeight = this->wallHeight;
+
+	// Center position of the tile
+	Vector3 basePos = { posX * this->tileSize, wallHeight / 2.0f, posZ * this->tileSize };
+
+	// North wall (top side of tile)
+	if (north) {
+		Vector3 wallSize = { this->tileSize, wallHeight, wallThickness };
+		Vector3 wallPos = { basePos.x, basePos.y, basePos.z - halfSize + wallThickness / 2.0f };
+		DrawCubeV(wallPos, wallSize, BEIGE);
+		DrawCubeWiresV(wallPos, wallSize, BLACK);
+	}
+
+	// South wall (bottom side of tile)
+	if (south) {
+		Vector3 wallSize = { this->tileSize, wallHeight, wallThickness };
+		Vector3 wallPos = { basePos.x, basePos.y, basePos.z + halfSize - wallThickness / 2.0f };
+		DrawCubeV(wallPos, wallSize, BEIGE);
+		DrawCubeWiresV(wallPos, wallSize, BLACK);
+	}
+
+	// East wall (right side of tile)
+	if (east) {
+		Vector3 wallSize = { wallThickness, wallHeight, this->tileSize };
+		Vector3 wallPos = { basePos.x + halfSize - wallThickness / 2.0f, basePos.y, basePos.z };
+		DrawCubeV(wallPos, wallSize, BEIGE);
+		DrawCubeWiresV(wallPos, wallSize, BLACK);
+	}
+
+	// West wall (left side of tile)
+	if (west) {
+		Vector3 wallSize = { wallThickness, wallHeight, this->tileSize };
+		Vector3 wallPos = { basePos.x - halfSize + wallThickness / 2.0f, basePos.y, basePos.z };
+		DrawCubeV(wallPos, wallSize, BEIGE);
+		DrawCubeWiresV(wallPos, wallSize, BLACK);
+	}
+}
+
+
 void maze::draw()
 {
 	//DrawSphere(Vector3{ 0.0f, 0.0f, -15.0f }, 1.5f, RED);
@@ -88,6 +133,10 @@ void maze::draw()
 
 	//makeSlabWall(0.0f, -1.0f);
 	//makeFullWall(-1.0f, -1.0f);
+
+	makeTunnel(0.f, -1.f, false, false, true, true, wallTime);
+
+	wallTime += 0.01;
 
 	scene.UpdateSystems(1);
 	int count = scene.GetEntityCount();
