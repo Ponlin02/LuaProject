@@ -9,6 +9,7 @@ public:
 	void makeSlabWall(float posX, float posZ);
 	void makeFullWall(float posX, float posZ);
 	void makeTunnel(float posX, float posZ, bool north, bool south, bool east, bool west, float time);
+	void makeButton(float posX, float posZ);
 	void draw();
 
 private:

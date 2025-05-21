@@ -114,6 +114,37 @@ void maze::makeTunnel(float posX, float posZ, bool north, bool south, bool east,
 	}
 }
 
+void maze::makeButton(float posX, float posZ)
+{
+	Vector3 wallPosition = { posX * this->tileSize + this->tileSize / 2, this->wallHeight / 2, posZ * this->tileSize };
+	Vector3 wallSize = { 0.2f, 0.2f, 0.2f };
+
+	
+
+	//Vector2 screenPos = GetWorldToScreen(wallPosition, camera);
+		
+	// This code is for hovering over our objects that could be useful for the map editor!
+
+		//BoundingBox box = {
+		//{ wallPosition.x - wallSize.x / 2, wallPosition.y - wallSize.y / 2, wallPosition.z - wallSize.z / 2 },
+		//{ wallPosition.x + wallSize.x / 2, wallPosition.y + wallSize.y / 2, wallPosition.z + wallSize.z / 2 }
+		//};
+
+		//Ray ray = GetMouseRay(GetMousePosition(), camera);
+
+
+		//RayCollision collision = GetRayCollisionBox(ray, box);
+		//bool isHovered = collision.hit;
+		//bool isClicked = isHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+
+	//Color btnColor = isHovered ? SKYBLUE : BEIGE;
+
+	if (!IsKeyDown(KEY_C))
+	{
+		DrawCubeWiresV(wallPosition, wallSize, BLACK);
+		DrawCubeV(wallPosition, wallSize, BEIGE);
+	}
+}
 
 void maze::draw()
 {
@@ -135,6 +166,7 @@ void maze::draw()
 	//makeFullWall(-1.0f, -1.0f);
 
 	makeTunnel(0.f, -1.f, false, false, true, true, wallTime);
+	makeButton(0.f, 0.f);
 
 	wallTime += 0.01;
 
