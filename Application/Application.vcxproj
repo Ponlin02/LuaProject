@@ -45,6 +45,7 @@
     <ClInclude Include="Transform.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Button.lua" />
     <None Include="createfloor.lua" />
     <None Include="monster.lua" />
     <None Include="sceneDemo.lua" />

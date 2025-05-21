@@ -29,56 +29,27 @@ void ConsoleThreadFunction(lua_State* L)
 	}
 }
 
-class BehaviourSystem : public System
-{
-	lua_State* L;
-public: 
-	BehaviourSystem(lua_State* L) : L(L){}
 
-	bool OnUpdate(entt::registry& registry, float delta) final
-	{
-		auto view = registry.view<BehaviourComponent>();
-
-		view.each([&](BehaviourComponent& script) {
-			lua_rawgeti(L, LUA_REGISTRYINDEX, script.LuaRef);
-			lua_getfield(L, -1, "OnUpdate");
-			lua_pushvalue(L, -2);
-			lua_pushnumber(L, delta);
-
-			if (lua_pcall(L, 2, 0, 0) != LUA_OK) {
-				DumpError(L);
-			}
-
-			lua_pop(L, 1);
-			});
-
-		return false;
-	}
-};
 
 int main()
 {
 	lua_State* L = luaL_newstate();
 	luaL_openlibs(L);
 
-	luaL_dostring(L, "print('hello from lua')");
+	//luaL_dostring(L, "print('hello from lua')");
 
 	std::thread consoleThread(ConsoleThreadFunction, L);
 
 	Scene scene;
-	//Scene::lua_openscene(L, &scene);
+	Scene::lua_openscene(L, &scene);
 	
 	/*scene.CreateSystem<PoisonSystem>(15);
 	scene.CreateSystem<CleanupSystem>();
 	scene.CreateSystem<InfoSystem>();*/
-	scene.CreateSystem<BehaviourSystem>(L);
-	luaL_dofile(L, "sceneDemo.lua");
+	//scene.CreateSystem<BehaviourSystem>(L);
+	//luaL_dofile(L, "sceneDemo.lua");
 	
-	const char* script = "monster.lua";
-
-	int entity = scene.CreateEntity();
-	
-	luaL_dofile(L, "test.lua");
+	//int entity = scene.CreateEntity();
 	
 	for (int i = 0; i < 20; i++)
 	{

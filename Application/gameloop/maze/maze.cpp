@@ -22,9 +22,13 @@ void maze::InitializeMaze(lua_State* L, bool& isInitialized)
 	scene.SetComponent(entity, floor1);
 	scene.SetComponent(entity2, floor2);
 	//scene.SetComponent(entity3, floor3);
+	luaL_dofile(L, "test.lua");
 	
 	scene.CreateSystem<FloorSystem>();
 	scene.CreateSystem<WallSystem>();
+	scene.CreateSystem<BehaviourSystem>(L);
+
+
 	
 	isInitialized = true;
 
@@ -90,10 +94,7 @@ void maze::makeFullWall(float posX, float posZ)
 void maze::makeTunnel(float posX, float posZ, bool north, bool south, bool east, bool west, float time, bool isClicked)
 {
 	float halfSize = this->tileSize / 2.0f;
-
-	//float wallThickness = this->tileSize * 0.1f; // thin wall edges
-	//if(isClicked)
-	float wallThickness = this->tileSize * 0.1f * time;
+	float wallThickness = this->tileSize * 0.1f; // thin wall edges
 	if (wallThickness >= halfSize)
 		wallThickness = halfSize;
 	float wallHeight = this->wallHeight;
@@ -189,9 +190,8 @@ void maze::draw(Camera camera)
 	makeFullWall(-1.0f, -1.0f);
 	makeFullWall(1.0f, -1.0f);
 
-	bool isHovered = true;
-	makeButton(0.f, 0.f, camera, isHovered);
-	makeTunnel(0.f, -1.f, false, false, true, true, wallTime, isHovered);
+	makeButton(0.f, 0.f, camera, isClicked);
+	makeTunnel(0.f, -1.f, false, false, true, true, wallTime, isClicked);
 
 	wallTime += 0.01;
 

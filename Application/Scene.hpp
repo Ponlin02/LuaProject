@@ -18,7 +18,9 @@ struct Health
 
 struct Button
 {
-	float size;
+	float posX;
+	float posZ;
+	bool activated;
 };
 
 struct Poison
