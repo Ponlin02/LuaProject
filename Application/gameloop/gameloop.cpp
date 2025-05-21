@@ -33,7 +33,7 @@ void gameloop::run(lua_State* L)
             break;
 
         case PLAYING:
-            //currentState = game.run();
+            //currentState = game.run(L);
             game.run(L);
             break;
 
