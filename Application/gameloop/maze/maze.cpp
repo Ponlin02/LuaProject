@@ -91,9 +91,9 @@ void maze::makeTunnel(float posX, float posZ, bool north, bool south, bool east,
 {
 	float halfSize = this->tileSize / 2.0f;
 
-	float wallThickness = this->tileSize * 0.1f; // thin wall edges
-	if(isClicked)
-		float wallThickness = this->tileSize * 0.1f * time;
+	//float wallThickness = this->tileSize * 0.1f; // thin wall edges
+	//if(isClicked)
+	float wallThickness = this->tileSize * 0.1f * time;
 	if (wallThickness >= halfSize)
 		wallThickness = halfSize;
 	float wallHeight = this->wallHeight;
@@ -189,6 +189,12 @@ void maze::draw(Camera camera)
 	makeFullWall(-1.0f, -1.0f);
 	makeFullWall(1.0f, -1.0f);
 
+	bool isHovered = true;
+	makeButton(0.f, 0.f, camera, isHovered);
+	makeTunnel(0.f, -1.f, false, false, true, true, wallTime, isHovered);
+
+	wallTime += 0.01;
+
 	scene.UpdateSystems(1);
 
 	this->drawHitboxes();
@@ -216,14 +222,5 @@ void maze::drawHitboxes()
 	{
 		DrawBoundingBox(this->walls[i].boundingBox, RED);
 	}
-	//makeFullWall(-1.0f, -1.0f);
-	bool isHovered = false;
-	makeButton(0.f, 0.f, camera, isHovered);
-	makeTunnel(0.f, -1.f, false, false, true, true, wallTime, isHovered);
-
-	wallTime += 0.01;
-
-	scene.UpdateSystems(1);
-	int count = scene.GetEntityCount();
 
 }

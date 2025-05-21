@@ -55,7 +55,7 @@ GameState game::run(lua_State* L)
     DrawBoundingBox(this->player.getBoundingBox(), RED);
 
     
-    this->maze.draw(this->camera);
+    this->maze.draw(this->player.getCamera());
     this->player.draw();
     EndMode3D();
 

@@ -65,6 +65,7 @@ public:
 		auto view = registry.view<Wall>();
 		view.each([&](Wall& wall) {
 			Maze.makeFullWall(wall.PosX, wall.PosZ);
+
 			});
 		return false;
 	};
