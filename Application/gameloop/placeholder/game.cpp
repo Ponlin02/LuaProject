@@ -23,7 +23,7 @@ bool game::playerWallCollide()
     return false;
 }
 
-GameState game::run()
+GameState game::run(lua_State* L)
 {
     //Update values
     Vector3 oldPlayerPosition = this->player.getPosition();
@@ -35,6 +35,11 @@ GameState game::run()
     }
 
     ClearBackground(RAYWHITE);
+
+    if (!isInitialized) {
+        maze.InitializeMaze(L, isInitialized);
+    }
+
 
     if (!IsKeyDown(KEY_B))
     {
@@ -49,7 +54,8 @@ GameState game::run()
 
     DrawBoundingBox(this->player.getBoundingBox(), RED);
 
-    this->maze.draw();
+    
+    this->maze.draw(this->camera);
     this->player.draw();
     EndMode3D();
 

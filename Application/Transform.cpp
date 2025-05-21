@@ -41,9 +41,9 @@ void DumpError(lua_State* L)
 
 
 // Convert Lua table to Vector3
-Vector3 lua_tovector(lua_State* L, int index)
+SelfVector3 lua_tovector(lua_State* L, int index)
 {
-    Vector3 vector;
+    SelfVector3 vector;
     lua_getfield(L, index, "x");
     vector.X = lua_tonumber(L, -1);
     lua_pop(L, 1);
@@ -59,7 +59,7 @@ Vector3 lua_tovector(lua_State* L, int index)
 }
 
 // Push Vector3 as Lua table
-int lua_pushvector(lua_State* L, const Vector3& vector)
+int lua_pushvector(lua_State* L, const SelfVector3& vector)
 {
     lua_newtable(L);
 
@@ -76,9 +76,9 @@ int lua_pushvector(lua_State* L, const Vector3& vector)
 }
 
 // Convert Lua table to Transform
-Transform lua_totransform(lua_State* L, int index)
+SelfTransform lua_totransform(lua_State* L, int index)
 {
-    Transform transform;
+    SelfTransform transform;
 
     lua_getfield(L, index, "position");
     transform.Position = lua_tovector(L, -1);
@@ -96,7 +96,7 @@ Transform lua_totransform(lua_State* L, int index)
 }
 
 // Push Transform as Lua table
-int lua_pushtransform(lua_State* L, const Transform& transform)
+int lua_pushtransform(lua_State* L, const SelfTransform& transform)
 {
     lua_newtable(L);
 

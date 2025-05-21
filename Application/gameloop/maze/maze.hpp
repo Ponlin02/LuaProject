@@ -1,6 +1,7 @@
 #pragma once
 #include "raylib.h"
 #include <vector>
+#include "../../Scene.hpp"
 
 struct wall
 {
@@ -8,13 +9,17 @@ struct wall
 	BoundingBox boundingBox;
 };
 
+
 class maze
 {
 public:
+	void InitializeMaze(lua_State*L, bool& isInitialized);
 	void makeFloor(float posX, float posZ);
 	void makeSlabWall(float posX, float posZ);
 	void makeFullWall(float posX, float posZ);
-	void draw();
+	void makeTunnel(float posX, float posZ, bool north, bool south, bool east, bool west, float time, bool isClicked);
+	void makeButton(float posX, float posZ, Camera camera, bool& isClicked);
+	void draw(Camera camera);
 
 	std::vector<BoundingBox> getRelevantBBs(Vector2 playerPos);
 
@@ -26,4 +31,41 @@ private:
 
 private:
 	void drawHitboxes();
+	float wallTime = 1.f;
+
+	Scene scene;
+};
+
+class FloorSystem : public System
+{
+	int hej = 0;
+
+public:
+	FloorSystem() = default;
+	bool OnUpdate(entt::registry& registry, float delta)
+	{
+		maze Maze;
+		auto view = registry.view<Floor>();
+		view.each([&](Floor& floor) {
+			Maze.makeFloor(floor.PosX, floor.PosZ);
+			});
+		return false;
+	};
+};
+
+class WallSystem : public System
+{
+	int hej = 0;
+
+public:
+	WallSystem() = default;
+	bool OnUpdate(entt::registry& registry, float delta)
+	{
+		maze Maze;
+		auto view = registry.view<Wall>();
+		view.each([&](Wall& wall) {
+			Maze.makeFullWall(wall.PosX, wall.PosZ);
+			});
+		return false;
+	};
 };

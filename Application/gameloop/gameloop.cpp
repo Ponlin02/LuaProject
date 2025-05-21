@@ -7,7 +7,7 @@
 #include "placeholder/game.hpp"
 #include "placeholder/paused.hpp"
 
-void gameloop::run()
+void gameloop::run(lua_State* L)
 {
     //Preparing stuff
     InitWindow(1280, 720, "Maze Game!");
@@ -34,7 +34,7 @@ void gameloop::run()
 
         case PLAYING:
             //currentState = game.run();
-            game.run();
+            game.run(L);
             break;
 
         case PAUSED:

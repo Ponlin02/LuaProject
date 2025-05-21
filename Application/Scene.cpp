@@ -117,7 +117,13 @@ int Scene::lua_HasComponent(lua_State* L)
 		hasComponent = scene->HasComponents<Poison>(entity);
 	}
 	else if (type == "transform") {
-		hasComponent = scene->HasComponents<Transform>(entity);
+		hasComponent = scene->HasComponents<SelfTransform>(entity);
+	}
+	else if (type == "floor") {
+		hasComponent = scene->HasComponents<Floor>(entity);
+	}
+	else if (type == "wall") {
+		hasComponent = scene->HasComponents<Wall>(entity);
 	}
 
 	lua_pushboolean(L, hasComponent);
@@ -157,10 +163,24 @@ int Scene::lua_GetComponent(lua_State* L)
 		lua_pushnumber(L, poison.TickDamage);
 		return 1;
 	}
-	else if (type == "transform" && scene->HasComponents<Transform>(entity))
+	else if (type == "transform" && scene->HasComponents<SelfTransform>(entity))
 	{
-		Transform& transform = scene->GetComponent<Transform>(entity);
+		SelfTransform& transform = scene->GetComponent<SelfTransform>(entity);
 		lua_pushtransform(L, transform);
+		return 1;
+	}
+	else if (type == "floor" && scene->HasComponents<Floor>(entity))
+	{
+		Floor& floor = scene->GetComponent<Floor>(entity);
+		lua_pushnumber(L, floor.PosX);
+		lua_pushnumber(L, floor.PosZ);
+		return 1;
+	}
+	else if (type == "wall" && scene->HasComponents<Floor>(entity))
+	{
+		Wall& wall = scene->GetComponent<Wall>(entity);
+		lua_pushnumber(L, wall.PosX);
+		lua_pushnumber(L, wall.PosZ);
 		return 1;
 	}
 
@@ -185,8 +205,20 @@ int Scene::lua_SetComponent(lua_State* L)
 	}
 	else if (type == "transform")
 	{
-		Transform transform = lua_totransform(L, 3);
-		scene->SetComponent<Transform>(entity);
+		SelfTransform transform = lua_totransform(L, 3);
+		scene->SetComponent<SelfTransform>(entity);
+	}
+	else if (type == "floor")
+	{
+		float posx = lua_tonumber(L, 3);
+		float posz = lua_tonumber(L, 4);
+		scene->SetComponent<Floor>(entity, posx, posz);
+	}
+	else if (type == "wall")
+	{
+		float posx = lua_tonumber(L, 3);
+		float posz = lua_tonumber(L, 4);
+		scene->SetComponent<Wall>(entity, posx, posz);
 	}
 	else if (type == "behaviour")
 	{
@@ -196,8 +228,7 @@ int Scene::lua_SetComponent(lua_State* L)
 		}
 
 		const char* path = lua_tostring(L, 3);
-		luaL_dofile(L, path);
-
+		
 		lua_pushvalue(L, -1);
 		int ref = RefAndPushBehaviour(L, entity, path);
 
@@ -231,8 +262,11 @@ int Scene::lua_RemoveComponent(lua_State* L)
 	else if (type == "poison")
 		scene->RemoveComponent<Poison>(entity);
 	else if (type == "transform")
-		scene->RemoveComponent<Transform>(entity);
-
+		scene->RemoveComponent<SelfTransform>(entity);
+	else if (type == "floor")
+		scene->RemoveComponent<Floor>(entity);
+	else if (type == "wall")
+		scene->RemoveComponent<Wall>(entity);
 	return 0;
 }
 
