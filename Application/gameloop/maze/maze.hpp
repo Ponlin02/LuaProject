@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Scene.hpp"
+#include "raylib.h"
 
 class maze
 {
@@ -8,9 +9,9 @@ public:
 	void makeFloor(float posX, float posZ);
 	void makeSlabWall(float posX, float posZ);
 	void makeFullWall(float posX, float posZ);
-	void makeTunnel(float posX, float posZ, bool north, bool south, bool east, bool west, float time);
-	void makeButton(float posX, float posZ);
-	void draw();
+	void makeTunnel(float posX, float posZ, bool north, bool south, bool east, bool west, float time, bool isClicked);
+	void makeButton(float posX, float posZ, Camera camera, bool& isClicked);
+	void draw(Camera camera);
 
 private:
 	float wallHeight = 4.0f;

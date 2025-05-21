@@ -21,7 +21,7 @@ GameState game::run(lua_State* L)
     }
 
     BeginMode3D(this->camera);
-    this->maze.draw();
+    this->maze.draw(this->camera);
     this->player.draw();
     EndMode3D();
 

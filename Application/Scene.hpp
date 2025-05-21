@@ -16,6 +16,11 @@ struct Health
 	Health() = default;
 };
 
+struct Button
+{
+	float size;
+};
+
 struct Poison
 {
 	float TickDamage;

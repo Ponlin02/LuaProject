@@ -6,7 +6,6 @@
 #include <thread>
 #include <string>
 #include "Scene.hpp"
-//#include "windowsThreading.cpp"
 #include <Windows.h>
 #include <stdlib.h>
 #include <time.h>
@@ -66,15 +65,12 @@ int main()
 
 	std::thread consoleThread(ConsoleThreadFunction, L);
 
-	//rayLib raylib;
-	//raylib.run();
-
 	Scene scene;
 	//Scene::lua_openscene(L, &scene);
 	
-	scene.CreateSystem<PoisonSystem>(15);
+	/*scene.CreateSystem<PoisonSystem>(15);
 	scene.CreateSystem<CleanupSystem>();
-	scene.CreateSystem<InfoSystem>();
+	scene.CreateSystem<InfoSystem>();*/
 	scene.CreateSystem<BehaviourSystem>(L);
 	luaL_dofile(L, "sceneDemo.lua");
 	

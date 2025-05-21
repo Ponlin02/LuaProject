@@ -1,5 +1,5 @@
 #include "maze.hpp"
-#include "raylib.h"
+
 
 void maze::InitializeMaze(lua_State* L, bool& isInitialized)
 {
@@ -70,10 +70,13 @@ void maze::makeFullWall(float posX, float posZ)
 	}
 }
 
-void maze::makeTunnel(float posX, float posZ, bool north, bool south, bool east, bool west, float time)
+void maze::makeTunnel(float posX, float posZ, bool north, bool south, bool east, bool west, float time, bool isClicked)
 {
 	float halfSize = this->tileSize / 2.0f;
-	float wallThickness = this->tileSize * 0.1f * time; // thin wall edges
+
+	float wallThickness = this->tileSize * 0.1f; // thin wall edges
+	if(isClicked)
+		float wallThickness = this->tileSize * 0.1f * time;
 	if (wallThickness >= halfSize)
 		wallThickness = halfSize;
 	float wallHeight = this->wallHeight;
@@ -114,39 +117,42 @@ void maze::makeTunnel(float posX, float posZ, bool north, bool south, bool east,
 	}
 }
 
-void maze::makeButton(float posX, float posZ)
+void maze::makeButton(float posX, float posZ, Camera camera, bool& isClicked)
 {
 	Vector3 wallPosition = { posX * this->tileSize + this->tileSize / 2, this->wallHeight / 2, posZ * this->tileSize };
 	Vector3 wallSize = { 0.2f, 0.2f, 0.2f };
 
 	
 
-	//Vector2 screenPos = GetWorldToScreen(wallPosition, camera);
+	Vector2 screenPos = GetWorldToScreen(wallPosition, camera);
 		
-	// This code is for hovering over our objects that could be useful for the map editor!
+	 //This code is for hovering over our objects that could be useful for the map editor!
 
-		//BoundingBox box = {
-		//{ wallPosition.x - wallSize.x / 2, wallPosition.y - wallSize.y / 2, wallPosition.z - wallSize.z / 2 },
-		//{ wallPosition.x + wallSize.x / 2, wallPosition.y + wallSize.y / 2, wallPosition.z + wallSize.z / 2 }
-		//};
+		BoundingBox box = {
+		{ wallPosition.x - wallSize.x / 2, wallPosition.y - wallSize.y / 2, wallPosition.z - wallSize.z / 2 },
+		{ wallPosition.x + wallSize.x / 2, wallPosition.y + wallSize.y / 2, wallPosition.z + wallSize.z / 2 }
+		};
 
-		//Ray ray = GetMouseRay(GetMousePosition(), camera);
+		Ray ray = GetMouseRay(GetMousePosition(), camera);
 
 
-		//RayCollision collision = GetRayCollisionBox(ray, box);
-		//bool isHovered = collision.hit;
-		//bool isClicked = isHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+		RayCollision collision = GetRayCollisionBox(ray, box);
+		bool isHovered = collision.hit;
+		isClicked = isHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
 
-	//Color btnColor = isHovered ? SKYBLUE : BEIGE;
+	Color btnColor = isHovered ? SKYBLUE : BEIGE;
+
+	if (isClicked)
+		std::cout << "Button clicked!" << std::endl;
 
 	if (!IsKeyDown(KEY_C))
 	{
 		DrawCubeWiresV(wallPosition, wallSize, BLACK);
-		DrawCubeV(wallPosition, wallSize, BEIGE);
+		DrawCubeV(wallPosition, wallSize, btnColor);
 	}
 }
 
-void maze::draw()
+void maze::draw(Camera camera)
 {
 	//DrawSphere(Vector3{ 0.0f, 0.0f, -15.0f }, 1.5f, RED);
 	
@@ -164,9 +170,9 @@ void maze::draw()
 
 	//makeSlabWall(0.0f, -1.0f);
 	//makeFullWall(-1.0f, -1.0f);
-
-	makeTunnel(0.f, -1.f, false, false, true, true, wallTime);
-	makeButton(0.f, 0.f);
+	bool isHovered = false;
+	makeButton(0.f, 0.f, camera, isHovered);
+	makeTunnel(0.f, -1.f, false, false, true, true, wallTime, isHovered);
 
 	wallTime += 0.01;
 
