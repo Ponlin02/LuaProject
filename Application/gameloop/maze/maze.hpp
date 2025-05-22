@@ -13,13 +13,13 @@ struct wall
 class maze
 {
 public:
-	void InitializeMaze(lua_State*L, bool& isInitialized);
+	void InitializeMaze(lua_State*L, bool& isInitialized, Scene& scene);
 	void makeFloor(float posX, float posZ);
 	void makeSlabWall(float posX, float posZ);
 	void makeFullWall(float posX, float posZ);
 	void makeTunnel(float posX, float posZ, bool north, bool south, bool east, bool west, float time, bool isClicked);
 	void makeButton(float posX, float posZ, Camera camera, bool& isClicked);
-	void draw(Camera camera);
+	void draw(Camera camera, Scene& scene);
 
 	std::vector<BoundingBox> getRelevantBBs(Vector2 playerPos);
 
@@ -32,8 +32,6 @@ private:
 private:
 	void drawHitboxes();
 	float wallTime = 1.f;
-
-	Scene scene;
 };
 
 class FloorSystem : public System

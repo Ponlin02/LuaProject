@@ -37,7 +37,7 @@ GameState game::run(lua_State* L)
     ClearBackground(RAYWHITE);
 
     if (!isInitialized) {
-        maze.InitializeMaze(L, isInitialized);
+        maze.InitializeMaze(L, isInitialized, this->scene);
     }
 
 
@@ -55,7 +55,7 @@ GameState game::run(lua_State* L)
     DrawBoundingBox(this->player.getBoundingBox(), RED);
 
     
-    this->maze.draw(this->player.getCamera());
+    this->maze.draw(this->player.getCamera(), this->scene);
     this->player.draw();
     EndMode3D();
 

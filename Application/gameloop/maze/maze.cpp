@@ -1,7 +1,7 @@
 #include "maze.hpp"
 
 
-void maze::InitializeMaze(lua_State* L, bool& isInitialized)
+void maze::InitializeMaze(lua_State* L, bool& isInitialized, Scene& scene)
 {
 	// Anv�nder denna f�r att s�tta in startv�rden
 	// Kommer att l�gga in en Serializer h�r senare
@@ -169,7 +169,7 @@ void maze::makeButton(float posX, float posZ, Camera camera, bool& isClicked)
 	}
 }
 
-void maze::draw(Camera camera)
+void maze::draw(Camera camera, Scene& scene)
 {
 	//DrawSphere(Vector3{ 0.0f, 0.0f, -15.0f }, 1.5f, RED);
 	

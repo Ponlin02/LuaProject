@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include "../player/player.hpp"
 #include "../maze/maze.hpp"
+#include "../../Scene.hpp"
 
 class game
 {
@@ -16,4 +17,5 @@ private:
 	maze maze;
 	player player;
 	bool isInitialized = false;
+	Scene scene;
 };
