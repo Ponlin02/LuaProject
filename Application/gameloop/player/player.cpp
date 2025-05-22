@@ -2,7 +2,7 @@
 
 player::player()
 {
-	this->position = { 0.0f, 2.0f, -10.0f };
+	this->position = { 0.0f, 2.0f, -25.0f };
 
 	this->camera.position = this->position;
 	this->camera.target = { 0.0f, 1.0f, 0.0f };

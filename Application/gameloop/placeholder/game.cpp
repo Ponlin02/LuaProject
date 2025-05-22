@@ -13,8 +13,19 @@ game::game(lua_State* L)
     //ECS
     Scene::lua_openscene(L, &this->scene);
 
-    int Tile0_3 = scene.CreateEntity();
-    this->scene.SetComponent(Tile0_3, Floor{ 0.0f, -3.0f });
+    int Tile0 = scene.CreateEntity();
+    this->scene.SetComponent(Tile0, Floor{ 0.0f, -3.0f });
+    this->scene.SetComponent(Tile0, Wall{ 0.0f, -3.0f });
+
+    int Tile1 = scene.CreateEntity();
+    this->scene.SetComponent(Tile1, Floor{ 1.0f, -3.0f });
+    this->scene.SetComponent(Tile1, Wall{ 1.0f, -3.0f });
+
+    int Tile2 = scene.CreateEntity();
+    this->scene.SetComponent(Tile2, Floor{ 0.0f, -4.0f });
+
+    int Tile3 = scene.CreateEntity();
+    this->scene.SetComponent(Tile3, Floor{ 1.0f, -4.0f });
 }
 
 bool game::playerWallCollide()

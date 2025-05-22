@@ -57,6 +57,14 @@ struct Wall
 	Wall() = default;
 };
 
+struct Player
+{
+	float PosX;
+	float PosZ;
+	Player(float posx, float posz) : PosX(posx), PosZ(posz) {}
+	Player() = default;
+};
+
 
 class System
 {

@@ -61,17 +61,24 @@ public:
 class WallSystem : public System
 {
 	int hej = 0;
+	float wallHeight = 4.0f;
+	float tileSize = 5.0f;
 
 public:
 	WallSystem() = default;
 	bool OnUpdate(entt::registry& registry, float delta)
 	{
-		maze Maze;
 		auto view = registry.view<Wall>();
 		view.each([&](Wall& wall) {
-			Maze.makeFullWall(wall.PosX, wall.PosZ);
+			Vector3 wallPosition = { wall.PosX * this->tileSize, this->wallHeight / 2, wall.PosZ * this->tileSize };
+			Vector3 wallSize = { this->tileSize, this->wallHeight, this->tileSize };
 
-			});
+			if (!IsKeyDown(KEY_C))
+			{
+				DrawCubeWiresV(wallPosition, wallSize, BLACK);
+				DrawCubeV(wallPosition, wallSize, BEIGE);
+			}
+		});
 		return false;
 	};
 };
