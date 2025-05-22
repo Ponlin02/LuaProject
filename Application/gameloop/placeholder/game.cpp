@@ -9,6 +9,12 @@ game::game(lua_State* L)
     this->camera.projection = CAMERA_PERSPECTIVE;
 
     maze.InitializeMaze(L, this->scene);
+
+    //ECS
+    Scene::lua_openscene(L, &this->scene);
+
+    int Tile0_3 = scene.CreateEntity();
+    this->scene.SetComponent(Tile0_3, Floor{ 0.0f, -3.0f });
 }
 
 bool game::playerWallCollide()

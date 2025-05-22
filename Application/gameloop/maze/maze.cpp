@@ -8,8 +8,6 @@ void maze::InitializeMaze(lua_State* L,  Scene& scene)
 	// Det �r funktionen som kommer att l�sa all data 
 	// fr�n en fil
 
-	Scene::lua_openscene(L, &scene);
-
 	int entity = scene.CreateEntity();
 	int entity2 = scene.CreateEntity();
 	int entity3 = scene.CreateEntity();

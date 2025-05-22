@@ -37,16 +37,23 @@ private:
 class FloorSystem : public System
 {
 	int hej = 0;
+	float tileSize = 5.0f;
 
 public:
 	FloorSystem() = default;
 	bool OnUpdate(entt::registry& registry, float delta)
 	{
-		maze Maze;
 		auto view = registry.view<Floor>();
 		view.each([&](Floor& floor) {
-			Maze.makeFloor(floor.PosX, floor.PosZ);
-			});
+			Vector3 floorPosition = { floor.PosX * this->tileSize, 0.0f, floor.PosZ * this->tileSize };
+			Vector3 floorSize = { this->tileSize, 0.1f, this->tileSize };
+
+			if (!IsKeyDown(KEY_X))
+			{
+				DrawCubeWiresV(floorPosition, floorSize, BLACK);
+				DrawCubeV(floorPosition, floorSize, ORANGE);
+			}
+		});
 		return false;
 	};
 };
