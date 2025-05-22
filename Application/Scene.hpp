@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <cstring>
 #include "lua.hpp"
+//#include "raylib.h"
+
 
 //#include <Windows.h>
 
@@ -18,9 +20,10 @@ struct Health
 
 struct Button
 {
-	float posX;
-	float posZ;
-	bool activated;
+	float PosX;
+	float PosZ;
+
+	Button(float posx, float posz) : PosX(posx), PosZ(posz) {}
 };
 
 struct Poison
@@ -60,13 +63,12 @@ struct Wall
 };
 
 
+
 class System
 {
 public:
-	virtual bool OnUpdate(entt::registry& registry, float delta) = 0;
+	virtual bool OnUpdate(entt::registry& registry, float delta, SelfVector3 cameraPos) = 0;
 };
-
-
 
 class Scene
 {
@@ -74,7 +76,7 @@ class Scene
 	entt::registry m_registry;
 	std::vector<System*> m_systems;
 	lua_State* m_luaState;
-
+	SelfVector3 cameraPos;
 public: 
 	Scene() = default;
 	Scene(lua_State* L);
@@ -108,6 +110,10 @@ public:
 
 	static void lua_openscene(lua_State* L, Scene* scene);
 
+	void SetCameraPosition(SelfVector3 position);
+
+	void SetBehaviour(lua_State* L, int entity, const char* script);
+
 
 private: 
 	// Lua funktioner så att lua kan skapa en scen
@@ -127,59 +133,59 @@ private:
 	static int RefAndPushBehaviour(lua_State* L, int entity, const char* path);
 };
 
-
-class PoisonSystem : public System
-{
-	int m_lifetime;
-public: 
-	PoisonSystem(int lifetime) : m_lifetime(lifetime) {}
-	bool OnUpdate(entt::registry& registry, float delta) final
-	{
-		auto view = registry.view<Health, Poison>();
-		view.each([](Health& health, const Poison& poison) {
-			health.Value -= poison.TickDamage;
-			});
-
-		return (--m_lifetime) <= 0;
-	}
-};
-
-class CleanupSystem : public System
-{
-public:
-	bool OnUpdate(entt::registry& registry, float delta) final 
-	{
-		auto view = registry.view<Health>();
-		view.each([&](entt::entity entity, const Health& health) {
-			if (health.Value <= 0.f) {
-				registry.destroy(entity);
-			}
-			});
-		return false;
-	}
-};
-
-class InfoSystem : public System
-{
-	int m_updateCounter = 0;
-public: 
-	InfoSystem() = default;
-	bool OnUpdate(entt::registry& registry, float delta) final
-	{
-		int count = 0;
-
-		auto view = registry.view<entt::entity>();
-		view.each([&](entt::entity) {
-			count++;
-			});
-		auto healthView = registry.view<Health>();
-		auto poisonView = registry.view<Poison>();
-		printf("\n-- Update %i -- \n", ++m_updateCounter);
-		printf(" Living entities: \t%i\n",healthView.size());
-		printf("\n-- Poisoned entities: \t%i\n ", poisonView.size());
-		return false;
-	}
-};
+//
+//class PoisonSystem : public System
+//{
+//	int m_lifetime;
+//public: 
+//	PoisonSystem(int lifetime) : m_lifetime(lifetime) {}
+//	bool OnUpdate(entt::registry& registry, float delta) final
+//	{
+//		auto view = registry.view<Health, Poison>();
+//		view.each([](Health& health, const Poison& poison) {
+//			health.Value -= poison.TickDamage;
+//			});
+//
+//		return (--m_lifetime) <= 0;
+//	}
+//};
+//
+//class CleanupSystem : public System
+//{
+//public:
+//	bool OnUpdate(entt::registry& registry, float delta) final 
+//	{
+//		auto view = registry.view<Health>();
+//		view.each([&](entt::entity entity, const Health& health) {
+//			if (health.Value <= 0.f) {
+//				registry.destroy(entity);
+//			}
+//			});
+//		return false;
+//	}
+//};
+//
+//class InfoSystem : public System
+//{
+//	int m_updateCounter = 0;
+//public: 
+//	InfoSystem() = default;
+//	bool OnUpdate(entt::registry& registry, float delta) final
+//	{
+//		int count = 0;
+//
+//		auto view = registry.view<entt::entity>();
+//		view.each([&](entt::entity) {
+//			count++;
+//			});
+//		auto healthView = registry.view<Health>();
+//		auto poisonView = registry.view<Poison>();
+//		printf("\n-- Update %i -- \n", ++m_updateCounter);
+//		printf(" Living entities: \t%i\n",healthView.size());
+//		printf("\n-- Poisoned entities: \t%i\n ", poisonView.size());
+//		return false;
+//	}
+//};
 
 //class FloorSystem : public System
 //{

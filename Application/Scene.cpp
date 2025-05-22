@@ -1,5 +1,15 @@
 #include "Scene.hpp"
 
+//
+//struct SystemContext {
+//	Camera* camera;
+//	Vector2 mousePos;
+//	Ray mouseRay;
+//	float time;
+//	bool debugEnabled;
+//};
+
+
 Scene::Scene(lua_State* L) : m_luaState(L)
 {
 
@@ -44,9 +54,10 @@ void Scene::RemoveEntity(int entity)
 
 void Scene::UpdateSystems(float delta)
 {
+	
 	for (auto it = m_systems.begin(); it != m_systems.end();)
 	{
-		if ((*it)->OnUpdate(m_registry, delta)) {
+		if ((*it)->OnUpdate(m_registry, delta, cameraPos)) {
 			delete (*it);
 			it = m_systems.erase(it);
 		}
@@ -292,7 +303,11 @@ void Scene::lua_openscene(lua_State* L, Scene* scene)
 
 int Scene::RefAndPushBehaviour(lua_State* L, int entity, const char* path)
 {
-	luaL_dofile(L, path);
+	if (luaL_dofile(L, path) != LUA_OK) {
+		std::cerr << "Lua error: " << lua_tostring(L, -1) << std::endl;
+		lua_pop(L, 1);
+		return LUA_REFNIL;
+	}
 
 	lua_pushvalue(L, -1);
 	int luaTableRef = luaL_ref(L, LUA_REGISTRYINDEX);
@@ -307,5 +322,18 @@ int Scene::RefAndPushBehaviour(lua_State* L, int entity, const char* path)
 	lua_pushvalue(L, -2);
 	lua_pcall(L, 1, 0, 0);
 
+
 	return luaTableRef;
+}
+
+void Scene::SetCameraPosition(SelfVector3 position)
+{
+	cameraPos = position;
+}
+
+void Scene::SetBehaviour(lua_State* L, int entity, const char* script)
+{
+	int luaRef = RefAndPushBehaviour(L, entity, script);
+	//int luaRef = luaL_ref(L, LUA_REGISTRYINDEX);
+	m_registry.emplace<BehaviourComponent>(static_cast<entt::entity>(entity), script, luaRef);
 }

@@ -9,17 +9,17 @@ function button:OnCreate()
 end
 
 function button:OnUpdate(delta)
-	print("update button!")
-	print(self.time)
-	if self.time >= 0 then
-		self.time = self.time - 1
+--	print("update button!")
+	--print(self.time)
+	if self.time < 5 then
+		self.time = self.time + 0.01
 	end
-	print("button not activated")
+	--print("button not activated")
 end
 
---function button:OnActivate()
-	--print("activated button!")
-	--self.time = 30
---end
+function button:OnActivate()
+	print("activated button!")
+	self.time = 0
+end
 
 return button

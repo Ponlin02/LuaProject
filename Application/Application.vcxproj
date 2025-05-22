@@ -31,6 +31,7 @@
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="external\raylib\include\rcamera.h" />
     <ClInclude Include="gameloop\gameloop.hpp" />
     <ClInclude Include="gameloop\maze\maze.hpp" />
     <ClInclude Include="gameloop\placeholder\game.hpp" />

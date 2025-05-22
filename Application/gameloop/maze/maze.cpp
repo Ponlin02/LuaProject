@@ -1,7 +1,7 @@
 #include "maze.hpp"
 
 
-void maze::InitializeMaze(lua_State* L, bool& isInitialized)
+void Maze::InitializeMaze(lua_State* L, bool& isInitialized)
 {
 	// Anv�nder denna f�r att s�tta in startv�rden
 	// Kommer att l�gga in en Serializer h�r senare
@@ -16,15 +16,18 @@ void maze::InitializeMaze(lua_State* L, bool& isInitialized)
 
 	Floor floor1(0.f,1.f);
 	Floor floor2(0.f,-1.f);
-	Floor floor3(0.f,0.f);
+	Button floor3(1.f,1.f);
 
 
 	scene.SetComponent(entity, floor1);
 	scene.SetComponent(entity2, floor2);
-	//scene.SetComponent(entity3, floor3);
+	scene.SetComponent(entity3, floor3);
+	//const char* script = "Buttons.lua";
+	//scene.SetBehaviour(L, entity3, script);
+	
 	luaL_dofile(L, "test.lua");
 	
-	scene.CreateSystem<FloorSystem>();
+	scene.CreateSystem<FloorSystem>(L);
 	scene.CreateSystem<WallSystem>();
 	scene.CreateSystem<BehaviourSystem>(L);
 
@@ -35,20 +38,57 @@ void maze::InitializeMaze(lua_State* L, bool& isInitialized)
 }
 
 
-void maze::makeFloor(float posX, float posZ)
+bool Maze::makeFloor(float posX, float posZ, SelfVector3 cameraPos)
 {
+
 	//Floor test
 	Vector3 floorPosition = { posX * this->tileSize, 0.0f, posZ * this->tileSize };
 	Vector3 floorSize = { this->tileSize, 0.1f, this->tileSize };
 
+	Vector2 screenPos = GetWorldToScreen(floorPosition, camera);
+	
+
+	BoundingBox box = {
+	{ floorPosition.x - this->tileSize / 2, floorPosition.y - 0.05f, floorPosition.z - tileSize / 2 },
+	{ floorPosition.x + tileSize / 2, floorPosition.y + 0.05f, floorPosition.z + tileSize / 2 }
+	};
+
+	Camera camera;
+	camera.position = { cameraPos.X, cameraPos.Y, cameraPos.Z };
+	camera.target = { cameraPos.X, 0.0f, cameraPos.Z - 1.0f };
+	camera.up = { 0.0f, 1.0f, 0.0f };
+	camera.fovy = 45.0f;
+	camera.projection = CAMERA_PERSPECTIVE;
+
+	Vector2 mousePos = GetMousePosition();
+	//Matrix view = GetCameraViewMatrix(camera);
+	//Matrix projection = GetCameraProjectionMatrix(camera, CAMERA_PERSPECTIVE);
+
+
+	Ray ray = GetScreenToWorldRay(mousePos, camera);
+	RayCollision collision = GetRayCollisionBox(ray, box);
+	
+	
+
+	DrawBoundingBox(box, RED);
+	bool isHovered = collision.hit;
+	bool isClicked = isHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+
+	if (isClicked) {
+		std::cout << "Ray Origin: " << ray.position.x << ", " << ray.position.y << ", " << ray.position.z << "\n";
+		std::cout << "Ray Direction: " << ray.direction.x << ", " << ray.direction.y << ", " << ray.direction.z << "\n";
+
+	}
+
 	if (!IsKeyDown(KEY_X))
 	{
-		DrawCubeWiresV(floorPosition, floorSize, BLACK);
-		DrawCubeV(floorPosition, floorSize, ORANGE);
+		//DrawCubeWiresV(floorPosition, floorSize, BLACK);
+		DrawCubeV(floorPosition, floorSize, BEIGE);
 	}
+	return isClicked;
 }
 
-void maze::makeSlabWall(float posX, float posZ)
+void Maze::makeSlabWall(float posX, float posZ)
 {
 	//Wall test
 	Vector3 wallPosition = { posX * this->tileSize + this->tileSize / 2, this->wallHeight / 2, posZ * this->tileSize };
@@ -61,7 +101,7 @@ void maze::makeSlabWall(float posX, float posZ)
 	}
 }
 
-void maze::makeFullWall(float posX, float posZ)
+void Maze::makeFullWall(float posX, float posZ)
 {
 	//Wall test
 	Vector3 wallPosition = { posX * this->tileSize, this->wallHeight / 2, posZ * this->tileSize };
@@ -91,10 +131,10 @@ void maze::makeFullWall(float posX, float posZ)
 	this->walls.push_back(newWall);
 }
 
-void maze::makeTunnel(float posX, float posZ, bool north, bool south, bool east, bool west, float time, bool isClicked)
+void Maze::makeTunnel(float posX, float posZ, bool north, bool south, bool east, bool west, float time)
 {
 	float halfSize = this->tileSize / 2.0f;
-	float wallThickness = this->tileSize * 0.1f; // thin wall edges
+	float wallThickness = this->tileSize * 0.1f * time + 0.1f; // thin wall edges
 	if (wallThickness >= halfSize)
 		wallThickness = halfSize;
 	float wallHeight = this->wallHeight;
@@ -135,7 +175,7 @@ void maze::makeTunnel(float posX, float posZ, bool north, bool south, bool east,
 	}
 }
 
-void maze::makeButton(float posX, float posZ, Camera camera, bool& isClicked)
+bool Maze::makeButton(float posX, float posZ, SelfVector3 cameraPos)
 {
 	Vector3 wallPosition = { posX * this->tileSize + this->tileSize / 2, this->wallHeight / 2, posZ * this->tileSize };
 	Vector3 wallSize = { 0.2f, 0.2f, 0.2f };
@@ -151,27 +191,60 @@ void maze::makeButton(float posX, float posZ, Camera camera, bool& isClicked)
 		{ wallPosition.x + wallSize.x / 2, wallPosition.y + wallSize.y / 2, wallPosition.z + wallSize.z / 2 }
 		};
 
-		Ray ray = GetMouseRay(GetMousePosition(), camera);
+		//Ray ray = GetMouseRay(GetMousePosition(), camera);
 
 
-		RayCollision collision = GetRayCollisionBox(ray, box);
-		bool isHovered = collision.hit;
-		isClicked = isHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+		//RayCollision collision = GetRayCollisionBox(ray, box);
+		//bool isHovered = collision.hit;
+		//isClicked = isHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+
+
+
+
+	Camera camera;
+	camera.position = { cameraPos.X, cameraPos.Y, cameraPos.Z };
+	camera.target = { cameraPos.X, 0.0f, cameraPos.Z - 1.0f };
+	camera.up = { 0.0f, 1.0f, 0.0f };
+	camera.fovy = 45.0f;
+	camera.projection = CAMERA_PERSPECTIVE;
+
+	Vector2 mousePos = GetMousePosition();
+	//Matrix view = GetCameraViewMatrix(camera);
+	//Matrix projection = GetCameraProjectionMatrix(camera, CAMERA_PERSPECTIVE);
+
+
+	Ray ray = GetScreenToWorldRay(mousePos, camera);
+	RayCollision collision = GetRayCollisionBox(ray, box);
+
+
+
+	DrawBoundingBox(box, RED);
+	bool isHovered = collision.hit;
+	bool isClicked = isHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+
 
 	Color btnColor = isHovered ? SKYBLUE : BEIGE;
 
+
 	if (isClicked)
-		std::cout << "Button clicked!" << std::endl;
+		//std::cout << "Button clicked!" << std::endl;
 
 	if (!IsKeyDown(KEY_C))
 	{
 		DrawCubeWiresV(wallPosition, wallSize, BLACK);
 		DrawCubeV(wallPosition, wallSize, btnColor);
 	}
+	return isClicked;
 }
 
-void maze::draw(Camera camera)
+void Maze::draw(Camera camera)
 {
+	SelfVector3 camerapos;
+	camerapos.X = camera.position.x;
+	camerapos.Y = camera.position.y;
+	camerapos.Z = camera.position.z;
+	this->scene.SetCameraPosition(camerapos);
+	//std::cout << "cameraPos: " << camera.position.x << ", " << camera.position.y << ", " << camera.position.z << std::endl;
 	//DrawSphere(Vector3{ 0.0f, 0.0f, -15.0f }, 1.5f, RED);
 	
 	// Utkommenterat f�r att se om jag kan g�ra dessa till komponenter ist�llet
@@ -187,11 +260,10 @@ void maze::draw(Camera camera)
 	//makeSlabWall(-1.0f, 0.0f);
 
 	//makeSlabWall(0.0f, -1.0f);
-	makeFullWall(-1.0f, -1.0f);
-	makeFullWall(1.0f, -1.0f);
-
-	makeButton(0.f, 0.f, camera, isClicked);
-	makeTunnel(0.f, -1.f, false, false, true, true, wallTime, isClicked);
+	//makeFullWall(-1.0f, -1.0f);
+	//bool isHovered = false;
+	//makeButton(0.f, 0.f, camera, isHovered);
+	//makeTunnel(0.f, -1.f, false, false, true, true, wallTime, isHovered);
 
 	wallTime += 0.01;
 
@@ -200,7 +272,7 @@ void maze::draw(Camera camera)
 	this->drawHitboxes();
 }
 
-std::vector<BoundingBox> maze::getRelevantBBs(Vector2 playerPos)
+std::vector<BoundingBox> Maze::getRelevantBBs(Vector2 playerPos)
 {
 	std::vector<BoundingBox> returnVector;
 	for (int i = 0; i < this->walls.size(); i++)
@@ -216,11 +288,16 @@ std::vector<BoundingBox> maze::getRelevantBBs(Vector2 playerPos)
 	return returnVector;
 }
 
-void maze::drawHitboxes()
+void Maze::drawHitboxes()
 {
 	for (int i = 0; i < this->walls.size(); i++)
 	{
 		DrawBoundingBox(this->walls[i].boundingBox, RED);
 	}
 
+}
+
+void Maze::GetMazeCamera(Camera& cameraOther)
+{
+	cameraOther = this->camera;
 }

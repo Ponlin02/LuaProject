@@ -1,4 +1,5 @@
 #include "player.hpp"
+#include <iostream>
 
 player::player()
 {
@@ -17,6 +18,8 @@ void player::update()
 
 	UpdateCamera(&this->camera, CAMERA_FIRST_PERSON);
 	this->position = this->camera.position;
+
+	//std::cout << "CameraPos: " << this->camera.position.x << this->camera.position.y << this->camera.position.z << std::endl;
 	SetMousePosition(GetScreenWidth() / 2, GetScreenHeight() / 2);
 
 	/*if (IsKeyDown(KEY_W)) this->position.y += 10.0f * GetFrameTime();

@@ -23,6 +23,7 @@
     <ClInclude Include="gameloop\placeholder\main_menu.hpp" />
     <ClInclude Include="gameloop\placeholder\paused.hpp" />
     <ClInclude Include="gameloop\player\player.hpp" />
+    <ClInclude Include="external\raylib\include\rcamera.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="monster.lua" />
