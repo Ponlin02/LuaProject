@@ -17,7 +17,7 @@ void gameloop::run(lua_State* L)
     GameState currentState = PLAYING;
 
     main_menu main_menu;
-    game game;
+    game game(L);
     paused paused;
 
     //The gameloop

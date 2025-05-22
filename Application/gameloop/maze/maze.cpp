@@ -1,7 +1,7 @@
 #include "maze.hpp"
 
 
-void maze::InitializeMaze(lua_State* L, bool& isInitialized, Scene& scene)
+void maze::InitializeMaze(lua_State* L,  Scene& scene)
 {
 	// Anv�nder denna f�r att s�tta in startv�rden
 	// Kommer att l�gga in en Serializer h�r senare
@@ -25,9 +25,6 @@ void maze::InitializeMaze(lua_State* L, bool& isInitialized, Scene& scene)
 	
 	scene.CreateSystem<FloorSystem>();
 	scene.CreateSystem<WallSystem>();
-	
-	isInitialized = true;
-
 }
 
 

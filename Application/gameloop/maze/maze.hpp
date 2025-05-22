@@ -13,7 +13,7 @@ struct wall
 class maze
 {
 public:
-	void InitializeMaze(lua_State*L, bool& isInitialized, Scene& scene);
+	void InitializeMaze(lua_State*L, Scene& scene);
 	void makeFloor(float posX, float posZ);
 	void makeSlabWall(float posX, float posZ);
 	void makeFullWall(float posX, float posZ);

@@ -8,7 +8,7 @@
 class game
 {
 public:
-	game();
+	game(lua_State* L);
 	bool playerWallCollide();
 	GameState run(lua_State* L);
 
@@ -16,6 +16,5 @@ private:
 	Camera camera = { 0 };
 	maze maze;
 	player player;
-	bool isInitialized = false;
 	Scene scene;
 };

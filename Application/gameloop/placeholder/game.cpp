@@ -1,12 +1,14 @@
 #include "game.hpp"
 
-game::game()
+game::game(lua_State* L)
 {
     this->camera.position = { 0.0f, 2.0f, 6.0f };
     this->camera.target = { 0.0f, 1.0f, 0.0f };
     this->camera.up = { 0.0f, 1.0f, 0.0f };
     this->camera.fovy = 45.0f;
     this->camera.projection = CAMERA_PERSPECTIVE;
+
+    maze.InitializeMaze(L, this->scene);
 }
 
 bool game::playerWallCollide()
@@ -35,11 +37,6 @@ GameState game::run(lua_State* L)
     }
 
     ClearBackground(RAYWHITE);
-
-    if (!isInitialized) {
-        maze.InitializeMaze(L, isInitialized, this->scene);
-    }
-
 
     if (!IsKeyDown(KEY_B))
     {
