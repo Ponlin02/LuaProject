@@ -16,7 +16,7 @@ void Maze::InitializeMaze(lua_State* L, bool& isInitialized)
 
 	Floor floor1(0.f,1.f);
 	Floor floor2(0.f,-1.f);
-	Button floor3(1.f,1.f);
+	Button floor3(2.f,1.f);
 
 
 	scene.SetComponent(entity, floor1);
