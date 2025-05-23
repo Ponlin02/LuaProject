@@ -57,11 +57,19 @@ struct Wall
 	Wall() = default;
 };
 
-struct Player
+struct Collider
 {
 	float PosX;
 	float PosZ;
-	Player(float posx, float posz) : PosX(posx), PosZ(posz) {}
+	SelfVector3 size;
+	Collider(float posx, float posz, SelfVector3 size) : PosX(posx), PosZ(posz), size(size){}
+	Collider() = default;
+};
+
+struct Player
+{
+	SelfVector3 Pos;
+	Player(SelfVector3 pos) : Pos(pos) {}
 	Player() = default;
 };
 

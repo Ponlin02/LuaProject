@@ -13,9 +13,14 @@ game::game(lua_State* L)
     //ECS
     Scene::lua_openscene(L, &this->scene);
 
+    //player
+    int player = scene.CreateEntity();
+
+    //maze
     int Tile0 = scene.CreateEntity();
     this->scene.SetComponent(Tile0, Floor{ 0.0f, -3.0f });
     this->scene.SetComponent(Tile0, Wall{ 0.0f, -3.0f });
+    this->scene.SetComponent(Tile0, Collider{0.0f, -3.0f, this->wallBBsize });
 
     int Tile1 = scene.CreateEntity();
     this->scene.SetComponent(Tile1, Floor{ 1.0f, -3.0f });

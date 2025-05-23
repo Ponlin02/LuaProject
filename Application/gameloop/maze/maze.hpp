@@ -3,7 +3,7 @@
 #include <vector>
 #include "../../Scene.hpp"
 
-struct wall
+struct oldwall
 {
 	Vector2 position;
 	BoundingBox boundingBox;
@@ -27,7 +27,7 @@ private:
 	float wallHeight = 4.0f;
 	float tileSize = 5.0f;
 
-	std::vector<wall> walls;
+	std::vector<oldwall> walls;
 
 private:
 	void drawHitboxes();

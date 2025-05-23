@@ -17,4 +17,6 @@ private:
 	maze maze;
 	player player;
 	Scene scene;
+
+	SelfVector3 wallBBsize = { 5.0f, 4.0f, 5.0f };
 };

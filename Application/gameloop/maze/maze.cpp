@@ -65,7 +65,7 @@ void maze::makeFullWall(float posX, float posZ)
 	}
 
 	//Add in vector
-	wall newWall;
+	oldwall newWall;
 	newWall.position = { posX, posZ };
 	newWall.boundingBox = {
 		Vector3{
