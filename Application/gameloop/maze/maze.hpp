@@ -3,7 +3,7 @@
 #include <vector>
 #include "../../Scene.hpp"
 
-struct oldwall
+struct oldwall //Aim to remove this
 {
 	Vector2 position;
 	BoundingBox boundingBox;
@@ -14,26 +14,27 @@ class maze
 {
 public:
 	void InitializeMaze(lua_State*L, Scene& scene);
-	void makeFloor(float posX, float posZ);
+	void makeFloor(float posX, float posZ); //Aim to remove this
 	void makeSlabWall(float posX, float posZ);
-	void makeFullWall(float posX, float posZ);
+	void makeFullWall(float posX, float posZ); //Aim to remove this
 	void makeTunnel(float posX, float posZ, bool north, bool south, bool east, bool west, float time, bool isClicked);
 	void makeButton(float posX, float posZ, Camera camera, bool& isClicked);
 	void draw(Camera camera, Scene& scene);
 
-	std::vector<BoundingBox> getRelevantBBs(Vector2 playerPos);
+	std::vector<BoundingBox> getRelevantBBs(Vector2 playerPos); //Needs ECSifying (and moved?)
 
 private:
 	float wallHeight = 4.0f;
 	float tileSize = 5.0f;
 
-	std::vector<oldwall> walls;
+	std::vector<oldwall> walls; //Aim to remove this
 
 private:
-	void drawHitboxes();
+	void drawHitboxes(); //Needs ECSifying (and moved?)
 	float wallTime = 1.f;
 };
 
+//System that renders all of the floors in the scene
 class FloorSystem : public System
 {
 	int hej = 0;
@@ -58,6 +59,7 @@ public:
 	};
 };
 
+//System that renders all of the walls in the scene
 class WallSystem : public System
 {
 	int hej = 0;

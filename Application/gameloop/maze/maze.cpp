@@ -20,9 +20,6 @@ void maze::InitializeMaze(lua_State* L,  Scene& scene)
 	scene.SetComponent(entity, floor1);
 	scene.SetComponent(entity2, floor2);
 	//scene.SetComponent(entity3, floor3);
-	
-	scene.CreateSystem<FloorSystem>();
-	scene.CreateSystem<WallSystem>();
 }
 
 
@@ -190,8 +187,6 @@ void maze::draw(Camera camera, Scene& scene)
 
 	wallTime += 0.01;
 
-	scene.UpdateSystems(1);
-
 	this->drawHitboxes();
 }
 
@@ -215,7 +210,7 @@ void maze::drawHitboxes()
 {
 	for (int i = 0; i < this->walls.size(); i++)
 	{
-		DrawBoundingBox(this->walls[i].boundingBox, RED);
+		DrawBoundingBox(this->walls[i].boundingBox, GREEN);
 	}
 
 }

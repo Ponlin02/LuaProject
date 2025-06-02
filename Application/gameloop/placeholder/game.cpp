@@ -10,13 +10,13 @@ game::game(lua_State* L)
 
     maze.InitializeMaze(L, this->scene);
 
-    //ECS
+    //ECS scene
     Scene::lua_openscene(L, &this->scene);
 
-    //player
+    //player entity
     int player = scene.CreateEntity();
 
-    //maze
+    //maze entities
     int Tile0 = scene.CreateEntity();
     this->scene.SetComponent(Tile0, Floor{ 0.0f, -3.0f });
     this->scene.SetComponent(Tile0, Wall{ 0.0f, -3.0f });
@@ -25,12 +25,18 @@ game::game(lua_State* L)
     int Tile1 = scene.CreateEntity();
     this->scene.SetComponent(Tile1, Floor{ 1.0f, -3.0f });
     this->scene.SetComponent(Tile1, Wall{ 1.0f, -3.0f });
+    this->scene.SetComponent(Tile1, Collider{ 1.0f, -3.0f, this->wallBBsize });
 
     int Tile2 = scene.CreateEntity();
     this->scene.SetComponent(Tile2, Floor{ 0.0f, -4.0f });
 
     int Tile3 = scene.CreateEntity();
     this->scene.SetComponent(Tile3, Floor{ 1.0f, -4.0f });
+
+    //systems
+    scene.CreateSystem<FloorSystem>();
+    scene.CreateSystem<WallSystem>();
+    scene.CreateSystem<BBSystem>();
 }
 
 bool game::playerWallCollide()
@@ -71,10 +77,11 @@ GameState game::run(lua_State* L)
     //UpdateCamera(&this->camera, CAMERA_FIRST_PERSON);
     //SetMousePosition(GetScreenWidth() / 2, GetScreenHeight() / 2);
 
-    DrawBoundingBox(this->player.getBoundingBox(), RED);
+    DrawBoundingBox(this->player.getBoundingBox(), GREEN);
 
-    
-    this->maze.draw(this->player.getCamera(), this->scene);
+    //update all systems
+    this->scene.UpdateSystems(1);
+    //this->maze.draw(this->player.getCamera(), this->scene);
     this->player.draw();
     EndMode3D();
 
