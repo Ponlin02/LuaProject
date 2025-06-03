@@ -15,12 +15,15 @@ game::game(lua_State* L)
 
     //player entity
     int player = scene.CreateEntity();
+    this->scene.SetComponent(player, Player{ {0.0f, 2.0f, 6.0f} });
+    this->scene.SetComponent(player, CameraComponent{ &this->player.getCamera() });
+    this->scene.SetComponent(player, Collider{ 0.0f, 1.0f, {1.0f, 1.0f, 1.0f} });
 
     //maze entities
     int Tile0 = scene.CreateEntity();
     this->scene.SetComponent(Tile0, Floor{ 0.0f, -3.0f });
     this->scene.SetComponent(Tile0, Wall{ 0.0f, -3.0f });
-    this->scene.SetComponent(Tile0, Collider{0.0f, -3.0f, this->wallBBsize });
+    this->scene.SetComponent(Tile0, Collider{ 0.0f, -3.0f, this->wallBBsize });
 
     int Tile1 = scene.CreateEntity();
     this->scene.SetComponent(Tile1, Floor{ 1.0f, -3.0f });
@@ -34,9 +37,9 @@ game::game(lua_State* L)
     this->scene.SetComponent(Tile3, Floor{ 1.0f, -4.0f });
 
     //systems
-    scene.CreateSystem<FloorSystem>();
-    scene.CreateSystem<WallSystem>();
-    scene.CreateSystem<BBSystem>();
+    scene.CreateSystem<FloorRenderSystem>();
+    scene.CreateSystem<WallRenderSystem>();
+    scene.CreateSystem<WallBBSystem>();
 }
 
 bool game::playerWallCollide()

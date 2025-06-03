@@ -59,7 +59,7 @@ void player::setPosition(Vector3& position)
 	this->position = position;
 }
 
-Camera player::getCamera()
+Camera& player::getCamera()
 {
 	return this->camera;
 }

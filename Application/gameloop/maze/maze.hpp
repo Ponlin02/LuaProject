@@ -35,13 +35,13 @@ private:
 };
 
 //System that renders all of the floors in the scene
-class FloorSystem : public System
+class FloorRenderSystem : public System
 {
 	int hej = 0;
 	float tileSize = 5.0f;
 
 public:
-	FloorSystem() = default;
+	FloorRenderSystem() = default;
 	bool OnUpdate(entt::registry& registry, float delta)
 	{
 		auto view = registry.view<Floor>();
@@ -60,14 +60,14 @@ public:
 };
 
 //System that renders all of the walls in the scene
-class WallSystem : public System
+class WallRenderSystem : public System
 {
 	int hej = 0;
 	float wallHeight = 4.0f;
 	float tileSize = 5.0f;
 
 public:
-	WallSystem() = default;
+	WallRenderSystem() = default;
 	bool OnUpdate(entt::registry& registry, float delta)
 	{
 		auto view = registry.view<Wall>();

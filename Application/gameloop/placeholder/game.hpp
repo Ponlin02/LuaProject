@@ -22,28 +22,26 @@ private:
 };
 
 //System that renders all of the bounding boxes in the scene
-class BBSystem : public System
+class WallBBSystem : public System
 {
 	int hej = 0;
-	float wallHeight = 4;
-	float tileSize = 5.0f;
 
 public:
-	BBSystem() = default;
+	WallBBSystem() = default;
 	bool OnUpdate(entt::registry& registry, float delta)
 	{
-		auto view = registry.view<Collider>();
-		view.each([&](Collider& collider) {
+		auto view = registry.view<Collider, Wall>();
+		view.each([&](Collider& collider, Wall& wall) {
 			BoundingBox BB = {
 				Vector3{
-					collider.PosX * this->tileSize - collider.size.X / 2,
+					collider.PosX * collider.size.X - collider.size.X / 2,
 					0,
-					collider.PosZ * this->tileSize - collider.size.Z / 2},
+					collider.PosZ * collider.size.Z - collider.size.Z / 2},
 
 				Vector3{
-					collider.PosX * this->tileSize + collider.size.X / 2,
-					this->wallHeight,
-					collider.PosZ * this->tileSize + collider.size.Z / 2}
+					collider.PosX * collider.size.X + collider.size.X / 2,
+					collider.size.Y,
+					collider.PosZ * collider.size.Z + collider.size.Z / 2}
 			};
 
 			DrawBoundingBox(BB, RED);
