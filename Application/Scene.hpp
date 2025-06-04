@@ -60,9 +60,10 @@ struct Wall
 struct Collider
 {
 	float PosX;
+	float PosY;
 	float PosZ;
 	SelfVector3 size;
-	Collider(float posx, float posz, SelfVector3 size) : PosX(posx), PosZ(posz), size(size){}
+	Collider(float posx, float posy, float posz, SelfVector3 size) : PosX(posx), PosY(posy), PosZ(posz), size(size){}
 	Collider() = default;
 };
 

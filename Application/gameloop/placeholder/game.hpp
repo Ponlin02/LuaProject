@@ -9,7 +9,6 @@ class game
 {
 public:
 	game(lua_State* L);
-	bool playerWallCollide();
 	GameState run(lua_State* L);
 
 private:
@@ -21,26 +20,26 @@ private:
 	SelfVector3 wallBBsize = { 5.0f, 4.0f, 5.0f };
 };
 
-//System that renders all of the bounding boxes in the scene
-class WallBBSystem : public System
+//System that renders all of the colliders in the scene
+class BBSystem : public System
 {
 	int hej = 0;
 
 public:
-	WallBBSystem() = default;
+	BBSystem() = default;
 	bool OnUpdate(entt::registry& registry, float delta)
 	{
-		auto view = registry.view<Collider, Wall>();
-		view.each([&](Collider& collider, Wall& wall) {
+		auto view = registry.view<Collider>();
+		view.each([&](Collider& collider) {
 			BoundingBox BB = {
 				Vector3{
 					collider.PosX * collider.size.X - collider.size.X / 2,
-					0,
+					collider.PosY - collider.size.Y / 2,
 					collider.PosZ * collider.size.Z - collider.size.Z / 2},
 
 				Vector3{
 					collider.PosX * collider.size.X + collider.size.X / 2,
-					collider.size.Y,
+					collider.PosY + collider.size.Y / 2,
 					collider.PosZ * collider.size.Z + collider.size.Z / 2}
 			};
 

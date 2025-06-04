@@ -3,13 +3,6 @@
 #include <vector>
 #include "../../Scene.hpp"
 
-struct oldwall //Aim to remove this
-{
-	Vector2 position;
-	BoundingBox boundingBox;
-};
-
-
 class maze
 {
 public:
@@ -21,16 +14,11 @@ public:
 	void makeButton(float posX, float posZ, Camera camera, bool& isClicked);
 	void draw(Camera camera, Scene& scene);
 
-	std::vector<BoundingBox> getRelevantBBs(Vector2 playerPos); //Needs ECSifying (and moved?)
-
 private:
 	float wallHeight = 4.0f;
 	float tileSize = 5.0f;
 
-	std::vector<oldwall> walls; //Aim to remove this
-
 private:
-	void drawHitboxes(); //Needs ECSifying (and moved?)
 	float wallTime = 1.f;
 };
 

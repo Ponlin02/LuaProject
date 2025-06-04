@@ -60,23 +60,6 @@ void maze::makeFullWall(float posX, float posZ)
 		DrawCubeWiresV(wallPosition, wallSize, BLACK);
 		DrawCubeV(wallPosition, wallSize, BEIGE);
 	}
-
-	//Add in vector
-	oldwall newWall;
-	newWall.position = { posX, posZ };
-	newWall.boundingBox = {
-		Vector3{
-			posX * this->tileSize - this->tileSize / 2,
-			0,
-			posZ * this->tileSize - this->tileSize / 2},
-
-		Vector3{
-			posX * this->tileSize + this->tileSize / 2,
-			this->wallHeight,
-			posZ * this->tileSize + this->tileSize / 2}
-	};
-	
-	this->walls.push_back(newWall);
 }
 
 void maze::makeTunnel(float posX, float posZ, bool north, bool south, bool east, bool west, float time, bool isClicked)
@@ -167,50 +150,10 @@ void maze::draw(Camera camera, Scene& scene)
 	
 	// Utkommenterat f�r att se om jag kan g�ra dessa till komponenter ist�llet
 	// Och s�tta de i initialize ist�llet!
-	//makeFloor(0.0f, 0.0f);
-	//makeFloor(0.0f, -1.0f);
-	//makeFloor(-1.0f, 0.0f);
-	//makeFloor(1.0f, 0.0f);
-
-	//makeFloor(1.0f, -1.0f);
-
-	//makeSlabWall(0.0f, 0.0f);
-	//makeSlabWall(-1.0f, 0.0f);
-
-	//makeSlabWall(0.0f, -1.0f);
-	makeFullWall(-1.0f, -1.0f);
-	makeFullWall(1.0f, -1.0f);
 
 	bool isHovered = true;
 	makeButton(0.f, 0.f, camera, isHovered);
 	makeTunnel(0.f, -1.f, false, false, true, true, wallTime, isHovered);
 
 	wallTime += 0.01;
-
-	this->drawHitboxes();
-}
-
-std::vector<BoundingBox> maze::getRelevantBBs(Vector2 playerPos)
-{
-	std::vector<BoundingBox> returnVector;
-	for (int i = 0; i < this->walls.size(); i++)
-	{
-		Vector2 tempVec = { playerPos.x - this->walls[i].position.x, playerPos.y - this->walls[i].position.y };
-		float length = sqrt(pow(tempVec.x, 2) + pow(tempVec.y, 2));
-		if (length < 10)
-		{
-			returnVector.push_back(this->walls[i].boundingBox);
-		}
-	}
-
-	return returnVector;
-}
-
-void maze::drawHitboxes()
-{
-	for (int i = 0; i < this->walls.size(); i++)
-	{
-		DrawBoundingBox(this->walls[i].boundingBox, GREEN);
-	}
-
 }
