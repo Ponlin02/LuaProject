@@ -47,9 +47,6 @@ game::game(lua_State* L)
 
 GameState game::run(lua_State* L)
 {
-    //Update values
-    Vector3 oldPlayerPosition = this->player.getPosition();
-
     ClearBackground(RAYWHITE);
 
     if (!IsKeyDown(KEY_B))
@@ -63,7 +60,7 @@ GameState game::run(lua_State* L)
 
     //update all systems
     this->scene.UpdateSystems(1);
-    this->maze.draw(this->player.getCamera(), this->scene);
+    //this->maze.draw(this->player.getCamera(), this->scene);
     EndMode3D();
 
     if (IsKeyPressed(KEY_ESCAPE))

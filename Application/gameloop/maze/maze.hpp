@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include <vector>
 #include "../../Scene.hpp"
+#include "../placeholder/constants.h"
 
 class maze
 {
@@ -15,8 +16,8 @@ public:
 	void draw(Camera camera, Scene& scene);
 
 private:
-	float wallHeight = 4.0f;
-	float tileSize = 5.0f;
+	float wallHeight = MazeConstants::WALL_HEIGHT;
+	float tileSize = MazeConstants::TILE_SIZE;
 
 private:
 	float wallTime = 1.f;
@@ -26,7 +27,7 @@ private:
 class FloorRenderSystem : public System
 {
 	int hej = 0;
-	float tileSize = 5.0f;
+	float tileSize = MazeConstants::TILE_SIZE;
 
 public:
 	FloorRenderSystem() = default;
@@ -51,8 +52,8 @@ public:
 class WallRenderSystem : public System
 {
 	int hej = 0;
-	float wallHeight = 4.0f;
-	float tileSize = 5.0f;
+	float wallHeight = MazeConstants::WALL_HEIGHT;
+	float tileSize = MazeConstants::TILE_SIZE;
 
 public:
 	WallRenderSystem() = default;

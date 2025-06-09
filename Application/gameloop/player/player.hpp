@@ -19,13 +19,12 @@ class player
 public:
 	player();
 
-	Vector3 getPosition();
-	void setPosition(Vector3& position);
+	Vector3 getPosition(); //might not need?
+	void setPosition(Vector3& position); //might not need?
 	Camera& getCamera();
 
 private:
 	Vector3 position;
-	Vector3 size = {1.0f, 1.0f, 1.0f};
 	Camera camera = { 0 };
 };
 

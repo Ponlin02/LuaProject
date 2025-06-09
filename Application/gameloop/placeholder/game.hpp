@@ -4,6 +4,7 @@
 #include "../player/player.hpp"
 #include "../maze/maze.hpp"
 #include "../../Scene.hpp"
+#include "constants.h"
 
 class game
 {
@@ -17,7 +18,7 @@ private:
 	player player;
 	Scene scene;
 
-	SelfVector3 wallBBsize = { 5.0f, 4.0f, 5.0f };
+	SelfVector3 wallBBsize = { MazeConstants::TILE_SIZE, MazeConstants::WALL_HEIGHT, MazeConstants::TILE_SIZE };
 };
 
 //System that renders all of the colliders in the scene

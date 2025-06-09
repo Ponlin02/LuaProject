@@ -33,6 +33,7 @@
   <ItemGroup>
     <ClInclude Include="gameloop\gameloop.hpp" />
     <ClInclude Include="gameloop\maze\maze.hpp" />
+    <ClInclude Include="gameloop\placeholder\constants.h" />
     <ClInclude Include="gameloop\placeholder\game.hpp" />
     <ClInclude Include="gameloop\placeholder\gamestate.hpp" />
     <ClInclude Include="gameloop\placeholder\main_menu.hpp" />
