@@ -1,4 +1,5 @@
 #include "Scene.hpp"
+#include "gameloop/placeholder/constants.h"
 
 Scene::Scene(lua_State* L) : m_luaState(L)
 {
@@ -125,6 +126,9 @@ int Scene::lua_HasComponent(lua_State* L)
 	else if (type == "wall") {
 		hasComponent = scene->HasComponents<Wall>(entity);
 	}
+	else if (type == "collider") {
+		hasComponent = scene->HasComponents<Collider>(entity);
+	}
 
 	lua_pushboolean(L, hasComponent);
 	return 1;
@@ -183,6 +187,15 @@ int Scene::lua_GetComponent(lua_State* L)
 		lua_pushnumber(L, wall.PosZ);
 		return 1;
 	}
+	else if (type == "collider" && scene->HasComponents<Collider>(entity))
+	{
+		Collider& collider = scene->GetComponent<Collider>(entity);
+		lua_pushnumber(L, collider.PosX);
+		lua_pushnumber(L, collider.PosY);
+		lua_pushnumber(L, collider.PosZ);
+		lua_pushvector(L, collider.size);
+		return 4;
+	}
 
 }
 
@@ -219,6 +232,18 @@ int Scene::lua_SetComponent(lua_State* L)
 		float posx = lua_tonumber(L, 3);
 		float posz = lua_tonumber(L, 4);
 		scene->SetComponent<Wall>(entity, posx, posz);
+		scene->SetComponent<Collider>(entity, posx, MazeConstants::WALL_HEIGHT / 2, posz, 
+			MazeConstants::TILE_SIZE, MazeConstants::WALL_HEIGHT, MazeConstants::TILE_SIZE);
+	}
+	else if (type == "collider")
+	{
+		float posx = lua_tonumber(L, 3);
+		float posy = lua_tonumber(L, 4);
+		float posz = lua_tonumber(L, 5);
+		float sizex = lua_tonumber(L, 6);
+		float sizey = lua_tonumber(L, 7);
+		float sizez = lua_tonumber(L, 8);
+		scene->SetComponent<Collider>(entity, posx, posy, posz, sizex, sizey, sizez);
 	}
 	else if (type == "behaviour")
 	{

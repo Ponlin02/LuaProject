@@ -64,6 +64,7 @@ struct Collider
 	float PosZ;
 	SelfVector3 size;
 	Collider(float posx, float posy, float posz, SelfVector3 size) : PosX(posx), PosY(posy), PosZ(posz), size(size){}
+	Collider(float posx, float posy, float posz, float sizex, float sizey, float sizez) : PosX(posx), PosY(posy), PosZ(posz), size(sizex, sizey, sizez) {}
 	Collider() = default;
 };
 
