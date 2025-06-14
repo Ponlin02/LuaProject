@@ -129,6 +129,9 @@ int Scene::lua_HasComponent(lua_State* L)
 	else if (type == "collider") {
 		hasComponent = scene->HasComponents<Collider>(entity);
 	}
+	else if (type == "player") {
+		hasComponent = scene->HasComponents<Player>(entity);
+	}
 
 	lua_pushboolean(L, hasComponent);
 	return 1;
@@ -178,14 +181,14 @@ int Scene::lua_GetComponent(lua_State* L)
 		Floor& floor = scene->GetComponent<Floor>(entity);
 		lua_pushnumber(L, floor.PosX);
 		lua_pushnumber(L, floor.PosZ);
-		return 1;
+		return 2;
 	}
 	else if (type == "wall" && scene->HasComponents<Floor>(entity))
 	{
 		Wall& wall = scene->GetComponent<Wall>(entity);
 		lua_pushnumber(L, wall.PosX);
 		lua_pushnumber(L, wall.PosZ);
-		return 1;
+		return 2;
 	}
 	else if (type == "collider" && scene->HasComponents<Collider>(entity))
 	{
@@ -195,6 +198,14 @@ int Scene::lua_GetComponent(lua_State* L)
 		lua_pushnumber(L, collider.PosZ);
 		lua_pushvector(L, collider.size);
 		return 4;
+	}
+	else if (type == "player" && scene->HasComponents<Player>(entity))
+	{
+		Player& player = scene->GetComponent<Player>(entity);
+		lua_pushnumber(L, player.Pos.X);
+		lua_pushnumber(L, player.Pos.Y);
+		lua_pushnumber(L, player.Pos.Z);
+		return 3;
 	}
 
 }
@@ -245,6 +256,14 @@ int Scene::lua_SetComponent(lua_State* L)
 		float sizez = lua_tonumber(L, 8);
 		scene->SetComponent<Collider>(entity, posx, posy, posz, sizex, sizey, sizez);
 	}
+	else if (type == "player")
+	{
+		float posx = lua_tonumber(L, 3);
+		float posy = lua_tonumber(L, 4);
+		float posz = lua_tonumber(L, 5);
+		scene->SetComponent<Player>(entity, posx, posy, posz);
+		scene->SetComponent<Collider>(entity, posx, posy, posz, 1.0f, 1.0f, 1.0f);
+	}
 	else if (type == "behaviour")
 	{
 		if (scene->HasComponents<BehaviourComponent>(entity))
@@ -291,7 +310,23 @@ int Scene::lua_RemoveComponent(lua_State* L)
 	else if (type == "floor")
 		scene->RemoveComponent<Floor>(entity);
 	else if (type == "wall")
+	{
 		scene->RemoveComponent<Wall>(entity);
+		if (scene->HasComponents<Collider>(entity))
+		{
+			scene->RemoveComponent<Collider>(entity);
+		}
+	}
+	else if (type == "collider")
+		scene->RemoveComponent<Collider>(entity);
+	else if (type == "player")
+	{
+		scene->RemoveComponent<Player>(entity);
+		if (scene->HasComponents<Collider>(entity))
+		{
+			scene->RemoveComponent<Collider>(entity);
+		}
+	}
 	return 0;
 }
 

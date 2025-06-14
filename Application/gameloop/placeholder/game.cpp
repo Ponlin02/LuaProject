@@ -14,10 +14,10 @@ game::game(lua_State* L)
     Scene::lua_openscene(L, &this->scene);
 
     //player entity
-    int player = scene.CreateEntity();
-    this->scene.SetComponent(player, Player{ {0.0f, 2.0f, -25.0f} });
-    this->scene.SetComponent(player, CameraComponent{ &this->player.getCamera() });
-    this->scene.SetComponent(player, Collider{ 0.0f, 2.0f, -25.0f, {1.0f, 1.0f, 1.0f} });
+    //int player = scene.CreateEntity();
+    //this->scene.SetComponent(player, Player{ {0.0f, 2.0f, -25.0f} });
+    //this->scene.SetComponent(player, CameraComponent{ &this->player.getCamera() });
+    //this->scene.SetComponent(player, Collider{ 0.0f, 2.0f, -25.0f, {1.0f, 1.0f, 1.0f} });
 
     //maze entities
     int Tile0 = scene.CreateEntity();
@@ -35,6 +35,19 @@ game::game(lua_State* L)
 
     int Tile3 = scene.CreateEntity();
     this->scene.SetComponent(Tile3, Floor{ 1.0f, -4.0f });
+
+    //test with lua
+    luaL_dofile(L, "createfloor.lua");
+
+    //find the player entity and give it a raylib camera
+    for (int i = 0; i < this->scene.GetEntityCount(); i++)
+    {
+        if (this->scene.IsEntity(i) && this->scene.HasComponents<Player>(i))
+        {
+            this->scene.SetComponent(i, CameraComponent{ &this->player.getCamera() });
+            break; //only ONE player!!
+        }
+    }
 
     //systems
     scene.CreateSystem<FloorRenderSystem>();

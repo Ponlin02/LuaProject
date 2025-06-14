@@ -146,11 +146,6 @@ void maze::makeButton(float posX, float posZ, Camera camera, bool& isClicked)
 
 void maze::draw(Camera camera, Scene& scene)
 {
-	//DrawSphere(Vector3{ 0.0f, 0.0f, -15.0f }, 1.5f, RED);
-	
-	// Utkommenterat f�r att se om jag kan g�ra dessa till komponenter ist�llet
-	// Och s�tta de i initialize ist�llet!
-
 	bool isHovered = true;
 	makeButton(0.f, 0.f, camera, isHovered);
 	makeTunnel(0.f, -1.f, false, false, true, true, wallTime, isHovered);

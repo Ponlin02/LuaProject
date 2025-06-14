@@ -72,6 +72,7 @@ struct Player
 {
 	SelfVector3 Pos;
 	Player(SelfVector3 pos) : Pos(pos) {}
+	Player(float posx, float posy, float posz) : Pos(posx, posy, posz) {}
 	Player() = default;
 };
 
