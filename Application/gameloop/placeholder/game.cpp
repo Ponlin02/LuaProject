@@ -37,13 +37,14 @@ game::game(lua_State* L)
     this->scene.SetComponent(Tile3, Floor{ 1.0f, -4.0f });
 
     //test with lua
-    luaL_dofile(L, "createfloor.lua");
+    luaL_dofile(L, "scripts/default_scene.lua");
 
     //find the player entity and give it a raylib camera
     for (int i = 0; i < this->scene.GetEntityCount(); i++)
     {
         if (this->scene.IsEntity(i) && this->scene.HasComponents<Player>(i))
         {
+            this->player.getCamera().target = { scene.GetComponent<Player>(i).Pos.X, 1, 100 };
             this->scene.SetComponent(i, CameraComponent{ &this->player.getCamera() });
             break; //only ONE player!!
         }

@@ -49,6 +49,9 @@
     <None Include="createfloor.lua" />
     <None Include="monster.lua" />
     <None Include="sceneDemo.lua" />
+    <None Include="scripts\default_scene.lua" />
+    <None Include="scripts\entityFunctions.lua" />
+    <None Include="scripts\test.lua" />
     <None Include="test.lua" />
     <None Include="transform.lua" />
     <None Include="vector-demo.lua" />

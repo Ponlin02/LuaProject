@@ -1,8 +1,6 @@
 #include "gameloop.hpp"
 #include "raylib.h"
 
-#include "maze/maze.hpp" 
-#include "player/player.hpp"
 #include "placeholder/main_menu.hpp"
 #include "placeholder/game.hpp"
 #include "placeholder/paused.hpp"
@@ -14,7 +12,7 @@ void gameloop::run(lua_State* L)
     SetTargetFPS(60);
     SetExitKey(KEY_NULL);
 
-    GameState currentState = PLAYING;
+    GameState currentState = MAIN_MENU;
 
     main_menu main_menu;
     game game(L);
@@ -33,8 +31,8 @@ void gameloop::run(lua_State* L)
             break;
 
         case PLAYING:
-            //currentState = game.run(L);
-            game.run(L);
+            currentState = game.run(L);
+            //game.run(L);
             break;
 
         case PAUSED:

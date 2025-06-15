@@ -36,6 +36,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <None Include="createfloor.lua" />
+    <None Include="scripts\default_scene.lua" />
+    <None Include="scripts\test.lua" />
+    <None Include="scripts\entityFunctions.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\rayLibTest.hpp">

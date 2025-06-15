@@ -109,7 +109,7 @@ public:
 			Vector2 distanceVec = { playerPos.x - wallWorldPos.x, playerPos.y - wallWorldPos.y };
 			float length = sqrt(pow(distanceVec.x, 2) + pow(distanceVec.y, 2));
 
-			if (length < 10)
+			if (length < 6)
 			{
 				BoundingBox wallBB = {
 				Vector3{
