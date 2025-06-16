@@ -23,21 +23,23 @@ game::game(lua_State* L)
     int Tile0 = scene.CreateEntity();
     this->scene.SetComponent(Tile0, Floor{ 0.0f, -3.0f });
     this->scene.SetComponent(Tile0, Wall{ 0.0f, -3.0f });
-    this->scene.SetComponent(Tile0, Collider{ 0.0f, this->wallBBsize.Y / 2, -3.0f, this->wallBBsize });
+    this->scene.SetComponent(Tile0, Collider{ 0.0f, this->wallBBsize.Y / 2, -15.0f, this->wallBBsize });
 
     int Tile1 = scene.CreateEntity();
     this->scene.SetComponent(Tile1, Floor{ 1.0f, -3.0f });
     this->scene.SetComponent(Tile1, Wall{ 1.0f, -3.0f });
-    this->scene.SetComponent(Tile1, Collider{ 1.0f, this->wallBBsize.Y / 2, -3.0f, this->wallBBsize });
+    this->scene.SetComponent(Tile1, Collider{ 5.0f, this->wallBBsize.Y / 2, -15.0f, this->wallBBsize });
 
     int Tile2 = scene.CreateEntity();
     this->scene.SetComponent(Tile2, Floor{ 0.0f, -4.0f });
+    this->scene.SetComponent(Tile2, PressurePlate{ 0.0f, -4.0 });
+    this->scene.SetComponent(Tile2, Collider{ 0.0f, 1.0f, -20.0f, MazeConstants::PLATE_SIZE, 2.0f, MazeConstants::PLATE_SIZE });
 
     int Tile3 = scene.CreateEntity();
     this->scene.SetComponent(Tile3, Floor{ 1.0f, -4.0f });
 
     //test with lua
-    luaL_dofile(L, "scripts/default_scene.lua");
+    luaL_dofile(L, "scripts/test.lua");
 
     //find the player entity and give it a raylib camera
     for (int i = 0; i < this->scene.GetEntityCount(); i++)
@@ -53,6 +55,7 @@ game::game(lua_State* L)
     //systems
     scene.CreateSystem<FloorRenderSystem>();
     scene.CreateSystem<WallRenderSystem>();
+    scene.CreateSystem<PlateRenderSystem>();
     scene.CreateSystem<BBSystem>();
     scene.CreateSystem<PlayerRenderSystem>();
     scene.CreateSystem<PlayerControllerSystem>();

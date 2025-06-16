@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <cstring>
 #include "lua.hpp"
+#include "gameloop/placeholder/constants.h"
 
 //#include <Windows.h>
 
@@ -45,7 +46,7 @@ struct Floor
 {
 	float PosX;
 	float PosZ;
-	Floor(float posx, float posz) : PosX(posx), PosZ(posz){}
+	Floor(float posx, float posz) : PosX(posx * MazeConstants::TILE_SIZE), PosZ(posz* MazeConstants::TILE_SIZE){}
 	Floor() = default;
 };
 
@@ -53,7 +54,7 @@ struct Wall
 {
 	float PosX;
 	float PosZ;
-	Wall(float posx, float posz) : PosX(posx), PosZ(posz) {}
+	Wall(float posx, float posz) : PosX(posx * MazeConstants::TILE_SIZE), PosZ(posz * MazeConstants::TILE_SIZE) {}
 	Wall() = default;
 };
 
@@ -74,6 +75,14 @@ struct Player
 	Player(SelfVector3 pos) : Pos(pos) {}
 	Player(float posx, float posy, float posz) : Pos(posx, posy, posz) {}
 	Player() = default;
+};
+
+struct PressurePlate
+{
+	float PosX;
+	float PosZ;
+	PressurePlate(float posx, float posz) : PosX(posx * MazeConstants::TILE_SIZE), PosZ(posz * MazeConstants::TILE_SIZE) {}
+	PressurePlate() = default;
 };
 
 

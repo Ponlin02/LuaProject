@@ -35,7 +35,7 @@ public:
 	{
 		auto view = registry.view<Floor>();
 		view.each([&](Floor& floor) {
-			Vector3 floorPosition = { floor.PosX * this->tileSize, 0.0f, floor.PosZ * this->tileSize };
+			Vector3 floorPosition = { floor.PosX, 0.0f, floor.PosZ };
 			Vector3 floorSize = { this->tileSize, 0.1f, this->tileSize };
 
 			if (!IsKeyDown(KEY_X))
@@ -61,13 +61,39 @@ public:
 	{
 		auto view = registry.view<Wall>();
 		view.each([&](Wall& wall) {
-			Vector3 wallPosition = { wall.PosX * this->tileSize, this->wallHeight / 2, wall.PosZ * this->tileSize };
+			Vector3 wallPosition = { wall.PosX, this->wallHeight / 2, wall.PosZ };
 			Vector3 wallSize = { this->tileSize, this->wallHeight, this->tileSize };
 
 			if (!IsKeyDown(KEY_C))
 			{
 				DrawCubeWiresV(wallPosition, wallSize, BLACK);
 				DrawCubeV(wallPosition, wallSize, BEIGE);
+			}
+		});
+		return false;
+	};
+};
+
+//System that renders all of the pressure plates in the scene
+class PlateRenderSystem : public System
+{
+	int hej = 0;
+	float plateHeight = MazeConstants::PLATE_HEIGHT;
+	float plateSize = MazeConstants::PLATE_SIZE;
+
+public:
+	PlateRenderSystem() = default;
+	bool OnUpdate(entt::registry& registry, float delta)
+	{
+		auto view = registry.view<PressurePlate>();
+		view.each([&](PressurePlate& plate) {
+			Vector3 platePosition = { plate.PosX, this->plateHeight / 2, plate.PosZ };
+			Vector3 plateSize = { this->plateSize, this->plateHeight, this->plateSize };
+
+			if (!IsKeyDown(KEY_C))
+			{
+				DrawCubeWiresV(platePosition, plateSize, BLACK);
+				DrawCubeV(platePosition, plateSize, RED);
 			}
 		});
 		return false;

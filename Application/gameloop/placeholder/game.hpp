@@ -34,14 +34,14 @@ public:
 		view.each([&](Collider& collider) {
 			BoundingBox BB = {
 				Vector3{
-					collider.PosX * collider.size.X - collider.size.X / 2,
+					collider.PosX - collider.size.X / 2,
 					collider.PosY - collider.size.Y / 2,
-					collider.PosZ * collider.size.Z - collider.size.Z / 2},
+					collider.PosZ - collider.size.Z / 2},
 
 				Vector3{
-					collider.PosX * collider.size.X + collider.size.X / 2,
+					collider.PosX + collider.size.X / 2,
 					collider.PosY + collider.size.Y / 2,
-					collider.PosZ * collider.size.Z + collider.size.Z / 2}
+					collider.PosZ + collider.size.Z / 2}
 			};
 
 			DrawBoundingBox(BB, RED);

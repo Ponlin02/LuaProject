@@ -105,7 +105,7 @@ public:
 		auto view2 = registry.view<Wall, Collider>();
 		view2.each([&](Wall& wall, Collider& collider) {
 			//calculate length to walls to only do collison checks on close walls
-			Vector2 wallWorldPos = { wall.PosX * collider.size.X, wall.PosZ * collider.size.Z };
+			Vector2 wallWorldPos = { wall.PosX, wall.PosZ };
 			Vector2 distanceVec = { playerPos.x - wallWorldPos.x, playerPos.y - wallWorldPos.y };
 			float length = sqrt(pow(distanceVec.x, 2) + pow(distanceVec.y, 2));
 
@@ -113,14 +113,14 @@ public:
 			{
 				BoundingBox wallBB = {
 				Vector3{
-					collider.PosX * collider.size.X - collider.size.X / 2,
+					collider.PosX - collider.size.X / 2,
 					collider.PosY - collider.size.Y / 2,
-					collider.PosZ * collider.size.Z - collider.size.Z / 2},
+					collider.PosZ - collider.size.Z / 2},
 
 				Vector3{
-					collider.PosX * collider.size.X + collider.size.X / 2,
+					collider.PosX + collider.size.X / 2,
 					collider.PosY + collider.size.Y / 2,
-					collider.PosZ * collider.size.Z + collider.size.Z / 2}
+					collider.PosZ + collider.size.Z / 2}
 				};
 				wallBBs.push_back(wallBB);
 			}
