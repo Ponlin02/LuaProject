@@ -77,12 +77,13 @@ struct Player
 	Player() = default;
 };
 
-struct PressurePlate
+//A bigger button or pressure plate
+struct Button1
 {
 	float PosX;
 	float PosZ;
-	PressurePlate(float posx, float posz) : PosX(posx * MazeConstants::TILE_SIZE), PosZ(posz * MazeConstants::TILE_SIZE) {}
-	PressurePlate() = default;
+	Button1(float posx, float posz) : PosX(posx * MazeConstants::TILE_SIZE), PosZ(posz * MazeConstants::TILE_SIZE) {}
+	Button1() = default;
 };
 
 

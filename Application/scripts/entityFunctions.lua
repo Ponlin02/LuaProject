@@ -16,3 +16,9 @@ function createWall(x, z)
 	scene.SetComponent(wall, "floor", x, z)
 	scene.SetComponent(wall, "wall", x, z)
 end
+
+function createButton1(x, z)
+	local button = scene.CreateEntity()
+	scene.SetComponent(button, "floor", x, z)
+	scene.SetComponent(button, "button1", x, z)
+end

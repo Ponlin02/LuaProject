@@ -8,38 +8,13 @@ game::game(lua_State* L)
     this->camera.fovy = 45.0f;
     this->camera.projection = CAMERA_PERSPECTIVE;
 
-    maze.InitializeMaze(L, this->scene);
+    //maze.InitializeMaze(L, this->scene);
 
     //ECS scene
     Scene::lua_openscene(L, &this->scene);
 
-    //player entity
-    //int player = scene.CreateEntity();
-    //this->scene.SetComponent(player, Player{ {0.0f, 2.0f, -25.0f} });
-    //this->scene.SetComponent(player, CameraComponent{ &this->player.getCamera() });
-    //this->scene.SetComponent(player, Collider{ 0.0f, 2.0f, -25.0f, {1.0f, 1.0f, 1.0f} });
-
-    //maze entities
-    int Tile0 = scene.CreateEntity();
-    this->scene.SetComponent(Tile0, Floor{ 0.0f, -3.0f });
-    this->scene.SetComponent(Tile0, Wall{ 0.0f, -3.0f });
-    this->scene.SetComponent(Tile0, Collider{ 0.0f, this->wallBBsize.Y / 2, -15.0f, this->wallBBsize });
-
-    int Tile1 = scene.CreateEntity();
-    this->scene.SetComponent(Tile1, Floor{ 1.0f, -3.0f });
-    this->scene.SetComponent(Tile1, Wall{ 1.0f, -3.0f });
-    this->scene.SetComponent(Tile1, Collider{ 5.0f, this->wallBBsize.Y / 2, -15.0f, this->wallBBsize });
-
-    int Tile2 = scene.CreateEntity();
-    this->scene.SetComponent(Tile2, Floor{ 0.0f, -4.0f });
-    this->scene.SetComponent(Tile2, PressurePlate{ 0.0f, -4.0 });
-    this->scene.SetComponent(Tile2, Collider{ 0.0f, 1.0f, -20.0f, MazeConstants::PLATE_SIZE, 2.0f, MazeConstants::PLATE_SIZE });
-
-    int Tile3 = scene.CreateEntity();
-    this->scene.SetComponent(Tile3, Floor{ 1.0f, -4.0f });
-
     //test with lua
-    luaL_dofile(L, "scripts/test.lua");
+    luaL_dofile(L, "scripts/default_scene.lua");
 
     //find the player entity and give it a raylib camera
     for (int i = 0; i < this->scene.GetEntityCount(); i++)
@@ -55,7 +30,7 @@ game::game(lua_State* L)
     //systems
     scene.CreateSystem<FloorRenderSystem>();
     scene.CreateSystem<WallRenderSystem>();
-    scene.CreateSystem<PlateRenderSystem>();
+    scene.CreateSystem<Button1RenderSystem>();
     scene.CreateSystem<BBSystem>();
     scene.CreateSystem<PlayerRenderSystem>();
     scene.CreateSystem<PlayerControllerSystem>();

@@ -75,25 +75,25 @@ public:
 };
 
 //System that renders all of the pressure plates in the scene
-class PlateRenderSystem : public System
+class Button1RenderSystem : public System
 {
 	int hej = 0;
-	float plateHeight = MazeConstants::PLATE_HEIGHT;
-	float plateSize = MazeConstants::PLATE_SIZE;
+	float buttonHeight = MazeConstants::BUTTON1_HEIGHT;
+	float buttonSize = MazeConstants::BUTTON1_SIZE;
 
 public:
-	PlateRenderSystem() = default;
+	Button1RenderSystem() = default;
 	bool OnUpdate(entt::registry& registry, float delta)
 	{
-		auto view = registry.view<PressurePlate>();
-		view.each([&](PressurePlate& plate) {
-			Vector3 platePosition = { plate.PosX, this->plateHeight / 2, plate.PosZ };
-			Vector3 plateSize = { this->plateSize, this->plateHeight, this->plateSize };
+		auto view = registry.view<Button1>();
+		view.each([&](Button1& button) {
+			Vector3 buttonPosition = { button.PosX, this->buttonHeight / 2, button.PosZ };
+			Vector3 buttonSize = { this->buttonSize, this->buttonHeight, this->buttonSize };
 
 			if (!IsKeyDown(KEY_C))
 			{
-				DrawCubeWiresV(platePosition, plateSize, BLACK);
-				DrawCubeV(platePosition, plateSize, RED);
+				DrawCubeWiresV(buttonPosition, buttonSize, BLACK);
+				DrawCubeV(buttonPosition, buttonSize, DARKBLUE);
 			}
 		});
 		return false;
