@@ -30,7 +30,10 @@ game::game(lua_State* L)
     //systems
     scene.CreateSystem<FloorRenderSystem>();
     scene.CreateSystem<WallRenderSystem>();
+    scene.CreateSystem<Door1RenderSystem>();
     scene.CreateSystem<Button1RenderSystem>();
+    scene.CreateSystem<Button1ClickSystem>();
+    scene.CreateSystem<Door1OpenSystem>();
     scene.CreateSystem<BBSystem>();
     scene.CreateSystem<PlayerRenderSystem>();
     scene.CreateSystem<PlayerControllerSystem>();

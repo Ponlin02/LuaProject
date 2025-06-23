@@ -58,6 +58,14 @@ struct Wall
 	Wall() = default;
 };
 
+struct Door1
+{
+	float PosX;
+	float PosZ;
+	Door1(float posx, float posz) : PosX(posx* MazeConstants::TILE_SIZE), PosZ(posz* MazeConstants::TILE_SIZE) {}
+	Door1() = default;
+};
+
 struct Collider
 {
 	float PosX;
@@ -84,6 +92,12 @@ struct Button1
 	float PosZ;
 	Button1(float posx, float posz) : PosX(posx * MazeConstants::TILE_SIZE), PosZ(posz * MazeConstants::TILE_SIZE) {}
 	Button1() = default;
+};
+
+struct Button1click
+{
+	bool clicked = false;
+	Button1click() = default;
 };
 
 

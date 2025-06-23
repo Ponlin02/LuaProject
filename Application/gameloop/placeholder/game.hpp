@@ -10,6 +10,7 @@ class game
 {
 public:
 	game(lua_State* L);
+	~game() = default;
 	GameState run(lua_State* L);
 
 private:
@@ -46,6 +47,36 @@ public:
 
 			DrawBoundingBox(BB, RED);
 		});
+		return false;
+	};
+};
+
+//System that removes the door when enough buttons have been pressed
+class Door1OpenSystem : public System
+{
+	int hej = 0;
+
+public:
+	Door1OpenSystem() = default;
+	bool OnUpdate(entt::registry& registry, float delta)
+	{
+		float buttonsClicked = 0;
+		auto view = registry.view<Button1click>();
+		view.each([&](Button1click& click) {
+			if (click.clicked)
+			{
+				buttonsClicked += 1;
+			}
+		});
+
+		if (buttonsClicked >= 1)
+		{
+			auto doorView = registry.view<Door1>();
+			for (auto doorEntity : doorView)
+			{
+				registry.destroy(doorEntity);
+			}
+		}
 		return false;
 	};
 };

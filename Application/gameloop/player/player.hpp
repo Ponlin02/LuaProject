@@ -126,6 +126,31 @@ public:
 			}
 		});
 
+		//get relevant door BBs
+		auto view3 = registry.view<Door1, Collider>();
+		view3.each([&](Door1& door, Collider& collider) {
+			//calculate length to doors to only do collison checks on close doors
+			Vector2 doorWorldPos = { door.PosX, door.PosZ };
+			Vector2 distanceVec = { playerPos.x - doorWorldPos.x, playerPos.y - doorWorldPos.y };
+			float length = sqrt(pow(distanceVec.x, 2) + pow(distanceVec.y, 2));
+
+			if (length < 6)
+			{
+				BoundingBox doorBB = {
+				Vector3{
+					collider.PosX - collider.size.X / 2,
+					collider.PosY - collider.size.Y / 2,
+					collider.PosZ - collider.size.Z / 2},
+
+				Vector3{
+					collider.PosX + collider.size.X / 2,
+					collider.PosY + collider.size.Y / 2,
+					collider.PosZ + collider.size.Z / 2}
+				};
+				wallBBs.push_back(doorBB);
+			}
+		});
+
 		//do collision check
 		view.each([&](Player& player, Collider& collider) {
 			for (int i = 0; i < wallBBs.size(); i++)
@@ -145,6 +170,56 @@ public:
 		}
 		DrawBoundingBox(playerCollider, PURPLE);
 
+		return false;
+	};
+};
+
+//System that makes a button clickable
+class Button1ClickSystem : public System
+{
+	int hej = 0;
+
+public:
+	Button1ClickSystem() = default;
+	bool OnUpdate(entt::registry& registry, float delta)
+	{
+		Camera camera;
+		auto view = registry.view<CameraComponent>();
+		view.each([&](CameraComponent& camCom) {
+			camera = *camCom.camera;
+		});
+
+		auto view2 = registry.view<Button1, Collider, Button1click>();
+		view2.each([&](Button1& button, Collider& collider, Button1click& click) {
+			//calculate length to buttons to only do collison checks on close buttons
+			Vector2 distanceVec = { button.PosX - camera.position.x, button.PosZ - camera.position.z };
+			float length = sqrt(pow(distanceVec.x, 2) + pow(distanceVec.y, 2));
+
+			if (length < 6)
+			{
+				BoundingBox BB = {
+				Vector3{
+					collider.PosX - collider.size.X / 2,
+					collider.PosY - collider.size.Y / 2,
+					collider.PosZ - collider.size.Z / 2},
+
+				Vector3{
+					collider.PosX + collider.size.X / 2,
+					collider.PosY + collider.size.Y / 2,
+					collider.PosZ + collider.size.Z / 2}
+				};
+
+				Ray ray = GetMouseRay(GetMousePosition(), camera);
+				RayCollision collision = GetRayCollisionBox(ray, BB);
+				bool clicked = collision.hit && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+
+				if (clicked)
+				{
+					std::cout << "Button clicked!" << std::endl;
+					click.clicked = true;
+				}
+			}
+		});
 		return false;
 	};
 };

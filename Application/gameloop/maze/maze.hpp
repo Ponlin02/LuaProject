@@ -74,6 +74,32 @@ public:
 	};
 };
 
+//System that renders all of the door1 in the scene
+class Door1RenderSystem : public System
+{
+	int hej = 0;
+	float wallHeight = MazeConstants::WALL_HEIGHT;
+	float tileSize = MazeConstants::TILE_SIZE;
+
+public:
+	Door1RenderSystem() = default;
+	bool OnUpdate(entt::registry& registry, float delta)
+	{
+		auto view = registry.view<Door1>();
+		view.each([&](Door1& door) {
+			Vector3 doorPosition = { door.PosX, this->wallHeight / 2, door.PosZ };
+			Vector3 doorSize = { this->tileSize, this->wallHeight, this->tileSize };
+
+			if (!IsKeyDown(KEY_C))
+			{
+				DrawCubeWiresV(doorPosition, doorSize, BLACK);
+				DrawCubeV(doorPosition, doorSize, BROWN);
+			}
+		});
+		return false;
+	};
+};
+
 //System that renders all of the pressure plates in the scene
 class Button1RenderSystem : public System
 {
@@ -85,15 +111,22 @@ public:
 	Button1RenderSystem() = default;
 	bool OnUpdate(entt::registry& registry, float delta)
 	{
-		auto view = registry.view<Button1>();
-		view.each([&](Button1& button) {
+		auto view = registry.view<Button1, Button1click>();
+		view.each([&](Button1& button, Button1click click) {
 			Vector3 buttonPosition = { button.PosX, this->buttonHeight / 2, button.PosZ };
 			Vector3 buttonSize = { this->buttonSize, this->buttonHeight, this->buttonSize };
 
 			if (!IsKeyDown(KEY_C))
 			{
 				DrawCubeWiresV(buttonPosition, buttonSize, BLACK);
-				DrawCubeV(buttonPosition, buttonSize, DARKBLUE);
+				if (click.clicked)
+				{
+					DrawCubeV(buttonPosition, buttonSize, LIME);
+				}
+				else
+				{
+					DrawCubeV(buttonPosition, buttonSize, DARKBLUE);
+				}
 			}
 		});
 		return false;
