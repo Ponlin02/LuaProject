@@ -6,11 +6,11 @@
 #include "../../Scene.hpp"
 #include "constants.h"
 
-class game
+class Game
 {
 public:
-	game(lua_State* L);
-	~game() = default;
+	Game(lua_State* L);
+	~Game() = default;
 	GameState run(lua_State* L);
 
 private:

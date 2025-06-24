@@ -1,6 +1,6 @@
 #include "main_menu.hpp"
 
-GameState main_menu::draw()
+GameState Main_menu::draw()
 {
     ClearBackground(SKYBLUE);
     DrawText("Maze Game!", 200, 100, 60, BLACK);

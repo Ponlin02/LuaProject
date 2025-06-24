@@ -14,9 +14,9 @@ void gameloop::run(lua_State* L)
 
     GameState currentState = MAIN_MENU;
 
-    main_menu main_menu;
-    game game(L);
-    paused paused;
+    Main_menu main_menu;
+    Paused paused;
+    Game game(L);
 
     //The gameloop
     while (!WindowShouldClose() && currentState != GameState::QUIT)

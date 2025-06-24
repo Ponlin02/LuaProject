@@ -1,6 +1,6 @@
 #include "game.hpp"
 
-game::game(lua_State* L)
+Game::Game(lua_State* L)
 {
     this->camera.position = { 0.0f, 2.0f, 6.0f };
     this->camera.target = { 0.0f, 1.0f, 0.0f };
@@ -40,7 +40,7 @@ game::game(lua_State* L)
     scene.CreateSystem<PlayerCollisionSystem>();
 }
 
-GameState game::run(lua_State* L)
+GameState Game::run(lua_State* L)
 {
     ClearBackground(RAYWHITE);
 

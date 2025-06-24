@@ -2,7 +2,7 @@
 #include "gamestate.hpp"
 #include "raylib.h"
 
-class paused
+class Paused
 {
 public:
 	GameState draw();

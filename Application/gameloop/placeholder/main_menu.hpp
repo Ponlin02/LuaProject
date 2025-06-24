@@ -2,7 +2,7 @@
 #include "gamestate.hpp"
 #include "raylib.h"
 
-class main_menu
+class Main_menu
 {
 public:
 	GameState draw();

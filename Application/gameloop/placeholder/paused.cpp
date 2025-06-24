@@ -1,6 +1,6 @@
 #include "paused.hpp"
 
-GameState paused::draw()
+GameState Paused::draw()
 {
     ClearBackground(DARKBLUE);
     DrawText("Paused!", 200, 100, 60, BLACK);
