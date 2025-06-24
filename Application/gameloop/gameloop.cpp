@@ -5,7 +5,7 @@
 #include "placeholder/game.hpp"
 #include "placeholder/paused.hpp"
 
-void gameloop::run(lua_State* L)
+void Gameloop::run(lua_State* L)
 {
     //Preparing stuff
     InitWindow(1280, 720, "Maze Game!");
@@ -16,7 +16,7 @@ void gameloop::run(lua_State* L)
 
     Main_menu main_menu;
     Paused paused;
-    Game game(L);
+    Game* game = nullptr;
 
     //The gameloop
     while (!WindowShouldClose() && currentState != GameState::QUIT)
@@ -28,10 +28,16 @@ void gameloop::run(lua_State* L)
         {
         case MAIN_MENU:
             currentState = main_menu.draw();
+            //reset the game from main menu
+            if (currentState == GameState::PLAYING)
+            {
+                delete game;
+                game = new Game(L);
+            }
             break;
 
         case PLAYING:
-            currentState = game.run(L);
+            currentState = game->run(L);
             //game.run(L);
             break;
 
@@ -49,5 +55,6 @@ void gameloop::run(lua_State* L)
         EndDrawing();
     }
 
+    delete game;
     CloseWindow();
 }

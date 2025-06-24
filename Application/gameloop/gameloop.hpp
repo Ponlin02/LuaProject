@@ -1,7 +1,7 @@
 #pragma once
 #include "lua.hpp"
 
-class gameloop
+class Gameloop
 {
 public:
 	void run(lua_State* L);

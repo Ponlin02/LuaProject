@@ -100,6 +100,13 @@ struct Button1click
 	Button1click() = default;
 };
 
+struct WinTrigger
+{
+	bool* winFlag = nullptr;
+	WinTrigger() = default;
+	WinTrigger(bool* ptr) : winFlag(ptr) {}
+};
+
 
 class System
 {

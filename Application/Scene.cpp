@@ -11,6 +11,7 @@ Scene::~Scene()
 	for (auto system : m_systems) {
 		system = nullptr;
 	}
+	m_registry.clear();
 }
 
 // ECS function for c++ interface
@@ -233,7 +234,8 @@ int Scene::lua_GetComponent(lua_State* L)
 	else if (type == "button1click" && scene->HasComponents<Button1click>(entity))
 	{
 		Button1click& click = scene->GetComponent<Button1click>(entity);
-		return 0;
+		lua_pushboolean(L, click.clicked);
+		return 1;
 	}
 
 }

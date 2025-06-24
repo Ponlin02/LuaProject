@@ -23,6 +23,7 @@ Game::Game(lua_State* L)
         {
             this->player.getCamera().target = { scene.GetComponent<Player>(i).Pos.X, 1, 100 };
             this->scene.SetComponent(i, CameraComponent{ &this->player.getCamera() });
+            this->scene.SetComponent(i, WinTrigger{ &this->hasWon });
             break; //only ONE player!!
         }
     }
@@ -61,6 +62,11 @@ GameState Game::run(lua_State* L)
     if (IsKeyPressed(KEY_ESCAPE))
     {
         return GameState::PAUSED;
+    }
+
+    if (this->hasWon)
+    {
+        return GameState::WIN;
     }
 
     return GameState::PLAYING;

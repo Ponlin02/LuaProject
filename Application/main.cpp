@@ -88,7 +88,7 @@ int main()
 	//rayLib raylib;
 	//raylib.run();
 
-	gameloop mazegame;
+	Gameloop mazegame;
 	mazegame.run(L);
 
 	bool running = true;
