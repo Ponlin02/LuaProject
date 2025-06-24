@@ -24,6 +24,7 @@
     <ClCompile Include="gameloop\placeholder\game.cpp" />
     <ClCompile Include="gameloop\placeholder\main_menu.cpp" />
     <ClCompile Include="gameloop\placeholder\paused.cpp" />
+    <ClCompile Include="gameloop\placeholder\win_text.cpp" />
     <ClCompile Include="gameloop\player\player.cpp" />
     <ClCompile Include="GammalKod.cpp" />
     <ClCompile Include="main.cpp" />
@@ -38,6 +39,7 @@
     <ClInclude Include="gameloop\placeholder\gamestate.hpp" />
     <ClInclude Include="gameloop\placeholder\main_menu.hpp" />
     <ClInclude Include="gameloop\placeholder\paused.hpp" />
+    <ClInclude Include="gameloop\placeholder\win_text.h" />
     <ClInclude Include="gameloop\player\player.hpp" />
     <ClInclude Include="graphics\rayLibTest.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

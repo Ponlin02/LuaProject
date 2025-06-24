@@ -24,11 +24,10 @@ function createButton1(x, z)
 	scene.SetComponent(button, "button1click")
 end
 
-function createWinButton(x, z)
+function createGoal(x, z)
 	local button = scene.CreateEntity()
 	scene.SetComponent(button, "floor", x, z)
-	scene.SetComponent(button, "button1", x, z)
-	scene.SetComponent(button, "button1click")
+	scene.SetComponent(button, "goal", x, z)
 end
 
 function createDoor1(x, z)

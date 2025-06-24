@@ -10,7 +10,7 @@ print("Attempting to load default map...")
 -- 1 = wall
 -- 2 = button
 -- 3 = door
--- 4 = win button
+-- 4 = goal
 -- 9 = player
 
 local map = {
@@ -58,7 +58,7 @@ for z = 1, #map do
 			createDoor1(posX, posZ)
             createFloor(posX, posZ)
         elseif value == 4 then
-			createWinButton(posX, posZ)
+			createGoal(posX, posZ)
 		elseif value == 9 then
 			createFloor(posX, posZ)
 			createPlayer(posX * 5, posZ * 5)

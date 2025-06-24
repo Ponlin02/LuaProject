@@ -142,6 +142,9 @@ int Scene::lua_HasComponent(lua_State* L)
 	else if (type == "button1click") {
 		hasComponent = scene->HasComponents<Button1click>(entity);
 	}
+	else if (type == "goal") {
+		hasComponent = scene->HasComponents<Goal>(entity);
+	}
 
 	lua_pushboolean(L, hasComponent);
 	return 1;
@@ -237,6 +240,13 @@ int Scene::lua_GetComponent(lua_State* L)
 		lua_pushboolean(L, click.clicked);
 		return 1;
 	}
+	else if (type == "goal" && scene->HasComponents<Goal>(entity))
+	{
+		Goal& goal = scene->GetComponent<Goal>(entity);
+		lua_pushnumber(L, goal.PosX);
+		lua_pushnumber(L, goal.PosZ);
+		return 2;
+	}
 
 }
 
@@ -316,6 +326,15 @@ int Scene::lua_SetComponent(lua_State* L)
 	else if (type == "button1click")
 	{
 		scene->SetComponent<Button1click>(entity);
+	}
+	else if (type == "goal")
+	{
+		float posx = lua_tonumber(L, 3);
+		float posz = lua_tonumber(L, 4);
+		scene->SetComponent<Goal>(entity, posx, posz);
+		scene->SetComponent<Collider>(entity, 
+			posx * MazeConstants::TILE_SIZE, MazeConstants::GOAL_FLOAT_HEIGHT, posz * MazeConstants::TILE_SIZE,
+			1.0f, 1.0f, 1.0f);
 	}
 	else if (type == "behaviour")
 	{
@@ -399,6 +418,14 @@ int Scene::lua_RemoveComponent(lua_State* L)
 	else if (type == "button1click")
 	{
 		scene->RemoveComponent<Button1click>(entity);
+	}
+	else if (type == "goal")
+	{
+		scene->RemoveComponent<Goal>(entity);
+		if (scene->HasComponents<Collider>(entity))
+		{
+			scene->RemoveComponent<Collider>(entity);
+		}
 	}
 		
 	return 0;

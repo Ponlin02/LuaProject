@@ -5,4 +5,5 @@ struct MazeConstants {
     static constexpr float WALL_HEIGHT = 4.0f;
     static constexpr float BUTTON1_SIZE = 1.5f;
     static constexpr float BUTTON1_HEIGHT = 0.5f;
+    static constexpr float GOAL_FLOAT_HEIGHT = 2.0f;
 };

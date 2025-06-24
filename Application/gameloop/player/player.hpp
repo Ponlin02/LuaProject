@@ -28,7 +28,7 @@ private:
 	Camera camera = { 0 };
 };
 
-//System that renders the player move
+//System that renders the player
 class PlayerRenderSystem : public System
 {
 	int hej = 0;
@@ -220,6 +220,67 @@ public:
 				}
 			}
 		});
+		return false;
+	};
+};
+
+//System that makes the player win when touching goal
+class GoalCollisionSystem : public System
+{
+	int hej = 0;
+
+public:
+	GoalCollisionSystem() = default;
+	bool OnUpdate(entt::registry& registry, float delta)
+	{
+		BoundingBox playerCollider;
+		std::vector<BoundingBox> goalBB; //should only be one but just in case
+
+		//get player BB
+		auto view = registry.view<Player, Collider>();
+		view.each([&](Player& player, Collider& collider) {
+			playerCollider = {
+				Vector3{
+					collider.PosX - collider.size.X / 2,
+					collider.PosY - collider.size.Y / 2,
+					collider.PosZ - collider.size.Z / 2},
+
+				Vector3{
+					collider.PosX + collider.size.X / 2,
+					collider.PosY + collider.size.Y / 2,
+					collider.PosZ + collider.size.Z / 2}
+			};
+		});
+
+		//get the goal / goals
+		auto view2 = registry.view<Goal, Collider>();
+		view2.each([&](Goal& goal, Collider& collider) {
+			BoundingBox BB = {
+				Vector3{
+					collider.PosX - collider.size.X / 2,
+					collider.PosY - collider.size.Y / 2,
+					collider.PosZ - collider.size.Z / 2},
+
+				Vector3{
+					collider.PosX + collider.size.X / 2,
+					collider.PosY + collider.size.Y / 2,
+					collider.PosZ + collider.size.Z / 2}
+			};
+			goalBB.push_back(BB);
+		});
+
+		//do collision check
+		auto view3 = registry.view<WinTrigger>();
+		view3.each([&](WinTrigger& trigger) {
+			for (int i = 0; i < goalBB.size(); i++)
+			{
+				if (CheckCollisionBoxes(goalBB[i], playerCollider))
+				{
+					*trigger.winFlag = true;
+				}
+			}
+		});
+
 		return false;
 	};
 };

@@ -100,6 +100,14 @@ struct Button1click
 	Button1click() = default;
 };
 
+struct Goal
+{
+	float PosX;
+	float PosZ;
+	Goal(float posx, float posz) : PosX(posx* MazeConstants::TILE_SIZE), PosZ(posz* MazeConstants::TILE_SIZE) {}
+	Goal() = default;
+};
+
 struct WinTrigger
 {
 	bool* winFlag = nullptr;

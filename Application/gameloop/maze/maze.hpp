@@ -132,3 +132,20 @@ public:
 		return false;
 	};
 };
+
+//System that renders the goal
+class GoalRenderSystem : public System
+{
+	int hej = 0;
+
+public:
+	GoalRenderSystem() = default;
+	bool OnUpdate(entt::registry& registry, float delta)
+	{
+		auto view = registry.view<Goal>();
+		view.each([&](Goal& goal) {
+			DrawSphere({ goal.PosX, MazeConstants::GOAL_FLOAT_HEIGHT, goal.PosZ }, 0.5, GOLD);
+			});
+		return false;
+	};
+};

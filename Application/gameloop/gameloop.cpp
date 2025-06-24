@@ -4,6 +4,7 @@
 #include "placeholder/main_menu.hpp"
 #include "placeholder/game.hpp"
 #include "placeholder/paused.hpp"
+#include "placeholder/win_text.h"
 
 void Gameloop::run(lua_State* L)
 {
@@ -16,6 +17,7 @@ void Gameloop::run(lua_State* L)
 
     Main_menu main_menu;
     Paused paused;
+    Win_text win_text;
     Game* game = nullptr;
 
     //The gameloop
@@ -46,6 +48,13 @@ void Gameloop::run(lua_State* L)
             break;
 
         case WIN:
+            game->run(L);
+            currentState = win_text.draw();
+            if (currentState == GameState::PLAYING)
+            {
+                delete game;
+                game = new Game(L);
+            }
             break;
 
         default:
