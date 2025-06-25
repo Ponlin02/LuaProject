@@ -60,16 +60,18 @@ public:
 	Door1OpenSystem() = default;
 	bool OnUpdate(entt::registry& registry, float delta)
 	{
+		float totalButtons = 0;
 		float buttonsClicked = 0;
 		auto view = registry.view<Button1click>();
 		view.each([&](Button1click& click) {
+			totalButtons += 1;
 			if (click.clicked)
 			{
 				buttonsClicked += 1;
 			}
 		});
 
-		if (buttonsClicked >= 1)
+		if (buttonsClicked == totalButtons)
 		{
 			auto doorView = registry.view<Door1>();
 			for (auto doorEntity : doorView)
