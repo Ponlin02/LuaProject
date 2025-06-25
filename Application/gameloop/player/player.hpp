@@ -161,11 +161,11 @@ public:
 		});
 
 		//drawing the valid boxes for testing!
-		for (int i = 0; i < wallBBs.size(); i++)
+		/*for (int i = 0; i < wallBBs.size(); i++)
 		{
 			DrawBoundingBox(wallBBs[i], BLUE);
 		}
-		DrawBoundingBox(playerCollider, PURPLE);
+		DrawBoundingBox(playerCollider, PURPLE);*/
 
 		return false;
 	};

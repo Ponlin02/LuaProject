@@ -26,19 +26,50 @@ class FloorRenderSystem : public System
 	int hej = 0;
 	float tileSize = MazeConstants::TILE_SIZE;
 
+	//Mesh testing
+	Mesh floorMesh = GenMeshPlane(tileSize, tileSize, 1, 1);
+	Model floorModel = LoadModelFromMesh(floorMesh);
+	Texture2D floorTexture = LoadTexture("assets/floor.jpg");
+
+	Mesh ceilingMesh = GenMeshPlane(tileSize, tileSize, 1, 1);
+	Model ceilingModel = LoadModelFromMesh(ceilingMesh);
+	Texture2D ceilingTexture = LoadTexture("assets/ceiling.jpg");
+
 public:
-	FloorRenderSystem() = default;
+	FloorRenderSystem()
+	{
+		floorModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = floorTexture;
+		ceilingModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = ceilingTexture;
+	}
+	~FloorRenderSystem()
+	{
+		UnloadTexture(floorTexture);
+		UnloadModel(floorModel);
+		UnloadTexture(ceilingTexture);
+		UnloadModel(ceilingModel);
+	}
 	bool OnUpdate(entt::registry& registry, float delta)
 	{
+		/*Vector2 playerPos;
+		auto viewP = registry.view<Player>();
+		viewP.each([&](Player& player) {
+			playerPos = { player.Pos.X, player.Pos.Z };
+		});*/
+
 		auto view = registry.view<Floor>();
 		view.each([&](Floor& floor) {
 			Vector3 floorPosition = { floor.PosX, 0.0f, floor.PosZ };
 			Vector3 floorSize = { this->tileSize, 0.1f, this->tileSize };
 
+			Vector3 ceilingPosition = { floor.PosX, MazeConstants::WALL_HEIGHT, floor.PosZ };
+			//float distance = sqrt(pow(playerPos.x - floor.PosX, 2) + pow(playerPos.y - floor.PosZ, 2));
+
 			if (!IsKeyDown(KEY_X))
 			{
-				DrawCubeWiresV(floorPosition, floorSize, BLACK);
-				DrawCubeV(floorPosition, floorSize, ORANGE);
+				//DrawCubeWiresV(floorPosition, floorSize, BLACK);
+				//DrawCubeV(floorPosition, floorSize, ORANGE);
+				DrawModel(floorModel, floorPosition, 1.0f, GRAY);
+				DrawModelEx(ceilingModel, ceilingPosition, { 1, 0, 0 }, 180, { 1, 1, 1 }, GRAY);
 			}
 		});
 		return false;
@@ -52,8 +83,21 @@ class WallRenderSystem : public System
 	float wallHeight = MazeConstants::WALL_HEIGHT;
 	float tileSize = MazeConstants::TILE_SIZE;
 
+	//Mesh testing
+	Mesh wallMesh = GenMeshCube(tileSize, wallHeight, tileSize);
+	Model wallModel = LoadModelFromMesh(wallMesh);
+	Texture2D wallTexture = LoadTexture("assets/brick.jpg");
+
 public:
-	WallRenderSystem() = default;
+	WallRenderSystem()
+	{
+		wallModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = wallTexture;
+	}
+	~WallRenderSystem()
+	{
+		UnloadTexture(wallTexture);
+		UnloadModel(wallModel);
+	}
 	bool OnUpdate(entt::registry& registry, float delta)
 	{
 		auto view = registry.view<Wall>();
@@ -63,8 +107,9 @@ public:
 
 			if (!IsKeyDown(KEY_C))
 			{
-				DrawCubeWiresV(wallPosition, wallSize, BLACK);
-				DrawCubeV(wallPosition, wallSize, BEIGE);
+				//DrawCubeWiresV(wallPosition, wallSize, BLACK);
+				//DrawCubeV(wallPosition, wallSize, BEIGE);
+				DrawModel(wallModel, wallPosition, 1.0f, WHITE);
 			}
 		});
 		return false;

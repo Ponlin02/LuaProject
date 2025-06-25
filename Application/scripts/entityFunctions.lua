@@ -13,7 +13,7 @@ end
 
 function createWall(x, z)
 	local wall = scene.CreateEntity()
-	scene.SetComponent(wall, "floor", x, z)
+	-- scene.SetComponent(wall, "floor", x, z)
 	scene.SetComponent(wall, "wall", x, z)
 end
 

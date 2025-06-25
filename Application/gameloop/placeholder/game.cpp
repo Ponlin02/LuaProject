@@ -29,7 +29,7 @@ Game::Game(lua_State* L)
     scene.CreateSystem<GoalCollisionSystem>();
     scene.CreateSystem<Button1ClickSystem>();
     scene.CreateSystem<Door1OpenSystem>();
-    scene.CreateSystem<BBSystem>();
+    //scene.CreateSystem<BBSystem>();
     scene.CreateSystem<PlayerRenderSystem>();
     scene.CreateSystem<PlayerControllerSystem>();
     scene.CreateSystem<PlayerCollisionSystem>();
