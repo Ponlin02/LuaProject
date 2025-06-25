@@ -2,14 +2,6 @@
 
 Game::Game(lua_State* L)
 {
-    this->camera.position = { 0.0f, 2.0f, 6.0f };
-    this->camera.target = { 0.0f, 1.0f, 0.0f };
-    this->camera.up = { 0.0f, 1.0f, 0.0f };
-    this->camera.fovy = 45.0f;
-    this->camera.projection = CAMERA_PERSPECTIVE;
-
-    //maze.InitializeMaze(L, this->scene);
-
     //ECS scene
     Scene::lua_openscene(L, &this->scene);
 
@@ -47,18 +39,11 @@ GameState Game::run(lua_State* L)
 {
     ClearBackground(RAYWHITE);
 
-    if (!IsKeyDown(KEY_B))
-    {
-        BeginMode3D(this->player.getCamera());
-    }
-    else
-    {
-        BeginMode3D(this->camera);
-    }
+    BeginMode3D(this->player.getCamera());
 
     //update all systems
     this->scene.UpdateSystems(1);
-    //this->maze.draw(this->player.getCamera(), this->scene);
+
     EndMode3D();
 
     if (IsKeyPressed(KEY_ESCAPE))

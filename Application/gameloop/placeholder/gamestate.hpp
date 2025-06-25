@@ -4,6 +4,7 @@ enum GameState
 {
     MAIN_MENU,
     PLAYING,
+    EDIT,
     PAUSED,
     WIN,
     QUIT

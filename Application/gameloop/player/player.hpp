@@ -18,9 +18,6 @@ class player
 {
 public:
 	player();
-
-	Vector3 getPosition(); //might not need?
-	void setPosition(Vector3& position); //might not need?
 	Camera& getCamera();
 
 private:

@@ -12,6 +12,7 @@
     <ClCompile Include="gameloop\player\player.cpp" />
     <ClCompile Include="GammalKod.cpp" />
     <ClCompile Include="gameloop\placeholder\win_text.cpp" />
+    <ClCompile Include="gameloop\placeholder\edit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\rayLibTest.hpp" />
@@ -26,6 +27,7 @@
     <ClInclude Include="gameloop\player\player.hpp" />
     <ClInclude Include="gameloop\placeholder\constants.h" />
     <ClInclude Include="gameloop\placeholder\win_text.h" />
+    <ClInclude Include="gameloop\placeholder\edit.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="monster.lua" />

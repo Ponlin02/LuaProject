@@ -22,46 +22,6 @@ void maze::InitializeMaze(lua_State* L,  Scene& scene)
 	//scene.SetComponent(entity3, floor3);
 }
 
-
-void maze::makeFloor(float posX, float posZ)
-{
-	//Floor test
-	Vector3 floorPosition = { posX * this->tileSize, 0.0f, posZ * this->tileSize };
-	Vector3 floorSize = { this->tileSize, 0.1f, this->tileSize };
-
-	if (!IsKeyDown(KEY_X))
-	{
-		DrawCubeWiresV(floorPosition, floorSize, BLACK);
-		DrawCubeV(floorPosition, floorSize, ORANGE);
-	}
-}
-
-void maze::makeSlabWall(float posX, float posZ)
-{
-	//Wall test
-	Vector3 wallPosition = { posX * this->tileSize + this->tileSize / 2, this->wallHeight / 2, posZ * this->tileSize };
-	Vector3 wallSize = { 0.3f, this->wallHeight, this->tileSize };
-
-	if (!IsKeyDown(KEY_Z))
-	{
-		DrawCubeWiresV(wallPosition, wallSize, BLACK);
-		DrawCubeV(wallPosition, wallSize, LIME);
-	}
-}
-
-void maze::makeFullWall(float posX, float posZ)
-{
-	//Wall test
-	Vector3 wallPosition = { posX * this->tileSize, this->wallHeight / 2, posZ * this->tileSize };
-	Vector3 wallSize = { this->tileSize, this->wallHeight, this->tileSize };
-
-	if (!IsKeyDown(KEY_C))
-	{
-		DrawCubeWiresV(wallPosition, wallSize, BLACK);
-		DrawCubeV(wallPosition, wallSize, BEIGE);
-	}
-}
-
 void maze::makeTunnel(float posX, float posZ, bool north, bool south, bool east, bool west, float time, bool isClicked)
 {
 	float halfSize = this->tileSize / 2.0f;

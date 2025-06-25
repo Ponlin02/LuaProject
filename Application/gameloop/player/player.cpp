@@ -11,16 +11,6 @@ player::player()
 	this->camera.projection = CAMERA_PERSPECTIVE;
 }
 
-Vector3 player::getPosition()
-{
-	return this->position;
-}
-
-void player::setPosition(Vector3& position)
-{
-	this->position = position;
-}
-
 Camera& player::getCamera()
 {
 	return this->camera;

@@ -5,6 +5,7 @@
 #include "placeholder/game.hpp"
 #include "placeholder/paused.hpp"
 #include "placeholder/win_text.h"
+#include "placeholder/edit.h"
 
 void Gameloop::run(lua_State* L)
 {
@@ -18,6 +19,7 @@ void Gameloop::run(lua_State* L)
     Main_menu main_menu;
     Paused paused;
     Win_text win_text;
+    Edit edit(L);
     Game* game = nullptr;
 
     //The gameloop
@@ -55,6 +57,9 @@ void Gameloop::run(lua_State* L)
                 delete game;
                 game = new Game(L);
             }
+            break;
+        case EDIT:
+            currentState = edit.run(L);
             break;
 
         default:

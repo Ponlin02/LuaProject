@@ -8,9 +8,6 @@ class maze
 {
 public:
 	void InitializeMaze(lua_State*L, Scene& scene);
-	void makeFloor(float posX, float posZ); //Aim to remove this
-	void makeSlabWall(float posX, float posZ);
-	void makeFullWall(float posX, float posZ); //Aim to remove this
 	void makeTunnel(float posX, float posZ, bool north, bool south, bool east, bool west, float time, bool isClicked);
 	void makeButton(float posX, float posZ, Camera camera, bool& isClicked);
 	void draw(Camera camera, Scene& scene);

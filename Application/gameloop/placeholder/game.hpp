@@ -14,7 +14,6 @@ public:
 	GameState run(lua_State* L);
 
 private:
-	Camera camera = { 0 };
 	maze maze;
 	player player;
 	Scene scene;
