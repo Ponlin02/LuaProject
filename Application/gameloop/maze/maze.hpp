@@ -123,8 +123,21 @@ class Door1RenderSystem : public System
 	float wallHeight = MazeConstants::WALL_HEIGHT;
 	float tileSize = MazeConstants::TILE_SIZE;
 
+	//Mesh testing
+	Mesh doorMesh = GenMeshCube(tileSize, wallHeight, tileSize);
+	Model doorModel = LoadModelFromMesh(doorMesh);
+	Texture2D doorTexture = LoadTexture("assets/door.jpg");
+
 public:
-	Door1RenderSystem() = default;
+	Door1RenderSystem()
+	{
+		doorModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = doorTexture;
+	}
+	~Door1RenderSystem()
+	{
+		UnloadTexture(doorTexture);
+		UnloadModel(doorModel);
+	}
 	bool OnUpdate(entt::registry& registry, float delta)
 	{
 		auto view = registry.view<Door1>();
@@ -134,8 +147,9 @@ public:
 
 			if (!IsKeyDown(KEY_C))
 			{
-				DrawCubeWiresV(doorPosition, doorSize, BLACK);
-				DrawCubeV(doorPosition, doorSize, BROWN);
+				//DrawCubeWiresV(doorPosition, doorSize, BLACK);
+				//DrawCubeV(doorPosition, doorSize, BROWN);
+				DrawModel(doorModel, doorPosition, 1.0f, WHITE);
 			}
 		});
 		return false;
