@@ -1,11 +1,11 @@
 #include "gameloop.hpp"
 #include "raylib.h"
 
-#include "placeholder/main_menu.hpp"
-#include "placeholder/game.hpp"
-#include "placeholder/paused.hpp"
-#include "placeholder/win_text.h"
-#include "placeholder/edit.h"
+#include "mazegame/main_menu.hpp"
+#include "mazegame/game.hpp"
+#include "mazegame/paused.hpp"
+#include "mazegame/win_text.h"
+#include "mazegame/edit.h"
 
 void Gameloop::run(lua_State* L)
 {

@@ -85,18 +85,8 @@ int main()
 		scene.UpdateSystems(1);
 	}
 
-	//rayLib raylib;
-	//raylib.run();
-
 	Gameloop mazegame;
 	mazegame.run(L);
-
-	bool running = true;
-	while (!running)
-	{
-		//Update game
-		//Render game
-	}
 
 	consoleThread.detach();
 	

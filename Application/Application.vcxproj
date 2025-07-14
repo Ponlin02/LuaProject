@@ -21,11 +21,11 @@
   <ItemGroup>
     <ClCompile Include="gameloop\gameloop.cpp" />
     <ClCompile Include="gameloop\maze\maze.cpp" />
-    <ClCompile Include="gameloop\placeholder\edit.cpp" />
-    <ClCompile Include="gameloop\placeholder\game.cpp" />
-    <ClCompile Include="gameloop\placeholder\main_menu.cpp" />
-    <ClCompile Include="gameloop\placeholder\paused.cpp" />
-    <ClCompile Include="gameloop\placeholder\win_text.cpp" />
+    <ClCompile Include="gameloop\mazegame\edit.cpp" />
+    <ClCompile Include="gameloop\mazegame\game.cpp" />
+    <ClCompile Include="gameloop\mazegame\main_menu.cpp" />
+    <ClCompile Include="gameloop\mazegame\paused.cpp" />
+    <ClCompile Include="gameloop\mazegame\win_text.cpp" />
     <ClCompile Include="gameloop\player\player.cpp" />
     <ClCompile Include="GammalKod.cpp" />
     <ClCompile Include="main.cpp" />
@@ -34,14 +34,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameloop\gameloop.hpp" />
+    <ClInclude Include="gameloop\mazegame\ECS\components.hpp" />
+    <ClInclude Include="gameloop\mazegame\ECS\systemClass.hpp" />
+    <ClInclude Include="gameloop\mazegame\ECS\systems.hpp" />
     <ClInclude Include="gameloop\maze\maze.hpp" />
-    <ClInclude Include="gameloop\placeholder\constants.h" />
-    <ClInclude Include="gameloop\placeholder\edit.h" />
-    <ClInclude Include="gameloop\placeholder\game.hpp" />
-    <ClInclude Include="gameloop\placeholder\gamestate.hpp" />
-    <ClInclude Include="gameloop\placeholder\main_menu.hpp" />
-    <ClInclude Include="gameloop\placeholder\paused.hpp" />
-    <ClInclude Include="gameloop\placeholder\win_text.h" />
+    <ClInclude Include="gameloop\mazegame\constants.h" />
+    <ClInclude Include="gameloop\mazegame\edit.h" />
+    <ClInclude Include="gameloop\mazegame\game.hpp" />
+    <ClInclude Include="gameloop\mazegame\gamestate.hpp" />
+    <ClInclude Include="gameloop\mazegame\main_menu.hpp" />
+    <ClInclude Include="gameloop\mazegame\paused.hpp" />
+    <ClInclude Include="gameloop\mazegame\win_text.h" />
     <ClInclude Include="gameloop\player\player.hpp" />
     <ClInclude Include="graphics\rayLibTest.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

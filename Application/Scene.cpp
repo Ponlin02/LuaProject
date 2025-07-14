@@ -1,5 +1,5 @@
 #include "Scene.hpp"
-#include "gameloop/placeholder/constants.h"
+#include "gameloop/mazegame/constants.h"
 
 Scene::Scene(lua_State* L) : m_luaState(L)
 {
