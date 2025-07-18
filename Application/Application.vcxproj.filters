@@ -47,6 +47,7 @@
     <None Include="scripts\test.lua" />
     <None Include="scripts\entityFunctions.lua" />
     <None Include="scripts\maps.lua" />
+    <None Include="scripts\edit_default_scene.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\rayLibTest.hpp">

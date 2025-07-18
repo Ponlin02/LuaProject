@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="createfloor.lua" />
+    <None Include="scripts\edit_default_scene.lua" />
     <None Include="monster.lua" />
     <None Include="sceneDemo.lua" />
     <None Include="scripts\default_scene.lua" />

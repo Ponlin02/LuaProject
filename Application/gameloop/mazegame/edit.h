@@ -10,4 +10,5 @@ public:
 
 private:
 	Scene scene;
+	player player;
 };
