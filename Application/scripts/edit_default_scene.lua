@@ -15,6 +15,7 @@ for z = 1, 5 do
 	end
 end
 
+createWall(5,5)
 createPlayer(12,12)
 
 print ("Succesfully created editmap")

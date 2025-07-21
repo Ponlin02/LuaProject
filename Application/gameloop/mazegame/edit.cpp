@@ -19,8 +19,9 @@ Edit::Edit(lua_State* L)
 
 
 
-	scene.CreateSystem<FloorRenderSystem>();
-	scene.CreateSystem<PlayerRenderSystem>();
+	scene.CreateSystem<EditFloorRenderSystem>();
+	scene.CreateSystem<WallRenderSystem>();
+	//scene.CreateSystem<PlayerRenderSystem>();
 	scene.CreateSystem<PlayerEditControllSystem>();
 	scene.CreateSystem<PlayerCollisionSystem>();
 }

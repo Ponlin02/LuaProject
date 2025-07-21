@@ -49,11 +49,10 @@ public:
 
 			if (!IsKeyDown(KEY_X))
 			{
-				DrawCubeWiresV(floorPosition, floorSize, RED);
+				//DrawCubeWiresV(floorPosition, floorSize, RED);
 				//DrawCubeV(floorPosition, floorSize, ORANGE);
 				DrawModel(floorModel, floorPosition, 1.0f, GRAY);
-				// Out commented now for easier understanding of editing tool
-				//DrawModelEx(ceilingModel, ceilingPosition, { 1, 0, 0 }, 180, { 1, 1, 1 }, GRAY);
+				DrawModelEx(ceilingModel, ceilingPosition, { 1, 0, 0 }, 180, { 1, 1, 1 }, GRAY);
 			}
 			});
 		return false;
@@ -479,6 +478,81 @@ public:
 			}
 			});
 
+		return false;
+	};
+};
+
+class EditFloorRenderSystem : public System
+{
+	int hej = 0;
+	float tileSize = MazeConstants::TILE_SIZE;
+
+	//Mesh testing
+	Mesh floorMesh = GenMeshPlane(tileSize, tileSize, 1, 1);
+	Model floorModel = LoadModelFromMesh(floorMesh);
+	Texture2D floorTexture = LoadTexture("assets/floor.jpg");
+
+	Mesh ceilingMesh = GenMeshPlane(tileSize, tileSize, 1, 1);
+	Model ceilingModel = LoadModelFromMesh(ceilingMesh);
+	Texture2D ceilingTexture = LoadTexture("assets/cat.png");
+
+public:
+	EditFloorRenderSystem()
+	{
+		floorModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = floorTexture;
+		ceilingModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = ceilingTexture;
+	}
+	~EditFloorRenderSystem()
+	{
+		UnloadTexture(floorTexture);
+		UnloadModel(floorModel);
+		UnloadTexture(ceilingTexture);
+		UnloadModel(ceilingModel);
+	}
+	bool OnUpdate(entt::registry& registry, float delta)
+	{
+		auto camView = registry.view<CameraComponent>();
+
+		camView.each([&](CameraComponent camCom) {
+
+			auto view = registry.view<Floor>();
+			view.each([&](Floor& floor) {
+				Vector3 floorPosition = { floor.PosX, 0.0f, floor.PosZ };
+				Vector3 floorSize = { this->tileSize, 0.1f, this->tileSize };
+
+				Vector3 ceilingPosition = { floor.PosX, MazeConstants::WALL_HEIGHT, floor.PosZ };
+				//float distance = sqrt(pow(playerPos.x - floor.PosX, 2) + pow(playerPos.y - floor.PosZ, 2));
+
+
+				Vector2 screenPos = GetWorldToScreen(floorPosition, *camCom.camera);
+
+				BoundingBox box = {
+					{ floorPosition.x - this->tileSize / 2, floorPosition.y - 0.05f, floorPosition.z - tileSize / 2 },
+					{ floorPosition.x + tileSize / 2, floorPosition.y + 0.05f, floorPosition.z + tileSize / 2 }
+					};
+
+				Vector2 mousePos = GetMousePosition();
+
+				Ray ray = GetScreenToWorldRay(mousePos, *camCom.camera);
+				RayCollision collision = GetRayCollisionBox(ray, box);
+
+				if (collision.hit)
+					floorModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = ceilingTexture;
+				else
+					floorModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = floorTexture;
+
+				camCom.camera->position;
+
+				if (!IsKeyDown(KEY_X))
+				{
+					DrawCubeWiresV(floorPosition, floorSize, RED);
+					//DrawCubeV(floorPosition, floorSize, ORANGE);
+					DrawModel(floorModel, floorPosition, 1.0f, GRAY);
+					// Out commented now for easier understanding of editing tool
+					//DrawModelEx(ceilingModel, ceilingPosition, { 1, 0, 0 }, 180, { 1, 1, 1 }, GRAY);
+				}
+				});
+			});
 		return false;
 	};
 };

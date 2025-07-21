@@ -78,8 +78,8 @@ public:
 			if (IsKeyDown(KEY_D)) player.Pos.X += speed;
 
 			// Kamera setup
-			camCom.camera->projection = CAMERA_ORTHOGRAPHIC;
-			camCom.camera->position = { player.Pos.X, 1.0f, player.Pos.Z };
+			//camCom.camera->projection = CAMERA_ORTHOGRAPHIC;
+			camCom.camera->position = { player.Pos.X, 25.0f, player.Pos.Z };
 			camCom.camera->target = { player.Pos.X, 0.0f, player.Pos.Z };
 			camCom.camera->up = { 0.0f, 0.0f, -1.0f };
 
