@@ -52,7 +52,7 @@ public:
 				DrawCubeWiresV(floorPosition, floorSize, RED);
 				//DrawCubeV(floorPosition, floorSize, ORANGE);
 				DrawModel(floorModel, floorPosition, 1.0f, GRAY);
-				// Out now commented for easier understanding of editing tool
+				// Out commented now for easier understanding of editing tool
 				//DrawModelEx(ceilingModel, ceilingPosition, { 1, 0, 0 }, 180, { 1, 1, 1 }, GRAY);
 			}
 			});
