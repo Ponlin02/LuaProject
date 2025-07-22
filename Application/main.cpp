@@ -89,6 +89,8 @@ int main()
 	mazegame.run(L);
 
 	consoleThread.detach();
+
+	std::cout << "__cplusplus: " << __cplusplus << std::endl;
 	
 	return 0;
 }

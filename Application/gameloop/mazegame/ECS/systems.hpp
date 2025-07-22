@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "systemClass.hpp"
 #include "components.hpp"
+#include <format>
 
 //System that renders all of the floors in the scene
 class FloorRenderSystem : public System
@@ -496,8 +497,10 @@ class EditFloorRenderSystem : public System
 	Model ceilingModel = LoadModelFromMesh(ceilingMesh);
 	Texture2D ceilingTexture = LoadTexture("assets/cat.png");
 
+	lua_State* L;
+
 public:
-	EditFloorRenderSystem()
+	EditFloorRenderSystem(lua_State* L) : L(L)
 	{
 		floorModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = floorTexture;
 		ceilingModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = ceilingTexture;
@@ -515,8 +518,9 @@ public:
 
 		camView.each([&](CameraComponent camCom) {
 
+			entt::entity clickedEntity = entt::null;
 			auto view = registry.view<Floor>();
-			view.each([&](Floor& floor) {
+			view.each([&](entt::entity entity, Floor& floor) {
 				Vector3 floorPosition = { floor.PosX, 0.0f, floor.PosZ };
 				Vector3 floorSize = { this->tileSize, 0.1f, this->tileSize };
 
@@ -536,11 +540,28 @@ public:
 				Ray ray = GetScreenToWorldRay(mousePos, *camCom.camera);
 				RayCollision collision = GetRayCollisionBox(ray, box);
 
-				if (collision.hit)
+				bool isHovered = collision.hit;
+				bool isClicked = isHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+
+				if (isHovered)
 					floorModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = ceilingTexture;
+					
+						
 				else
 					floorModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = floorTexture;
 
+				if (isClicked)
+				{
+					clickedEntity = entity;
+					std::string luaCommand = "scene.SetComponent(" + std::to_string(static_cast<uint32_t>(clickedEntity)) + ", 'wall', " + 
+						std::to_string(floor.PosX/5) + ", " + std::to_string(floor.PosZ/5) + ")";
+					luaL_dostring(L, luaCommand.c_str());
+					//luaL_dostring(L, "scene.SetComponent(1, 'floor', -1, 1");
+					std::cout << "EntityID: " << (uint32_t)clickedEntity << "Floor is clicked with position " << floor.PosX << " and " << floor.PosZ << std::endl;
+
+
+
+				}
 				camCom.camera->position;
 
 				if (!IsKeyDown(KEY_X))
