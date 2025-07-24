@@ -249,3 +249,11 @@
 	//	lua_setfield(L, -2, "scale");
 	//
 	//}
+
+
+//std::string luaCommand = "scene.SetComponent(" + std::to_string(static_cast<uint32_t>(clickedEntity)) + ", 'wall', " + 
+//std::to_string(floor.PosX / 5) + ", " + std::to_string(floor.PosZ / 5) + ")";
+//luaL_dostring(L, luaCommand.c_str());
+//luaL_dostring(L, "scene.SetComponent(1, 'floor', -1, 1");
+//std::cout << "EntityID: " << (uint32_t)clickedEntity << "Floor is clicked with position " << floor.PosX << " and " << floor.PosZ << std::endl;
+

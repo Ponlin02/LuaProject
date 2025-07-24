@@ -11,4 +11,5 @@ public:
 private:
 	Scene scene;
 	player player;
+	int color = 1;
 };

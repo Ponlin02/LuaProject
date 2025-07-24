@@ -499,6 +499,9 @@ class EditFloorRenderSystem : public System
 
 	lua_State* L;
 
+	std::string block = "setWall";
+	float timeSinceLastAdd = 0.0f;
+
 public:
 	EditFloorRenderSystem(lua_State* L) : L(L)
 	{
@@ -514,9 +517,8 @@ public:
 	}
 	bool OnUpdate(entt::registry& registry, float delta)
 	{
+		timeSinceLastAdd += delta;
 		auto camView = registry.view<CameraComponent>();
-		std::string objects[5] = {"wall", "floor", "door", "button", "goal"};
-
 		camView.each([&](CameraComponent camCom) {
 
 			entt::entity clickedEntity = entt::null;
@@ -524,10 +526,6 @@ public:
 			view.each([&](entt::entity entity, Floor& floor) {
 				Vector3 floorPosition = { floor.PosX, 0.0f, floor.PosZ };
 				Vector3 floorSize = { this->tileSize, 0.1f, this->tileSize };
-
-				Vector3 ceilingPosition = { floor.PosX, MazeConstants::WALL_HEIGHT, floor.PosZ };
-				//float distance = sqrt(pow(playerPos.x - floor.PosX, 2) + pow(playerPos.y - floor.PosZ, 2));
-
 
 				Vector2 screenPos = GetWorldToScreen(floorPosition, *camCom.camera);
 
@@ -537,36 +535,84 @@ public:
 					};
 
 				Vector2 mousePos = GetMousePosition();
-
 				Ray ray = GetScreenToWorldRay(mousePos, *camCom.camera);
 				RayCollision collision = GetRayCollisionBox(ray, box);
 
 				bool isHovered = collision.hit;
 				bool isClicked = isHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
 
+				// Change color of the floor if hovered
 				if (isHovered)
-					floorModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = ceilingTexture;
+					floorModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].color = BLUE;
 					
-						
 				else
-					floorModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = floorTexture;
-				std::string block = "setWall";
-
+					floorModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].color = WHITE;
+				
+				// Change which block the player wants to use
 				if (IsKeyDown(KEY_ONE)) {
+					block = "setWall";
+				}
+				else if (IsKeyDown(KEY_TWO)) {
+					block = "setButton1";
+				}
+				else if (IsKeyDown(KEY_THREE)) {
+					block = "setDoor1";
+				}
+				else if (IsKeyDown(KEY_FOUR)) {
 					block = "setGoal";
 				}
+				// Add row or collumn
+				if (IsKeyPressed(KEY_FIVE) && timeSinceLastAdd > 1.0f) {
+					timeSinceLastAdd = 0.0f;
+					// Check Highest x and z position
+					float maxPosX = 0.0f;
+					float maxPosZ = 0.0f;
+					auto posView = registry.view<Floor> ();
+					posView.each([&](entt::entity entity, Floor& floor) {
+						if (floor.PosX > maxPosX)
+							maxPosX = floor.PosX;
+						if (floor.PosZ > maxPosZ)
+							maxPosZ = floor.PosZ;
+						});
 
+					lua_getglobal(L, "addCollumn");
+					lua_pushinteger(L, maxPosX / MazeConstants::TILE_SIZE);
+					lua_pushinteger(L, maxPosZ / MazeConstants::TILE_SIZE);
+
+					if (lua_pcall(L, 2, 0, 0) != LUA_OK) {
+						std::cerr << "Lua error: " << lua_tostring(L, -1) << std::endl;
+						lua_pop(L, 1); // ta bort felmeddelandet
+					}
+					
+				}
+				else if (IsKeyPressed(KEY_SIX) && timeSinceLastAdd > 1.0f) {
+					timeSinceLastAdd = 0.0f;
+					// Check Highest x and z position
+					float maxPosX = 0.0f;
+					float maxPosZ = 0.0f;
+					auto posView = registry.view<Floor>();
+					posView.each([&](entt::entity entity, Floor& floor) {
+						if (floor.PosX > maxPosX)
+							maxPosX = floor.PosX;
+						if (floor.PosZ > maxPosZ)
+							maxPosZ = floor.PosZ;
+						});
+
+					lua_getglobal(L, "addRow");
+					lua_pushinteger(L, maxPosX / MazeConstants::TILE_SIZE);
+					lua_pushinteger(L, maxPosZ / MazeConstants::TILE_SIZE);
+
+					if (lua_pcall(L, 2, 0, 0) != LUA_OK) {
+						std::cerr << "Lua error: " << lua_tostring(L, -1) << std::endl;
+						lua_pop(L, 1); // ta bort felmeddelandet
+					}
+
+				}
+				// If Left Mouse is clicked, add the current component onto chosen entity 
 				if (isClicked)
 				{
 					clickedEntity = entity;
-					std::string luaCommand = "scene.SetComponent(" + std::to_string(static_cast<uint32_t>(clickedEntity)) + ", 'wall', " + 
-						std::to_string(floor.PosX/5) + ", " + std::to_string(floor.PosZ/5) + ")";
-					//luaL_dostring(L, luaCommand.c_str());
-					//luaL_dostring(L, "scene.SetComponent(1, 'floor', -1, 1");
-					//std::cout << "EntityID: " << (uint32_t)clickedEntity << "Floor is clicked with position " << floor.PosX << " and " << floor.PosZ << std::endl;
-
-				
-
+					
 					lua_getglobal(L, block.c_str());
 					lua_pushinteger(L, (uint32_t)clickedEntity);
 					lua_pushinteger(L, floor.PosX / MazeConstants::TILE_SIZE);
@@ -578,15 +624,11 @@ public:
 					}
 
 				}
-				camCom.camera->position;
 
 				if (!IsKeyDown(KEY_X))
 				{
 					DrawCubeWiresV(floorPosition, floorSize, RED);
-					//DrawCubeV(floorPosition, floorSize, ORANGE);
 					DrawModel(floorModel, floorPosition, 1.0f, GRAY);
-					// Out commented now for easier understanding of editing tool
-					//DrawModelEx(ceilingModel, ceilingPosition, { 1, 0, 0 }, 180, { 1, 1, 1 }, GRAY);
 				}
 				});
 			});
