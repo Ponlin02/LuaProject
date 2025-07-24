@@ -17,10 +17,11 @@ Edit::Edit(lua_State* L)
 		}
 	}
 
-
+	luaL_dofile(L, "comTest.lua");
 
 	scene.CreateSystem<EditFloorRenderSystem>(L);
 	scene.CreateSystem<WallRenderSystem>();
+	scene.CreateSystem<GoalRenderSystem>();
 	//scene.CreateSystem<PlayerRenderSystem>();
 	scene.CreateSystem<PlayerEditControllSystem>();
 	//scene.CreateSystem<PlayerCollisionSystem>();
@@ -28,6 +29,9 @@ Edit::Edit(lua_State* L)
 
 GameState Edit::run(lua_State* L)
 {
+
+	Scene::lua_openscene(L, &this->scene);
+
 	ClearBackground(RAYWHITE);
 
 	BeginMode3D(this->player.getCamera());

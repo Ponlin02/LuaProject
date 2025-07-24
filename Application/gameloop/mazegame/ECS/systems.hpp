@@ -515,6 +515,7 @@ public:
 	bool OnUpdate(entt::registry& registry, float delta)
 	{
 		auto camView = registry.view<CameraComponent>();
+		std::string objects[5] = {"wall", "floor", "door", "button", "goal"};
 
 		camView.each([&](CameraComponent camCom) {
 
@@ -549,17 +550,32 @@ public:
 						
 				else
 					floorModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = floorTexture;
+				std::string block = "setWall";
+
+				if (IsKeyDown(KEY_ONE)) {
+					block = "setGoal";
+				}
 
 				if (isClicked)
 				{
 					clickedEntity = entity;
 					std::string luaCommand = "scene.SetComponent(" + std::to_string(static_cast<uint32_t>(clickedEntity)) + ", 'wall', " + 
 						std::to_string(floor.PosX/5) + ", " + std::to_string(floor.PosZ/5) + ")";
-					luaL_dostring(L, luaCommand.c_str());
+					//luaL_dostring(L, luaCommand.c_str());
 					//luaL_dostring(L, "scene.SetComponent(1, 'floor', -1, 1");
-					std::cout << "EntityID: " << (uint32_t)clickedEntity << "Floor is clicked with position " << floor.PosX << " and " << floor.PosZ << std::endl;
+					//std::cout << "EntityID: " << (uint32_t)clickedEntity << "Floor is clicked with position " << floor.PosX << " and " << floor.PosZ << std::endl;
 
+				
 
+					lua_getglobal(L, block.c_str());
+					lua_pushinteger(L, (uint32_t)clickedEntity);
+					lua_pushinteger(L, floor.PosX / MazeConstants::TILE_SIZE);
+					lua_pushinteger(L, floor.PosZ / MazeConstants::TILE_SIZE);
+
+					if (lua_pcall(L, 3, 0, 0) != LUA_OK) {
+						std::cerr << "Lua error: " << lua_tostring(L, -1) << std::endl;
+						lua_pop(L, 1); // ta bort felmeddelandet
+					}
 
 				}
 				camCom.camera->position;

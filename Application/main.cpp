@@ -90,7 +90,6 @@ int main()
 
 	consoleThread.detach();
 
-	std::cout << "__cplusplus: " << __cplusplus << std::endl;
 	
 	return 0;
 }

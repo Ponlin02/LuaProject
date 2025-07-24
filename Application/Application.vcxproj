@@ -61,7 +61,7 @@
     <None Include="scripts\entityFunctions.lua" />
     <None Include="scripts\maps.lua" />
     <None Include="scripts\test.lua" />
-    <None Include="test.lua" />
+    <None Include="comTest.lua" />
     <None Include="transform.lua" />
     <None Include="vector-demo.lua" />
     <None Include="vector.lua" />
