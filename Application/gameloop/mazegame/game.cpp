@@ -6,7 +6,8 @@ Game::Game(lua_State* L)
     Scene::lua_openscene(L, &this->scene);
 
     //test with lua
-    luaL_dofile(L, "scripts/default_scene.lua");
+    //luaL_dofile(L, "scripts/default_scene.lua");
+    luaL_dofile(L, "loadMap.lua");
 
     //find the player entity and give it a raylib camera
     for (int i = 0; i < this->scene.GetEntityCount(); i++)

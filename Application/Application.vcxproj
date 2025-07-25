@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameloop\gameloop.cpp" />
+    <ClCompile Include="gameloop\mazegame\SaveFunctions.cpp" />
     <ClCompile Include="gameloop\maze\maze.cpp" />
     <ClCompile Include="gameloop\mazegame\edit.cpp" />
     <ClCompile Include="gameloop\mazegame\game.cpp" />
@@ -37,6 +38,7 @@
     <ClInclude Include="gameloop\mazegame\ECS\components.hpp" />
     <ClInclude Include="gameloop\mazegame\ECS\systemClass.hpp" />
     <ClInclude Include="gameloop\mazegame\ECS\systems.hpp" />
+    <ClInclude Include="gameloop\mazegame\SaveFunctions.hpp" />
     <ClInclude Include="gameloop\maze\maze.hpp" />
     <ClInclude Include="gameloop\mazegame\constants.h" />
     <ClInclude Include="gameloop\mazegame\edit.h" />
@@ -54,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="createfloor.lua" />
+    <None Include="loadMap.lua" />
     <None Include="scripts\edit_default_scene.lua" />
     <None Include="monster.lua" />
     <None Include="sceneDemo.lua" />

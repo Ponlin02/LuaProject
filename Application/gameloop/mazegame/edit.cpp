@@ -49,6 +49,8 @@ GameState Edit::run(lua_State* L)
 		color = 3;
 	else if (IsKeyPressed(KEY_FOUR))
 		color = 4;
+	
+		
 
 	DrawText("Objects!", 1000, 100, 60, BLACK);
 	DrawText("1. Wall", 1100, 200, 30, color == 1 ? SKYBLUE : BLACK);

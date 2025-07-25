@@ -13,6 +13,7 @@
     <ClCompile Include="GammalKod.cpp" />
     <ClCompile Include="gameloop\mazegame\win_text.cpp" />
     <ClCompile Include="gameloop\mazegame\edit.cpp" />
+    <ClCompile Include="gameloop\mazegame\SaveFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\rayLibTest.hpp" />
@@ -31,6 +32,7 @@
     <ClInclude Include="gameloop\mazegame\ECS\components.hpp" />
     <ClInclude Include="gameloop\mazegame\ECS\systems.hpp" />
     <ClInclude Include="gameloop\mazegame\ECS\systemClass.hpp" />
+    <ClInclude Include="gameloop\mazegame\SaveFunctions.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="monster.lua" />
@@ -48,6 +50,7 @@
     <None Include="scripts\entityFunctions.lua" />
     <None Include="scripts\maps.lua" />
     <None Include="scripts\edit_default_scene.lua" />
+    <None Include="loadMap.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\rayLibTest.hpp">

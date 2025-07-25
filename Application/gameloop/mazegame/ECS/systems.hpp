@@ -2,7 +2,8 @@
 #include "raylib.h"
 #include "systemClass.hpp"
 #include "components.hpp"
-#include <format>
+#include <fstream>
+#include "SaveFunctions.hpp"
 
 //System that renders all of the floors in the scene
 class FloorRenderSystem : public System
@@ -483,6 +484,8 @@ public:
 	};
 };
 
+
+
 class EditFloorRenderSystem : public System
 {
 	int hej = 0;
@@ -631,7 +634,63 @@ public:
 					DrawModel(floorModel, floorPosition, 1.0f, GRAY);
 				}
 				});
+
+				if (IsKeyPressed(KEY_P) && timeSinceLastAdd > 2.0f)
+				{
+					timeSinceLastAdd = 0.0f;
+					EndMode3D();
+					std::string filename = "";
+					SaveFileName(filename);
+					BeginMode3D(*camCom.camera);
+					int size = 0;
+					std::ofstream file(filename);
+					if (!file.is_open()) {
+						std::cerr << "Failed to open save file: " << filename << "\n";
+						return;
+					}
+					
+					auto view = registry.view<entt::entity>();
+					view.each([&](entt::entity entity) {
+						size++;
+						uint32_t id = static_cast<uint32_t>(entity);
+
+						if (registry.all_of<Floor>(entity))
+						{
+							auto& floor = registry.get<Floor>(entity);
+							file << "entity: " << std::to_string(id) << " 'floor' posX: " << floor.PosX / MazeConstants::TILE_SIZE << " posZ: " << floor.PosZ / MazeConstants::TILE_SIZE << std::endl;
+						}
+						else if (registry.all_of<Wall>(entity))
+						{
+							auto& wall = registry.get<Wall>(entity);
+							file << "entity: " << std::to_string(id) << " 'wall' posX: " << wall.PosX / MazeConstants::TILE_SIZE << " posZ: " << wall.PosZ / MazeConstants::TILE_SIZE << std::endl;
+						}
+						else if (registry.all_of<Button1>(entity))
+						{
+							auto& button = registry.get<Button1>(entity);
+							file << "entity: " << std::to_string(id) << " 'button' posX: " << button.PosX / MazeConstants::TILE_SIZE << " posZ: " << button.PosZ / MazeConstants::TILE_SIZE << std::endl;
+						}
+						else if (registry.all_of<Door1>(entity))
+						{
+							auto& door = registry.get<Door1>(entity);
+							file << "entity: " << std::to_string(id) << " 'door' posX: " << door.PosX / MazeConstants::TILE_SIZE << " posZ: " << door.PosZ / MazeConstants::TILE_SIZE << std::endl;
+						}
+						else if (registry.all_of<Goal>(entity))
+						{
+							auto& goal = registry.get<Goal>(entity);
+							file << "entity: " << std::to_string(id) << " 'goal' posX: " << goal.PosX / MazeConstants::TILE_SIZE << " posZ: " << goal.PosZ / MazeConstants::TILE_SIZE << std::endl;
+						}
+						
+					});
+					
+					file << "entity: " << std::to_string(size + 1) << " 'player' posX: " << 0 << " posZ: " << 0 << std::endl;
+
+
+					file.close();
+
+					std::cout << "File Saved! " << std::endl;
+				}
 			});
 		return false;
 	};
 };
+
