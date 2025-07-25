@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include "SaveFunctions.hpp"
 
 Game::Game(lua_State* L)
 {
@@ -7,7 +8,13 @@ Game::Game(lua_State* L)
 
     //test with lua
     //luaL_dofile(L, "scripts/default_scene.lua");
-    luaL_dofile(L, "loadMap.lua");
+
+    LoadMap(L);
+    //luaL_dofile(L, "loadMap.lua");
+    if (luaL_dofile(L, "loadMap.lua") != LUA_OK) {
+                std::cerr << "Lua error: " << lua_tostring(L, -1) << std::endl;
+                lua_pop(L, 1);
+            }
 
     //find the player entity and give it a raylib camera
     for (int i = 0; i < this->scene.GetEntityCount(); i++)

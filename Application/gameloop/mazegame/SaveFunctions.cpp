@@ -1,7 +1,13 @@
 ﻿#include "SaveFunctions.hpp"
 #include "raylib.h"
+#include <vector>
+#include <iostream>
+#include <filesystem>
+
+
 void SaveFileName(std::string &fileName) {
-    while (!WindowShouldClose()) {
+    bool running = true;
+    while (!WindowShouldClose() && running) {
         // Hantera tangentinput
         bool fileSaved = false;
         int key = GetCharPressed();
@@ -19,16 +25,21 @@ void SaveFileName(std::string &fileName) {
         if (IsKeyPressed(KEY_ENTER) && !fileName.empty()) {
             
             if (fileName.find(".txt") == std::string::npos) {
-                fileName = "maze/mazeloop" + fileName + ".txt";
+                fileName = "gameloop/mazegame/Maps/" + fileName + ".txt";
             }
 
             fileSaved = true;
+        }
+
+        if (IsKeyPressed(KEY_ESCAPE)) {
+            running = false;
         }
 
         // Rita UI
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
+        DrawText("Cancel [ESC]:", 50, 50, 20, DARKGRAY);
         DrawText("Ange ett filnamn att spara (Enter = spara):", 50, 100, 20, DARKGRAY);
         DrawRectangle(50, 140, 500, 40, LIGHTGRAY);
         DrawText(fileName.c_str(), 60, 150, 20, BLACK);
@@ -40,4 +51,68 @@ void SaveFileName(std::string &fileName) {
         EndDrawing();
     }
 
+}
+
+void LoadMap(lua_State* L)
+{
+    std::cout << "Current working dir: " << std::filesystem::current_path() << std::endl;
+    std::vector<std::string> maps = GetMapFiles("gameloop/mazegame/Maps/");
+    int selected = -1;
+
+    while (!WindowShouldClose() && selected < 0) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+
+        DrawText("Välj en karta att ladda:", 50, 40, 20, DARKGRAY);
+
+        for (size_t i = 0; i < maps.size(); ++i) {
+            Color color = (i == selected) ? LIGHTGRAY : GRAY;
+            Rectangle btn = { 50, 80 + (int)i * 40, 300, 30 };
+            if (CheckCollisionPointRec(GetMousePosition(), btn) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                selected = static_cast<int>(i);
+            }
+            DrawRectangleRec(btn, color);
+            DrawText(maps[i].c_str(), 60, 85 + (int)i * 40, 20, BLACK);
+        }
+
+        /*if (selected >= 0) {
+            DrawText("Tryck ENTER för att starta spelet", 400, 100, 20, DARKGREEN);
+            if (IsKeyPressed(KEY_ENTER)) break;
+        }*/
+
+        EndDrawing();
+
+        if (selected >= 0) {
+            std::string chosenMap = "gameloop/mazegame/Maps/" + maps[selected];
+
+            // Initiera Lua och sätt global variabel
+            //lua_State* L = luaL_newstate();
+            //luaL_openlibs(L);
+
+            lua_pushstring(L, chosenMap.c_str());
+            lua_setglobal(L, "MAP_TO_LOAD");
+
+            // Ladda in kartan
+            /*if (luaL_dofile(L, "loadMap.lua") != LUA_OK) {
+                std::cerr << "Lua error: " << lua_tostring(L, -1) << std::endl;
+                lua_pop(L, 1);
+            }
+            else {
+                std::cout << "Laddade karta: " << chosenMap << std::endl;
+            }*/
+
+            //lua_close(L);
+        }
+
+    }
+}
+
+std::vector<std::string> GetMapFiles(const std::string& folder) {
+    std::vector<std::string> mapFiles;
+    for (const auto& entry : std::filesystem::directory_iterator(folder)) {
+        if (entry.path().extension() == ".txt") {
+            mapFiles.push_back(entry.path().filename().string());
+        }
+    }
+    return mapFiles;
 }

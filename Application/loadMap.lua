@@ -9,10 +9,13 @@
 --for k,v in pairs(lines) do
   --print('line[' .. k .. ']', v)
 --end
+if MAP_TO_LOAD == nil then
+    print("Ingen karta specificerad! Använder standard: test.txt")
+    MAP_TO_LOAD = "maps/test.txt"
+end
 
-print("nu kör vi!")
-
-for line in io.lines("test.txt") do
+print(MAP_TO_LOAD)
+for line in io.lines(MAP_TO_LOAD) do
 	
 	local entityID, component, posX, posZ = line:match("entity:%s*(%d+)%s*'(.-)'%s*posX:%s*(%d+)%s*posZ:%s(%d+)")
 
@@ -42,4 +45,4 @@ for line in io.lines("test.txt") do
 end
 
 
-createPlayer(12,12)
+--createPlayer(12,12)
