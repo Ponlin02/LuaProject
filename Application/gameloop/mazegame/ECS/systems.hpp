@@ -565,52 +565,93 @@ public:
 					block = "setGoal";
 				}
 				// Add row or collumn
-				if (IsKeyPressed(KEY_FIVE) && timeSinceLastAdd > 1.0f) {
+				else if (IsKeyPressed(KEY_FIVE) && timeSinceLastAdd > 1.0f) {
 					timeSinceLastAdd = 0.0f;
-					// Check Highest x and z position
-					float maxPosX = 0.0f;
-					float maxPosZ = 0.0f;
-					auto posView = registry.view<Floor> ();
-					posView.each([&](entt::entity entity, Floor& floor) {
-						if (floor.PosX > maxPosX)
-							maxPosX = floor.PosX;
-						if (floor.PosZ > maxPosZ)
-							maxPosZ = floor.PosZ;
-						});
 
-					lua_getglobal(L, "addCollumn");
-					lua_pushinteger(L, maxPosX / MazeConstants::TILE_SIZE);
-					lua_pushinteger(L, maxPosZ / MazeConstants::TILE_SIZE);
-
-					if (lua_pcall(L, 2, 0, 0) != LUA_OK) {
-						std::cerr << "Lua error: " << lua_tostring(L, -1) << std::endl;
-						lua_pop(L, 1); // ta bort felmeddelandet
-					}
-					
-				}
-				else if (IsKeyPressed(KEY_SIX) && timeSinceLastAdd > 1.0f) {
-					timeSinceLastAdd = 0.0f;
-					// Check Highest x and z position
 					float maxPosX = 0.0f;
 					float maxPosZ = 0.0f;
 					auto posView = registry.view<Floor>();
 					posView.each([&](entt::entity entity, Floor& floor) {
-						if (floor.PosX > maxPosX)
-							maxPosX = floor.PosX;
-						if (floor.PosZ > maxPosZ)
-							maxPosZ = floor.PosZ;
+						if (floor.PosX > maxPosX) maxPosX = floor.PosX;
+						if (floor.PosZ > maxPosZ) maxPosZ = floor.PosZ;
 						});
 
-					lua_getglobal(L, "addRow");
+					lua_getglobal(L, "createAddRowCoroutine");
 					lua_pushinteger(L, maxPosX / MazeConstants::TILE_SIZE);
 					lua_pushinteger(L, maxPosZ / MazeConstants::TILE_SIZE);
 
-					if (lua_pcall(L, 2, 0, 0) != LUA_OK) {
-						std::cerr << "Lua error: " << lua_tostring(L, -1) << std::endl;
-						lua_pop(L, 1); // ta bort felmeddelandet
+					if (lua_pcall(L, 2, 2, 0) != LUA_OK) {
+						std::cerr << "Lua error: kan ej skapa korutin" << lua_tostring(L, -1) << std::endl;
+						lua_pop(L, 1);
 					}
+					else {
 
+						if (!lua_isthread(L, -2)) {
+							std::cerr << "Första return är inte en coroutine!" << std::endl;
+							lua_pop(L, 2);
+							return;
+						}
+						if (!lua_isinteger(L, -1)) {
+							std::cerr << "Andra return är inte ett entity ID!" << std::endl;
+							lua_pop(L, 2);
+							return;
+						}
+
+						entt::entity entity = (entt::entity)lua_tointeger(L, -1);
+						lua_pop(L, 1);
+
+						lua_State* thread = lua_tothread(L, -1);
+						int coroutineRef = luaL_ref(L, LUA_REGISTRYINDEX);
+
+						registry.emplace_or_replace<CoroutineComponent>(entity, CoroutineComponent{ coroutineRef });
+
+					}
 				}
+				else if (IsKeyPressed(KEY_SIX) && timeSinceLastAdd > 1.0f) {
+					timeSinceLastAdd = 0.0f;
+
+					float maxPosX = 0.0f;
+					float maxPosZ = 0.0f;
+					auto posView = registry.view<Floor>();
+					posView.each([&](entt::entity entity, Floor& floor) {
+						if (floor.PosX > maxPosX) maxPosX = floor.PosX;
+						if (floor.PosZ > maxPosZ) maxPosZ = floor.PosZ;
+						});
+
+					lua_getglobal(L, "createAddCollumnCoroutine");
+					lua_pushinteger(L, maxPosX / MazeConstants::TILE_SIZE);
+					lua_pushinteger(L, maxPosZ / MazeConstants::TILE_SIZE);
+
+					if (lua_pcall(L, 2, 2, 0) != LUA_OK) {
+						std::cerr << "Lua error: kan ej skapa korutin" << lua_tostring(L, -1) << std::endl;
+						lua_pop(L, 1);
+					}
+					else {
+
+						if (!lua_isthread(L, -2)) {
+							std::cerr << "Första return är inte en coroutine!" << std::endl;
+							lua_pop(L, 2);
+							return;
+						}
+						if (!lua_isinteger(L, -1)) {
+							std::cerr << "Andra return är inte ett entity ID!" << std::endl;
+							lua_pop(L, 2);
+							return;
+						}
+						
+						entt::entity entity = (entt::entity)lua_tointeger(L, -1);
+						lua_pop(L, 1);
+
+						lua_State* thread = lua_tothread(L, -1); 
+						int coroutineRef = luaL_ref(L, LUA_REGISTRYINDEX); 
+
+						registry.emplace_or_replace<CoroutineComponent>(entity, CoroutineComponent{ coroutineRef });
+
+					}
+				}
+				
+
+				
 				// If Left Mouse is clicked, add the current component onto chosen entity 
 				if (isClicked)
 				{
@@ -627,6 +668,7 @@ public:
 					}
 
 				}
+				
 
 				if (!IsKeyDown(KEY_X))
 				{
@@ -692,5 +734,52 @@ public:
 			});
 		return false;
 	};
+};
+
+class CoroutineSystem : public System {
+	lua_State* L;
+public:
+	CoroutineSystem(lua_State* L) : L(L) {}
+
+	bool OnUpdate(entt::registry& registry, float delta) override {
+		auto view = registry.view<CoroutineComponent>();
+
+		std::vector<entt::entity> finishedCoroutines;
+
+		for (auto entity : view) {
+			
+			auto& coro = view.get<CoroutineComponent>(entity);
+			std::cout << "coro ref 2 = " << coro.coroutineRef << std::endl;
+			lua_rawgeti(L, LUA_REGISTRYINDEX, coro.coroutineRef);
+			if (!lua_isthread(L, -1)) {
+				std::cerr << "VARNING: coroutineRef " << coro.coroutineRef << " är inte en Lua-thread!" << std::endl;
+				lua_pop(L, 1);
+				continue;
+			}
+
+			lua_State* co = lua_tothread(L, -1);
+			lua_pop(L, 1);
+
+			std::cout << "thread = " << co << std::endl;
+
+			int nresults = 0;
+			int status = lua_resume(co, nullptr, 0, &nresults);
+
+			if (status == LUA_OK) {
+				// Coroutine klar, ta bort komponent och unref
+				luaL_unref(L, LUA_REGISTRYINDEX, coro.coroutineRef);
+				registry.remove<CoroutineComponent>(entity);
+			}
+			else if (status != LUA_YIELD) {
+				std::cerr << "Lua coroutine error: " << lua_tostring(L, -1) << std::endl;
+				lua_pop(co, 1);
+				luaL_unref(L, LUA_REGISTRYINDEX, coro.coroutineRef);
+				registry.remove<CoroutineComponent>(entity);
+			}
+
+		}
+
+		return false;
+	}
 };
 

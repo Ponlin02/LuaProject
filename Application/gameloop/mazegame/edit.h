@@ -12,4 +12,5 @@ private:
 	Scene scene;
 	player player;
 	int color = 1;
+	std::vector<int> activeCoroutines;
 };

@@ -25,6 +25,7 @@ Edit::Edit(lua_State* L)
 	scene.CreateSystem<PlayerEditControllSystem>();
 	scene.CreateSystem<Door1RenderSystem>();
 	scene.CreateSystem<Button1RenderSystem>();
+	scene.CreateSystem<CoroutineSystem>(L);
 }
 
 GameState Edit::run(lua_State* L)
@@ -49,16 +50,39 @@ GameState Edit::run(lua_State* L)
 		color = 3;
 	else if (IsKeyPressed(KEY_FOUR))
 		color = 4;
-	
-		
+	/*else if (IsKeyPressed(KEY_SEVEN)) {
 
+		float maxPosX = 0.0f;
+		float maxPosZ = 0.0f;
+		auto posView = scene.GetRegistry().view<Floor>();
+		posView.each([&](entt::entity entity, Floor& floor) {
+			if (floor.PosX > maxPosX) maxPosX = floor.PosX;
+			if (floor.PosZ > maxPosZ) maxPosZ = floor.PosZ;
+			});
+
+		lua_getglobal(L, "createAddCollumnCoroutine");
+		lua_pushinteger(L, maxPosX / MazeConstants::TILE_SIZE);
+		lua_pushinteger(L, maxPosZ / MazeConstants::TILE_SIZE);
+
+		if (lua_pcall(L, 2, 1, 0) != LUA_OK) {
+			std::cerr << "Lua error: kan ej skapa korutin" << lua_tostring(L, -1) << std::endl;
+			lua_pop(L, 1);
+		}
+		
+		
+		
+		
+		int coroutineRef = luaL_ref(L, LUA_REGISTRYINDEX);
+		int entity = scene.CreateEntity();
+		scene.SetComponent(entity, CoroutineComponent{ coroutineRef });
+	}*/
 	DrawText("Objects!", 1000, 100, 60, BLACK);
 	DrawText("1. Wall", 1100, 200, 30, color == 1 ? SKYBLUE : BLACK);
 	DrawText("2. Button", 1100, 260, 30, color == 2 ? SKYBLUE : BLACK);
 	DrawText("3. Door", 1100, 320, 30, color == 3 ? SKYBLUE : BLACK);
 	DrawText("4. Goal", 1100, 380, 30, color == 4 ? SKYBLUE : BLACK);
-	DrawText("5. Add Row", 1100, 380, 30, color == 4 ? SKYBLUE : BLACK);
-	DrawText("5. Add Collumn", 1100, 380, 30, color == 4 ? SKYBLUE : BLACK);
+	DrawText("5. Add Row", 1100, 440, 30, BLACK);
+	DrawText("6. Add Collumn", 1100, 500, 30, BLACK);
 
 	
 

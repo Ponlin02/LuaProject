@@ -73,3 +73,10 @@ struct WinTrigger
 	WinTrigger() = default;
 	WinTrigger(bool* ptr) : winFlag(ptr) {}
 };
+
+struct CoroutineComponent 
+{
+	int coroutineRef;
+	CoroutineComponent() = default;
+	CoroutineComponent(int ref) : coroutineRef(ref) {}
+};

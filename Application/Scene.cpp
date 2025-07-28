@@ -145,6 +145,9 @@ int Scene::lua_HasComponent(lua_State* L)
 	else if (type == "goal") {
 		hasComponent = scene->HasComponents<Goal>(entity);
 	}
+	else if (type == "coroutinecomponent") {
+		hasComponent = scene->HasComponents<CoroutineComponent>(entity);
+	}
 
 	lua_pushboolean(L, hasComponent);
 	return 1;
@@ -247,6 +250,12 @@ int Scene::lua_GetComponent(lua_State* L)
 		lua_pushnumber(L, goal.PosZ);
 		return 2;
 	}
+	else if (type == "coroutinecomponent" && scene->HasComponents<CoroutineComponent>(entity))
+	{
+		CoroutineComponent cocomp = scene->GetComponent<CoroutineComponent>(entity);
+		lua_pushnumber(L, cocomp.coroutineRef);
+		return 1;
+	}
 
 }
 
@@ -335,6 +344,12 @@ int Scene::lua_SetComponent(lua_State* L)
 		scene->SetComponent<Collider>(entity, 
 			posx * MazeConstants::TILE_SIZE, MazeConstants::GOAL_FLOAT_HEIGHT, posz * MazeConstants::TILE_SIZE,
 			1.0f, 1.0f, 1.0f);
+	}
+	else if (type == "coroutinecomponent")
+	{
+		int coroutineRef = lua_tonumber(L, 3);
+		scene->SetComponent<CoroutineComponent>(entity, coroutineRef);
+		
 	}
 	else if (type == "behaviour")
 	{
@@ -427,7 +442,14 @@ int Scene::lua_RemoveComponent(lua_State* L)
 			scene->RemoveComponent<Collider>(entity);
 		}
 	}
-		
+	else if (type == "coroutinecomponent")
+	{
+		scene->RemoveComponent<CoroutineComponent>(entity);
+		if (scene->HasComponents<Collider>(entity))
+		{
+			scene->RemoveComponent<Collider>(entity);
+		}
+	}
 	return 0;
 }
 
