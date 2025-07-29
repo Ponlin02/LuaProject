@@ -58,6 +58,7 @@ GameState Edit::run(lua_State* L)
 	DrawText("4. Goal", 1060, 380, 30, color == 4 ? SKYBLUE : BLACK);
 	DrawText("5. Add Row", 1060, 440, 30, BLACK);
 	DrawText("6. Add Collumn", 1060, 500, 30, BLACK);
+	DrawText("P. Save file!", 1060, 560, 30, BLACK);
 
 	if (IsKeyPressed(KEY_ESCAPE))
 	{
