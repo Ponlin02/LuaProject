@@ -600,7 +600,7 @@ public:
 
 					}
 				}
-				else if (IsKeyPressed(KEY_SIX) && timeSinceLastAdd > 1.0f && GetFrameTime() ) {
+				else if (IsKeyPressed(KEY_SIX) && timeSinceLastAdd > 1.0f  ) {
 					timeSinceLastAdd = 0.0f;
 
 					float maxPosX = 0.0f;
