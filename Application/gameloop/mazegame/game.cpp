@@ -6,12 +6,9 @@ Game::Game(lua_State* L)
     //ECS scene
     Scene::lua_openscene(L, &this->scene);
 
-    //test with lua
-    //luaL_dofile(L, "scripts/default_scene.lua");
-
+    
     LoadMap(L);
-    //luaL_dofile(L, "loadMap.lua");
-    if (luaL_dofile(L, "loadMap.lua") != LUA_OK) {
+    if (luaL_dofile(L, "scripts/loadMap.lua") != LUA_OK) {
                 std::cerr << "Lua error: " << lua_tostring(L, -1) << std::endl;
                 lua_pop(L, 1);
             }

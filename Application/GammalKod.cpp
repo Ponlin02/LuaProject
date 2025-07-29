@@ -305,3 +305,59 @@
 //
 //}
 
+// Gamla addrow collumn lua del
+//function addRow(x, z)
+//local posX = x + 1
+//local posZ = z + 1
+//print(x)
+//print(x)
+//for y = 1, posX do
+//entity = scene.CreateEntity()
+//scene.SetComponent(entity, "floor", y - 1, posZ)
+//end
+//end
+//
+//function addCollumn(x, z)
+//local posX = x + 1
+//local posZ = z + 1
+//print(x)
+//for y = 1, posZ do
+//entity = scene.CreateEntity()
+//scene.SetComponent(entity, "floor", posX, y - 1)
+//end
+//end
+
+//// monster.lua
+//local monster = {}
+//print("hello from monster file")
+//monster.lifespan = 3
+//
+//function monster : OnCreate()
+//print("Monster created!")
+//end
+//
+//function monster : OnUpdate(delta)
+//print("Monster updated!")
+//
+//self.lifespan = self.lifespan - 1
+//
+//if self.lifespan <= 0 then
+//scene.RemoveEntity(self.ID)
+//print("I dieded")
+//end
+//end
+//
+//return monster
+
+// Ladda map första version
+//
+//--local f = io.open("test1.txt")
+//
+//--local lines = {}
+//--for line in io.lines("test1.txt") do
+//--lines[#lines + 1] = line
+//--end
+//
+//--for k, v in pairs(lines) do
+//--print('line[' ..k .. ']', v)
+//--end

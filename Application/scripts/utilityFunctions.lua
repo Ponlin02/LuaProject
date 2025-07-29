@@ -21,26 +21,6 @@ function setGoal( entity, posX, posZ )
 	scene.SetComponent(entity, "goal", posX, posZ)
 end
 
-function addRow(x, z)
-	local posX = x + 1
-	local posZ = z + 1
-	print(x)
-	for y = 1, posX do
-		entity = scene.CreateEntity()
-		scene.SetComponent(entity, "floor", y - 1, posZ)
-	end	
-end
-
-function addCollumn(x, z)
-	local posX = x + 1
-	local posZ = z + 1
-	print(x)
-	for y = 1, posZ do
-		entity = scene.CreateEntity()
-		scene.SetComponent(entity, "floor", posX, y  - 1)
-	end
-end
-
 function createAddCollumnCoroutine(x, z)
     local posX = x + 1
     local posZ = z + 1

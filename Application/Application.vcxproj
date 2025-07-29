@@ -55,18 +55,14 @@
     <ClInclude Include="Transform.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="createfloor.lua" />
-    <None Include="loadMap.lua" />
     <None Include="scripts\edit_default_scene.lua" />
-    <None Include="monster.lua" />
-    <None Include="sceneDemo.lua" />
     <None Include="scripts\default_scene.lua" />
     <None Include="scripts\entityFunctions.lua" />
+    <None Include="scripts\loadMap.lua" />
     <None Include="scripts\maps.lua" />
     <None Include="scripts\test.lua" />
-    <None Include="comTest.lua" />
+    <None Include="scripts\utilityFunctions.lua" />
     <None Include="transform.lua" />
-    <None Include="vector-demo.lua" />
     <None Include="vector.lua" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -1,14 +1,4 @@
 
---local f = io.open("test1.txt")
-
---local lines = {}
---for line in io.lines("test1.txt") do 
-	--lines[#lines + 1] = line
---end
-
---for k,v in pairs(lines) do
-  --print('line[' .. k .. ']', v)
---end
 if MAP_TO_LOAD == nil then
     print("Ingen karta specificerad! Använder standard: test.txt")
     MAP_TO_LOAD = "maps/test.txt"
@@ -22,10 +12,6 @@ for line in io.lines(MAP_TO_LOAD) do
     posX = tonumber(posX) 
     posZ = tonumber(posZ) 
     
-    print(posX)
-    print(posZ)
-    print(component)
-
     if component == "floor" then
         createFloor(posX, posZ)
     elseif component == "wall" then

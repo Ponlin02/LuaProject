@@ -35,22 +35,18 @@
     <ClInclude Include="gameloop\mazegame\SaveFunctions.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="monster.lua" />
-    <None Include="sceneDemo.lua" />
-    <None Include="comTest.lua" />
     <None Include="transform.lua" />
-    <None Include="vector-demo.lua" />
     <None Include="vector.lua" />
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <None Include="createfloor.lua" />
     <None Include="scripts\default_scene.lua" />
     <None Include="scripts\test.lua" />
     <None Include="scripts\entityFunctions.lua" />
     <None Include="scripts\maps.lua" />
     <None Include="scripts\edit_default_scene.lua" />
-    <None Include="loadMap.lua" />
+    <None Include="scripts\utilityFunctions.lua" />
+    <None Include="scripts\loadMap.lua" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\rayLibTest.hpp">

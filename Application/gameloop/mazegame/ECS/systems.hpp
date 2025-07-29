@@ -412,13 +412,6 @@ public:
 			this->lastValidPos = player.Pos;
 			});
 
-		//drawing the valid boxes for testing!
-		/*for (int i = 0; i < wallBBs.size(); i++)
-		{
-			DrawBoundingBox(wallBBs[i], BLUE);
-		}
-		DrawBoundingBox(playerCollider, PURPLE);*/
-
 		return false;
 	};
 };
@@ -650,8 +643,6 @@ public:
 					}
 				}
 				
-
-				
 				// If Left Mouse is clicked, add the current component onto chosen entity 
 				if (isClicked)
 				{
@@ -664,7 +655,7 @@ public:
 
 					if (lua_pcall(L, 3, 0, 0) != LUA_OK) {
 						std::cerr << "Lua error: " << lua_tostring(L, -1) << std::endl;
-						lua_pop(L, 1); // ta bort felmeddelandet
+						lua_pop(L, 1);
 					}
 
 				}
@@ -749,7 +740,6 @@ public:
 		for (auto entity : view) {
 			
 			auto& coro = view.get<CoroutineComponent>(entity);
-			std::cout << "coro ref 2 = " << coro.coroutineRef << std::endl;
 			lua_rawgeti(L, LUA_REGISTRYINDEX, coro.coroutineRef);
 			if (!lua_isthread(L, -1)) {
 				std::cerr << "VARNING: coroutineRef " << coro.coroutineRef << " är inte en Lua-thread!" << std::endl;
@@ -759,8 +749,6 @@ public:
 
 			lua_State* co = lua_tothread(L, -1);
 			lua_pop(L, 1);
-
-			std::cout << "thread = " << co << std::endl;
 
 			int nresults = 0;
 			int status = lua_resume(co, nullptr, 0, &nresults);

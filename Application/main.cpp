@@ -61,29 +61,7 @@ int main()
 	lua_State* L = luaL_newstate();
 	luaL_openlibs(L);
 
-	luaL_dostring(L, "print('hello from lua')");
-
 	std::thread consoleThread(ConsoleThreadFunction, L);
-
-	Scene scene;
-	//Scene::lua_openscene(L, &scene);
-	
-	/*scene.CreateSystem<PoisonSystem>(15);
-	scene.CreateSystem<CleanupSystem>();
-	scene.CreateSystem<InfoSystem>();*/
-	scene.CreateSystem<BehaviourSystem>(L);
-	luaL_dofile(L, "sceneDemo.lua");
-	
-	const char* script = "monster.lua";
-
-	int entity = scene.CreateEntity();
-	
-	luaL_dofile(L, "test.lua");
-	
-	for (int i = 0; i < 20; i++)
-	{
-		scene.UpdateSystems(1);
-	}
 
 	Gameloop mazegame;
 	mazegame.run(L);

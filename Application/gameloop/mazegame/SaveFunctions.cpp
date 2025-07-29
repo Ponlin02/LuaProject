@@ -75,33 +75,15 @@ void LoadMap(lua_State* L)
             DrawText(maps[i].c_str(), 60, 85 + (int)i * 40, 20, BLACK);
         }
 
-        /*if (selected >= 0) {
-            DrawText("Tryck ENTER för att starta spelet", 400, 100, 20, DARKGREEN);
-            if (IsKeyPressed(KEY_ENTER)) break;
-        }*/
-
         EndDrawing();
 
         if (selected >= 0) {
             std::string chosenMap = "gameloop/mazegame/Maps/" + maps[selected];
 
-            // Initiera Lua och sätt global variabel
-            //lua_State* L = luaL_newstate();
-            //luaL_openlibs(L);
-
+            
             lua_pushstring(L, chosenMap.c_str());
             lua_setglobal(L, "MAP_TO_LOAD");
 
-            // Ladda in kartan
-            /*if (luaL_dofile(L, "loadMap.lua") != LUA_OK) {
-                std::cerr << "Lua error: " << lua_tostring(L, -1) << std::endl;
-                lua_pop(L, 1);
-            }
-            else {
-                std::cout << "Laddade karta: " << chosenMap << std::endl;
-            }*/
-
-            //lua_close(L);
         }
 
     }
