@@ -600,7 +600,7 @@ public:
 
 					}
 				}
-				else if (IsKeyPressed(KEY_SIX) && timeSinceLastAdd > 1.0f) {
+				else if (IsKeyPressed(KEY_SIX) && timeSinceLastAdd > 1.0f && GetFrameTime() ) {
 					timeSinceLastAdd = 0.0f;
 
 					float maxPosX = 0.0f;
@@ -715,7 +715,7 @@ public:
 						
 					});
 					
-					file << "entity: " << std::to_string(size + 1) << " 'player' posX: " << 0 << " posZ: " << 0 << std::endl;
+					file << "entity: " << std::to_string(size + 1) << " 'player' posX: " << 0 << " posZ: " << 1 << std::endl;
 
 
 					file.close();

@@ -35,7 +35,6 @@ function createAddCollumnCoroutine(x, z)
         end
     end)
 
-	print(co)
 	return co, entity
 end
 
@@ -53,6 +52,5 @@ function createAddRowCoroutine(x, z)
         end
     end)
 
-	print(co)
 	return co, entity
 end
