@@ -148,6 +148,9 @@ int Scene::lua_HasComponent(lua_State* L)
 	else if (type == "coroutinecomponent") {
 		hasComponent = scene->HasComponents<CoroutineComponent>(entity);
 	}
+	else if (type == "door1state") {
+		hasComponent = scene->HasComponents<Door1State>(entity);
+	}
 
 	lua_pushboolean(L, hasComponent);
 	return 1;
@@ -256,7 +259,12 @@ int Scene::lua_GetComponent(lua_State* L)
 		lua_pushnumber(L, cocomp.coroutineRef);
 		return 1;
 	}
-
+	else if (type == "door1state" && scene->HasComponents<Door1State>(entity))
+	{
+		Door1State state = scene->GetComponent<Door1State>(entity);
+		lua_pushnumber(L, state.openAmount);
+		return 1;
+	}
 }
 
 int Scene::lua_SetComponent(lua_State* L)
@@ -350,6 +358,12 @@ int Scene::lua_SetComponent(lua_State* L)
 		int coroutineRef = lua_tonumber(L, 3);
 		scene->SetComponent<CoroutineComponent>(entity, coroutineRef);
 		
+	}
+	else if (type == "door1state")
+	{
+		float openAmount = lua_tonumber(L, 3);
+		bool isClosing = lua_toboolean(L, 4);
+		scene->SetComponent<Door1State>(entity, openAmount, isClosing);
 	}
 	else if (type == "behaviour")
 	{
@@ -445,10 +459,10 @@ int Scene::lua_RemoveComponent(lua_State* L)
 	else if (type == "coroutinecomponent")
 	{
 		scene->RemoveComponent<CoroutineComponent>(entity);
-		if (scene->HasComponents<Collider>(entity))
-		{
-			scene->RemoveComponent<Collider>(entity);
-		}
+	}
+	else if (type == "door1state")
+	{
+		scene->RemoveComponent<Door1State>(entity);
 	}
 	return 0;
 }

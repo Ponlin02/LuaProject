@@ -361,3 +361,36 @@
 //--for k, v in pairs(lines) do
 //--print('line[' ..k .. ']', v)
 //--end
+//
+//coroutine.create(function openDoorCoroutine(entity)
+//	local steps = 600  --antal frames tills dörren är helt stängd
+//	--local door = scene.GetComponent(entity, "door1state")
+//	--door.openAmount = 0.0
+//
+//	--scene.UpdateComponent(entity, "door1state", door)
+//
+//	scene.RemoveComponent(entity, "door1state")
+//	scene.SetComponent(entity, "door1state", 0.0, true)
+//	coroutine.yield() --låt dörren vara öppen minst 1 frame
+//
+//	for i = 1, steps do
+//		--local door = scene.GetComponent(entity, "door1state")
+//		--door.openAmount = i / steps
+//
+//		--scene.UpdateComponent(entity, "door1state", door)
+//
+//		scene.RemoveComponent(entity, "door1state")
+//		scene.SetComponent(entity, "door1state", i, true)
+//
+//		coroutine.yield()
+//		end
+//
+//		-- Stäng klart dörren
+//		local door = scene.GetComponent(entity, "door1state")
+//		--door.openAmount = 1.0
+//		--door.isClosing = false
+//		--scene.UpdateComponent(entity, "door1state", door)
+//		scene.RemoveComponent(entity, "door1state")
+//		scene.SetComponent(entity, "door1state", 1.0, false)
+//
+//		end

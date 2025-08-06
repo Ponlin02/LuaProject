@@ -4,6 +4,7 @@
 function createPlayer(x, z)
 	local player = scene.CreateEntity()
 	scene.SetComponent(player, "player", x, 2, z)
+	print("player created!")
 end
 
 function createFloor(x, z)
@@ -32,4 +33,6 @@ end
 function createDoor1(x, z)
 	local door = scene.CreateEntity()
 	scene.SetComponent(door, "door1", x, z)
+	scene.SetComponent(door, "floor", x, z)
+	scene.SetComponent(door, "door1state", 1, false)
 end

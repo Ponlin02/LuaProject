@@ -54,3 +54,34 @@ function createAddRowCoroutine(x, z)
 
 	return co, entity
 end
+
+function openDoorCoroutine(entity)
+    --return coroutine.create(function()
+    local co = coroutine.create(function()
+        local steps = 600  -- antal frames tills dörren är helt stängd
+        --local door = scene.GetComponent(entity, "door1state")
+        --door.openAmount = 0.0
+    
+        scene.RemoveComponent(entity, "door1state")
+        scene.SetComponent(entity, "door1state", 0.0 , true)
+        --coroutine.yield() -- låt dörren vara öppen minst 1 frame
+
+
+        for i = 1, steps do
+            --local door = scene.GetComponent(entity, "door1state")
+            --door.openAmount = i / steps
+            local openAmount = i / steps
+            scene.RemoveComponent(entity, "door1state")
+            scene.SetComponent(entity, "door1state", openAmount, true)
+           
+            coroutine.yield()
+        end
+
+        -- Stäng klart dörren
+        --local door = scene.GetComponent(entity, "door1state")
+        scene.RemoveComponent(entity, "door1state")
+        scene.SetComponent(entity, "door1state", 1.0, false)
+
+        end)
+    return co, entity
+end

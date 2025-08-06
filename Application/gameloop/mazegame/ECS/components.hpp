@@ -53,6 +53,14 @@ struct Button1
 	Button1() = default;
 };
 
+struct Door1State 
+{
+	float openAmount = 1.0f; // 1.0 = stängd, 0.0 = helt öppen
+	bool isClosing = false;
+
+	Door1State() = default;
+};
+
 struct Button1click
 {
 	bool clicked = false;

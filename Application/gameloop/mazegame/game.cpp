@@ -33,11 +33,13 @@ Game::Game(lua_State* L)
     scene.CreateSystem<GoalRenderSystem>();
     scene.CreateSystem<GoalCollisionSystem>();
     scene.CreateSystem<Button1ClickSystem>();
-    scene.CreateSystem<Door1OpenSystem>();
+    scene.CreateSystem<Door1OpenSystem>(L);
     //scene.CreateSystem<BBSystem>();
     scene.CreateSystem<PlayerRenderSystem>();
     scene.CreateSystem<PlayerControllerSystem>();
     scene.CreateSystem<PlayerCollisionSystem>();
+    //scene.CreateSystem<Door1AnimationSystem>(L);
+    scene.CreateSystem<CoroutineSystem>(L);
 }
 
 GameState Game::run(lua_State* L)
