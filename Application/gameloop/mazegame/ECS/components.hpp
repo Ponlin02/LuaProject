@@ -21,7 +21,8 @@ struct Door1
 {
 	float PosX;
 	float PosZ;
-	Door1(float posx, float posz) : PosX(posx* MazeConstants::TILE_SIZE), PosZ(posz* MazeConstants::TILE_SIZE) {}
+	bool north = true;
+	Door1(float posx, float posz, bool north) : PosX(posx* MazeConstants::TILE_SIZE), PosZ(posz* MazeConstants::TILE_SIZE), north(north) {}
 	Door1() = default;
 };
 

@@ -5,9 +5,16 @@ function setWall( entity, posX, posZ )
 	scene.SetComponent(entity, "wall", posX, posZ)
 end
 
-function setDoor1( entity, posX, posZ )
-	scene.RemoveComponent(entity, "floor")
-	scene.SetComponent(entity, "door1", posX, posZ)
+function setDoorNorth( entity, posX, posZ) 
+    scene.RemoveComponent(entity, "floor")
+	scene.SetComponent(entity, "door1", posX, posZ, true)
+    scene.SetComponent(entity, "door1state", 0.5, false)
+end
+
+function setDoorWest( entity, posX, posZ ) 
+    scene.RemoveComponent(entity, "floor")
+	scene.SetComponent(entity, "door1", posX, posZ, false)
+    scene.SetComponent(entity, "door1state", 0.5, false)
 end
 
 function setButton1( entity, posX, posZ )
@@ -19,6 +26,11 @@ end
 function setGoal( entity, posX, posZ )
 	scene.RemoveComponent(entity, "floor")
 	scene.SetComponent(entity, "goal", posX, posZ)
+end
+
+function setPlayer( entity, posX, posZ )
+	scene.RemoveComponent(entity, "floor")
+	scene.SetComponent(entity, "player", posX, 2, posZ)
 end
 
 function createAddCollumnCoroutine(x, z)
@@ -56,20 +68,16 @@ function createAddRowCoroutine(x, z)
 end
 
 function openDoorCoroutine(entity)
-    --return coroutine.create(function()
     local co = coroutine.create(function()
         local steps = 600  -- antal frames tills dörren är helt stängd
-        --local door = scene.GetComponent(entity, "door1state")
-        --door.openAmount = 0.0
-    
+        door = scene.GetComponent(entity, "door1state")
         scene.RemoveComponent(entity, "door1state")
         scene.SetComponent(entity, "door1state", 0.0 , true)
         --coroutine.yield() -- låt dörren vara öppen minst 1 frame
 
 
         for i = 1, steps do
-            --local door = scene.GetComponent(entity, "door1state")
-            --door.openAmount = i / steps
+
             local openAmount = i / steps
             scene.RemoveComponent(entity, "door1state")
             scene.SetComponent(entity, "door1state", openAmount, true)
@@ -78,7 +86,6 @@ function openDoorCoroutine(entity)
         end
 
         -- Stäng klart dörren
-        --local door = scene.GetComponent(entity, "door1state")
         scene.RemoveComponent(entity, "door1state")
         scene.SetComponent(entity, "door1state", 1.0, false)
 

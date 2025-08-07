@@ -125,27 +125,38 @@ public:
 	}
 	bool OnUpdate(entt::registry& registry, float delta)
 	{
-		//auto view = registry.view<Door1>();
-		//view.each([&](Door1& door) {
-		//	Vector3 doorPosition = { door.PosX, this->wallHeight / 2, door.PosZ };
-		//	Vector3 doorSize = { this->tileSize, this->wallHeight, this->tileSize };
-
-		//	if (!IsKeyDown(KEY_C))
-		//	{
-		//		//DrawCubeWiresV(doorPosition, doorSize, BLACK);
-		//		//DrawCubeV(doorPosition, doorSize, BROWN);
-		//		DrawModel(doorModel, doorPosition, 1.0f, WHITE);
-		//	}
-		//	});
 		auto view = registry.view<Door1, Door1State>();
 		view.each([&](entt::entity entity, Door1& door, Door1State& state) {
-			Vector3 doorPosition = { door.PosX, (wallHeight * state.openAmount) / 2, door.PosZ };
-			Vector3 doorSize = { tileSize, wallHeight * state.openAmount, tileSize };
+			
+			float halfSize = tileSize / 2;
+			float wallThickness = tileSize * state.openAmount;
+			Vector3 centerPos = { door.PosX , wallHeight / 2, door.PosZ };
 
-			if (!IsKeyDown(KEY_C))
+			if(door.north)
 			{
-				DrawModelEx(doorModel, doorPosition, { 1, 0, 0 }, 0, { 1, state.openAmount, 1 }, WHITE);
+				Vector3 doorSize = { tileSize * state.openAmount, wallHeight , tileSize  };
+
+				Vector3 wallPos = { centerPos.x - tileSize + (wallThickness - halfSize / 2 + (1.5f * halfSize * (1 - state.openAmount))), centerPos.y,  centerPos.z  };
+				DrawModelEx(doorModel, wallPos, { 1, 0,0 }, 0, { 0.5f + (state.openAmount - 1) / 2,1, 1 }, WHITE);
+
+				wallPos = { centerPos.x + tileSize - (wallThickness - halfSize / 2 + (1.5f * halfSize * (1 - state.openAmount))), centerPos.y, centerPos.z  };
+				DrawModelEx(doorModel, wallPos, { 1, 0,0 }, 0, { 0.5f + (state.openAmount - 1) / 2,1, 1}, WHITE);
+
+				DrawCircle3D(centerPos, 1, { 0,1,0 }, 90, BLUE);
 			}
+			else
+			{
+				Vector3 doorSize = { tileSize, wallHeight , tileSize * state.openAmount };
+
+				Vector3 wallPos = { centerPos.x, centerPos.y,  centerPos.z - tileSize + (wallThickness - halfSize / 2 + (1.5f * halfSize * (1 - state.openAmount))) };
+				DrawModelEx(doorModel, wallPos, { 1, 0,0 }, 0, { 1,1, 0.5f + (state.openAmount - 1) / 2 }, WHITE);
+
+				wallPos = { centerPos.x, centerPos.y, centerPos.z + tileSize  - (wallThickness - halfSize/2 + (1.5f * halfSize * (1 - state.openAmount)))};
+				DrawModelEx(doorModel, wallPos, { 1, 0,0 }, 0, { 1,1, 0.5f + (state.openAmount - 1)/ 2}, WHITE);
+
+				DrawCircle3D(centerPos, 1, { 1,0,0 }, 0, BLUE);
+			}
+
 			});
 		return false;
 	};
@@ -167,7 +178,7 @@ public:
 			Vector3 buttonPosition = { button.PosX, this->buttonHeight / 2, button.PosZ };
 			Vector3 buttonSize = { this->buttonSize, this->buttonHeight, this->buttonSize };
 
-			if (!IsKeyDown(KEY_C))
+			if (!IsKeyDown(KEY_X))
 			{
 				DrawCubeWiresV(buttonPosition, buttonSize, BLACK);
 				if (click.clicked)
@@ -319,20 +330,6 @@ public:
 
 		if (buttonsClicked == totalButtons)
 		{
-			//auto doorView = registry.view<Door1>();
-			//for (auto doorEntity : doorView)
-			//{
-			//	registry.destroy(doorEntity);
-			//}
-			
-			
-			//auto doorView = registry.view<Door1>();
-			//for (auto doorEntity : doorView)
-			//{
-			//	if (!registry.all_of<Door1State>(doorEntity))
-			//		registry.emplace<Door1State>(doorEntity); // Lägg till dörr-tillstånd
-			//	registry.get<Door1State>(doorEntity).isClosing = true;
-			//}
 			auto view = registry.view<Door1, Door1State>();
 			for (auto entity : view)
 			{
@@ -366,7 +363,6 @@ public:
 					click.clicked = false;
 				}
 				});
-
 		}
 		return false;
 	};
@@ -415,9 +411,9 @@ public:
 			{
 				BoundingBox wallBB = {
 				Vector3{
-					collider.PosX - collider.size.X / 2,
+					collider.PosX - collider.size.X / 2 ,
 					collider.PosY - collider.size.Y / 2,
-					collider.PosZ - collider.size.Z / 2},
+					collider.PosZ - collider.size.Z / 2 },
 
 				Vector3{
 					collider.PosX + collider.size.X / 2,
@@ -429,30 +425,74 @@ public:
 			});
 
 		//get relevant door BBs
-		auto view3 = registry.view<Door1, Collider>();
-		view3.each([&](Door1& door, Collider& collider) {
+		auto view3 = registry.view<Door1, Collider, Door1State>();
+		view3.each([&](Door1& door, Collider& collider, Door1State& state) {
 			//calculate length to doors to only do collison checks on closed doors
 			Vector2 doorWorldPos = { door.PosX, door.PosZ };
 			Vector2 distanceVec = { playerPos.x - doorWorldPos.x, playerPos.y - doorWorldPos.y };
 			float length = sqrt(pow(distanceVec.x, 2) + pow(distanceVec.y, 2));
 
-			std::cout << "Dörrcollider Pos: " << collider.PosX << std::endl;
-
 			if (length < 6)
 			{
-				BoundingBox doorBB = {
-				Vector3{
-					collider.PosX - collider.size.X / 2,
-					collider.PosY - collider.size.Y / 2,
-					collider.PosZ - collider.size.Z / 2},
+				BoundingBox doorBB1; 
+				if (door.north)
+				{
+					doorBB1 = {
+					Vector3{
+						collider.PosX - collider.size.X / 2,
+						collider.PosY - collider.size.Y / 2,
+						collider.PosZ - collider.size.Z / 2},
+					Vector3{
+						collider.PosX - collider.size.X / 2 * (1 - state.openAmount),
+						collider.PosY + collider.size.Y / 2,
+						collider.PosZ + collider.size.Z / 2 }
+					};
+				}
+				else
+				{
 
-				Vector3{
-					collider.PosX + collider.size.X / 2,
-					collider.PosY + collider.size.Y / 2,
-					collider.PosZ + collider.size.Z / 2}
-				};
-				wallBBs.push_back(doorBB);
-			}
+					doorBB1 = {
+						Vector3{
+							collider.PosX - collider.size.X / 2,
+							collider.PosY - collider.size.Y / 2,
+							collider.PosZ - collider.size.Z / 2},
+						Vector3{
+							collider.PosX + collider.size.X / 2,
+							collider.PosY + collider.size.Y / 2,
+							collider.PosZ - collider.size.Z / 2 * (1 - state.openAmount)}
+						};
+				}
+
+				BoundingBox doorBB2; 
+				if (door.north) 
+				{
+					doorBB2 = {
+						Vector3{
+							collider.PosX + collider.size.X / 2 * (1 - state.openAmount),
+							collider.PosY - collider.size.Y / 2,
+							collider.PosZ - collider.size.Z / 2},
+						Vector3{
+							collider.PosX + collider.size.X / 2,
+							collider.PosY + collider.size.Y / 2,
+							collider.PosZ + collider.size.Z / 2}
+					};
+				}
+				else
+				{
+					doorBB2 = {
+						Vector3{
+							collider.PosX - collider.size.X / 2 ,
+							collider.PosY - collider.size.Y / 2,
+							collider.PosZ + collider.size.Z / 2 * (1 - state.openAmount)},
+						Vector3{
+							collider.PosX + collider.size.X / 2,
+							collider.PosY + collider.size.Y / 2,
+							collider.PosZ + collider.size.Z / 2}
+											};
+
+				}
+				wallBBs.push_back(doorBB1);
+				wallBBs.push_back(doorBB2);			}
 			});
 
 		//do collision check
@@ -598,6 +638,7 @@ public:
 					
 				else
 					floorModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].color = WHITE;
+
 				
 				// Change which block the player wants to use
 				if (IsKeyDown(KEY_ONE)) {
@@ -607,13 +648,19 @@ public:
 					block = "setButton1";
 				}
 				else if (IsKeyDown(KEY_THREE)) {
-					block = "setDoor1";
+					block = "setDoorNorth";
 				}
 				else if (IsKeyDown(KEY_FOUR)) {
+					block = "setDoorWest";
+				}
+				else if (IsKeyDown(KEY_FIVE)) {
 					block = "setGoal";
 				}
+				else if (IsKeyDown(KEY_SIX)) {
+					block = "setPlayer";
+				}
 				// Add row or collumn
-				else if (IsKeyPressed(KEY_FIVE) && timeSinceLastAdd > 1.0f) {
+				else if (IsKeyPressed(KEY_SEVEN) && timeSinceLastAdd > 1.0f) {
 					timeSinceLastAdd = 0.0f;
 
 					float maxPosX = 0.0f;
@@ -655,7 +702,7 @@ public:
 
 					}
 				}
-				else if (IsKeyPressed(KEY_SIX) && timeSinceLastAdd > 1.0f  ) {
+				else if (IsKeyPressed(KEY_EIGHT) && timeSinceLastAdd > 1.0f  ) {
 					timeSinceLastAdd = 0.0f;
 
 					float maxPosX = 0.0f;
@@ -736,7 +783,7 @@ public:
 						std::cerr << "Failed to open save file: " << filename << "\n";
 						return;
 					}
-					
+					int players = 0;
 					auto view = registry.view<entt::entity>();
 					view.each([&](entt::entity entity) {
 						size++;
@@ -760,17 +807,25 @@ public:
 						else if (registry.all_of<Door1>(entity))
 						{
 							auto& door = registry.get<Door1>(entity);
-							file << "entity: " << std::to_string(id) << " 'door' posX: " << door.PosX / MazeConstants::TILE_SIZE << " posZ: " << door.PosZ / MazeConstants::TILE_SIZE << std::endl;
+							file << "entity: " << std::to_string(id) << " 'door' posX: " << door.PosX / MazeConstants::TILE_SIZE << " posZ: " 
+								<< door.PosZ / MazeConstants::TILE_SIZE << " north: " << (door.north == true ? "true" : "false") << std::endl;
 						}
 						else if (registry.all_of<Goal>(entity))
 						{
 							auto& goal = registry.get<Goal>(entity);
 							file << "entity: " << std::to_string(id) << " 'goal' posX: " << goal.PosX / MazeConstants::TILE_SIZE << " posZ: " << goal.PosZ / MazeConstants::TILE_SIZE << std::endl;
 						}
-						
+						else if (registry.all_of<Player>(entity))
+						{
+							auto& player = registry.get<Player>(entity);
+							file << "entity: " << std::to_string(size + 1) << " 'player' posX: " << player.Pos.X << " posZ: " << player.Pos.Z << std::endl;
+							players++;
+
+						}
 					});
 					
-					file << "entity: " << std::to_string(size + 1) << " 'player' posX: " << 0 << " posZ: " << 0 << std::endl;
+					if(players == 0)
+						file << "entity: " << std::to_string(size + 1) << " 'player' posX: " << 0 << " posZ: " << 0 << std::endl;
 
 
 					file.close();
@@ -822,52 +877,6 @@ public:
 
 		}
 
-		return false;
-	}
-};
-
-class Door1AnimationSystem : public System
-{
-	lua_State* L;
-public:
-	Door1AnimationSystem(lua_State* L) : L(L) {}
-
-	bool OnUpdate(entt::registry& registry, float delta) override
-	{
-		auto view = registry.view<Door1, Door1State>();
-		for (auto entity : view)
-		//view.each([&](Door1 door, Door1State state)
-		{
-			auto& state = registry.get<Door1State>(entity);
-			if (state.isClosing)
-			{
-				//state.isClosing = true;
-
-				// Skapa coroutine
-				lua_getglobal(L, "openDoorCoroutine");
-				lua_pushinteger(L, (uint32_t)entity);
-
-				if (lua_pcall(L, 1, 1, 0) != LUA_OK)
-				{
-					std::cerr << "Lua error: " << lua_tostring(L, -1) << std::endl;
-					lua_pop(L, 1);
-				}
-				else
-				{
-					if (!lua_isthread(L, -1))
-					{
-						std::cerr << "Fel: Lua returnerade inte en coroutine!" << std::endl;
-						lua_pop(L, 1);
-					}
-					else
-					{
-						lua_State* thread = lua_tothread(L, -1);
-						int coroutineRef = luaL_ref(L, LUA_REGISTRYINDEX);
-						registry.emplace_or_replace<CoroutineComponent>(entity, CoroutineComponent{ coroutineRef });
-					}
-				}
-			}
-		}
 		return false;
 	}
 };

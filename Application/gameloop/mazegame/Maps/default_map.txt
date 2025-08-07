@@ -230,7 +230,7 @@ entity: 229 'wall' posX: 3 posZ: 15
 entity: 230 'wall' posX: 4 posZ: 15
 entity: 231 'wall' posX: 5 posZ: 15
 entity: 232 'wall' posX: 6 posZ: 15
-entity: 233 'door' posX: 7 posZ: 15
+entity: 233 'door' posX: 7 posZ: 15 north: true
 entity: 234 'wall' posX: 8 posZ: 15
 entity: 235 'wall' posX: 9 posZ: 15
 entity: 236 'wall' posX: 10 posZ: 15

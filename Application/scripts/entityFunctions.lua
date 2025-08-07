@@ -30,9 +30,9 @@ function createGoal(x, z)
 	scene.SetComponent(button, "goal", x, z)
 end
 
-function createDoor1(x, z)
+function createDoor1(x, z, north)
 	local door = scene.CreateEntity()
-	scene.SetComponent(door, "door1", x, z)
+	scene.SetComponent(door, "door1", x, z, north)
 	scene.SetComponent(door, "floor", x, z)
 	scene.SetComponent(door, "door1state", 1, false)
 end

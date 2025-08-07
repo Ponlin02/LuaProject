@@ -308,7 +308,8 @@ int Scene::lua_SetComponent(lua_State* L)
 	{
 		float posx = lua_tonumber(L, 3);
 		float posz = lua_tonumber(L, 4);
-		scene->SetComponent<Door1>(entity, posx, posz);
+		bool north = lua_toboolean(L, 5);
+		scene->SetComponent<Door1>(entity, posx, posz, north);
 		scene->SetComponent<Collider>(entity,
 			posx * MazeConstants::TILE_SIZE, MazeConstants::WALL_HEIGHT / 2, posz * MazeConstants::TILE_SIZE,
 			MazeConstants::TILE_SIZE, MazeConstants::WALL_HEIGHT, MazeConstants::TILE_SIZE);

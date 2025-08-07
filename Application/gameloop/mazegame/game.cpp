@@ -38,7 +38,6 @@ Game::Game(lua_State* L)
     scene.CreateSystem<PlayerRenderSystem>();
     scene.CreateSystem<PlayerControllerSystem>();
     scene.CreateSystem<PlayerCollisionSystem>();
-    //scene.CreateSystem<Door1AnimationSystem>(L);
     scene.CreateSystem<CoroutineSystem>(L);
 }
 

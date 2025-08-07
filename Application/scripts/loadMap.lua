@@ -17,7 +17,9 @@ for line in io.lines(MAP_TO_LOAD) do
     elseif component == "wall" then
         createWall(posX, posZ)
     elseif component == "door" then
-        createDoor1(posX, posZ)
+        local north = line:match("north:%s*(%a+)")
+        local isNorth = (north == "true")
+        createDoor1(posX, posZ, isNorth)
     elseif component == "button" then
         createButton1(posX, posZ)
     elseif component == "goal" then
