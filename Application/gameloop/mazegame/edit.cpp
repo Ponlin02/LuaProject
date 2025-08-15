@@ -54,14 +54,17 @@ GameState Edit::run(lua_State* L)
 		color = 5;
 	else if (IsKeyPressed(KEY_SIX))
 		color = 6;
-
+	/*else if (IsKeyPressed(KEY_P)) {
+		return GameState::MAIN_MENU;
+	}*/
+	
+	DrawText("PlayerSpawn on tile {1, 1}", 900, 40, 30, BLACK);
 	DrawText("Objects!", 1000, 100, 60, BLACK);
 	DrawText("1. Wall", 1060, 200, 30, color == 1 ? SKYBLUE : BLACK);
 	DrawText("2. Button", 1060, 260, 30, color == 2 ? SKYBLUE : BLACK);
 	DrawText("3. Door |", 1060, 320, 30, color == 3 ? SKYBLUE : BLACK);
 	DrawText("4. Door <->", 1060, 380, 30, color == 4 ? SKYBLUE : BLACK);
 	DrawText("5. Goal", 1060, 440, 30, color == 5 ? SKYBLUE : BLACK);
-	DrawText("6. Player", 1060, 500, 30, color == 6 ? SKYBLUE : BLACK);
 	DrawText("7. Add Row", 1060, 560, 30, BLACK);
 	DrawText("8. Add Collumn", 1060, 620, 30, BLACK);
 	DrawText("P. Save file!", 1060, 680, 30, BLACK);

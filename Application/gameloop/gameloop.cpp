@@ -19,8 +19,8 @@ void Gameloop::run(lua_State* L)
     Main_menu main_menu;
     Paused paused;
     Win_text win_text;
-    Edit edit(L);
     Game* game = nullptr;
+    Edit edit(L);
 
     //The gameloop
     while (!WindowShouldClose() && currentState != GameState::QUIT)
@@ -37,12 +37,12 @@ void Gameloop::run(lua_State* L)
             {
                 delete game;
                 game = new Game(L);
+
             }
             break;
 
         case PLAYING:
             currentState = game->run(L);
-            //game.run(L);
             break;
 
         case PAUSED:
@@ -68,7 +68,6 @@ void Gameloop::run(lua_State* L)
 
         EndDrawing();
     }
-
     delete game;
     CloseWindow();
 }

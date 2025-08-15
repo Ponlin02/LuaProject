@@ -142,7 +142,7 @@ public:
 				wallPos = { centerPos.x + tileSize - (wallThickness - halfSize / 2 + (1.5f * halfSize * (1 - state.openAmount))), centerPos.y, centerPos.z  };
 				DrawModelEx(doorModel, wallPos, { 1, 0,0 }, 0, { 0.5f + (state.openAmount - 1) / 2,1, 1}, WHITE);
 
-				DrawCircle3D(centerPos, 1, { 0,1,0 }, 90, BLUE);
+				
 			}
 			else
 			{
@@ -154,7 +154,6 @@ public:
 				wallPos = { centerPos.x, centerPos.y, centerPos.z + tileSize  - (wallThickness - halfSize/2 + (1.5f * halfSize * (1 - state.openAmount)))};
 				DrawModelEx(doorModel, wallPos, { 1, 0,0 }, 0, { 1,1, 0.5f + (state.openAmount - 1)/ 2}, WHITE);
 
-				DrawCircle3D(centerPos, 1, { 1,0,0 }, 0, BLUE);
 			}
 
 			});
@@ -328,11 +327,26 @@ public:
 			}
 			});
 
+
+		auto doorView = registry.view<Door1State>();
+		doorView.each([&](Door1State& door) {
+			auto ResetView = registry.view<Button1click>();
+			ResetView.each([&](Button1click& click) {
+				if (click.clicked && !door.isClosing /* && isClosing == false*/)
+				{
+					click.clicked = false;
+
+				}
+				});
+			});
+
+
 		if (buttonsClicked == totalButtons)
 		{
 			auto view = registry.view<Door1, Door1State>();
 			for (auto entity : view)
 			{
+				
 				lua_getglobal(L, "openDoorCoroutine");
 				lua_pushinteger(L, (uint32_t)entity);
 
@@ -355,14 +369,9 @@ public:
 						registry.emplace_or_replace<CoroutineComponent>(entity, CoroutineComponent{ coroutineRef });
 					}
 				}
+
 			}
-			auto ResetView = registry.view<Button1click>();
-			ResetView.each([&](Button1click& click) {
-				if (click.clicked)
-				{
-					click.clicked = false;
-				}
-				});
+			
 		}
 		return false;
 	};
@@ -371,7 +380,7 @@ public:
 //System that makes the player not collide with walls
 class PlayerCollisionSystem : public System
 {
-	int hej = 0;
+	float timeSinceLastAdded = 0;
 	SelfVector3 lastValidPos = { 0.0f, 0.0f, 0.0f };
 
 public:
@@ -381,6 +390,7 @@ public:
 		BoundingBox playerCollider;
 		Vector2 playerPos;
 		std::vector<BoundingBox> wallBBs;
+		std::vector<BoundingBox> doorBBs;
 
 		//get player BB
 		auto view = registry.view<Player, Collider>();
@@ -491,8 +501,8 @@ public:
 											};
 
 				}
-				wallBBs.push_back(doorBB1);
-				wallBBs.push_back(doorBB2);			}
+				doorBBs.push_back(doorBB1);
+				doorBBs.push_back(doorBB2);			}
 			});
 
 		//do collision check
@@ -504,6 +514,20 @@ public:
 					player.Pos = this->lastValidPos;
 				}
 			}
+			for (int i = 0; i < doorBBs.size(); i++)
+			{
+				if (CheckCollisionBoxes(doorBBs[i], playerCollider))
+				{
+					timeSinceLastAdded += delta;
+					std::cout << "delta = " << delta << std::endl;
+					if (timeSinceLastAdded > 70.0f) {
+
+						player.Pos = { 1, 2, 1 };
+						timeSinceLastAdded = 0.0f;
+					}
+				}
+			}
+
 			this->lastValidPos = player.Pos;
 			});
 
@@ -815,17 +839,17 @@ public:
 							auto& goal = registry.get<Goal>(entity);
 							file << "entity: " << std::to_string(id) << " 'goal' posX: " << goal.PosX / MazeConstants::TILE_SIZE << " posZ: " << goal.PosZ / MazeConstants::TILE_SIZE << std::endl;
 						}
-						else if (registry.all_of<Player>(entity))
-						{
-							auto& player = registry.get<Player>(entity);
-							file << "entity: " << std::to_string(size + 1) << " 'player' posX: " << player.Pos.X << " posZ: " << player.Pos.Z << std::endl;
-							players++;
+						//else if (registry.all_of<Player>(entity))
+						//{
+						//	auto& player = registry.get<Player>(entity);
+						//	file << "entity: " << std::to_string(size + 1) << " 'player' posX: " << player.Pos.X << " posZ: " << player.Pos.Z << std::endl;
+						//	players++;
 
-						}
+						//}
 					});
 					
 					if(players == 0)
-						file << "entity: " << std::to_string(size + 1) << " 'player' posX: " << 0 << " posZ: " << 0 << std::endl;
+						file << "entity: " << std::to_string(size + 1) << " 'player' posX: " << 1 << " posZ: " << 1 << std::endl;
 
 
 					file.close();

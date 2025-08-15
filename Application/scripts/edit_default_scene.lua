@@ -14,7 +14,7 @@ for z = 1, 5 do
 		createFloor(posX, posZ)
 	end
 end
-
+scene.RemoveComponent(6, "floor")
 createPlayer(12,12)
 
 print ("Succesfully created editmap")
