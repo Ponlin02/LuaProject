@@ -330,14 +330,14 @@ public:
 
 		auto doorView = registry.view<Door1State>();
 		doorView.each([&](Door1State& door) {
-			auto ResetView = registry.view<Button1click>();
-			ResetView.each([&](Button1click& click) {
-				if (click.clicked && !door.isClosing /* && isClosing == false*/)
+			view.each([&](Button1click& click) {
+				if (click.clicked && !door.isClosing && buttonsClicked >= totalButtons )
 				{
 					click.clicked = false;
 
 				}
 				});
+			std::cout << "openAmount: " << door.openAmount << std::endl;
 			});
 
 
@@ -518,8 +518,8 @@ public:
 			{
 				if (CheckCollisionBoxes(doorBBs[i], playerCollider))
 				{
+					player.Pos = this->lastValidPos;
 					timeSinceLastAdded += delta;
-					std::cout << "delta = " << delta << std::endl;
 					if (timeSinceLastAdded > 70.0f) {
 
 						player.Pos = { 1, 2, 1 };
