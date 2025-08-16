@@ -14,6 +14,7 @@
     <ClCompile Include="gameloop\mazegame\win_text.cpp" />
     <ClCompile Include="gameloop\mazegame\edit.cpp" />
     <ClCompile Include="gameloop\mazegame\SaveFunctions.cpp" />
+    <ClCompile Include="gameloop\mazegame\loss_text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graphics\rayLibTest.hpp" />
@@ -33,6 +34,7 @@
     <ClInclude Include="gameloop\mazegame\ECS\systems.hpp" />
     <ClInclude Include="gameloop\mazegame\ECS\systemClass.hpp" />
     <ClInclude Include="gameloop\mazegame\SaveFunctions.hpp" />
+    <ClInclude Include="gameloop\mazegame\loss_text.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="transform.lua" />

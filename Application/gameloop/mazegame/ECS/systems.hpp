@@ -35,27 +35,16 @@ public:
 	}
 	bool OnUpdate(entt::registry& registry, float delta)
 	{
-		/*Vector2 playerPos;
-		auto viewP = registry.view<Player>();
-		viewP.each([&](Player& player) {
-			playerPos = { player.Pos.X, player.Pos.Z };
-		});*/
-
+		
 		auto view = registry.view<Floor>();
 		view.each([&](Floor& floor) {
 			Vector3 floorPosition = { floor.PosX, 0.0f, floor.PosZ };
 			Vector3 floorSize = { this->tileSize, 0.1f, this->tileSize };
 
 			Vector3 ceilingPosition = { floor.PosX, MazeConstants::WALL_HEIGHT, floor.PosZ };
-			//float distance = sqrt(pow(playerPos.x - floor.PosX, 2) + pow(playerPos.y - floor.PosZ, 2));
-
-			if (!IsKeyDown(KEY_X))
-			{
-				//DrawCubeWiresV(floorPosition, floorSize, RED);
-				//DrawCubeV(floorPosition, floorSize, ORANGE);
+			
 				DrawModel(floorModel, floorPosition, 1.0f, GRAY);
 				DrawModelEx(ceilingModel, ceilingPosition, { 1, 0, 0 }, 180, { 1, 1, 1 }, GRAY);
-			}
 			});
 		return false;
 	};
@@ -89,13 +78,9 @@ public:
 		view.each([&](Wall& wall) {
 			Vector3 wallPosition = { wall.PosX, this->wallHeight / 2, wall.PosZ };
 			Vector3 wallSize = { this->tileSize, this->wallHeight, this->tileSize };
+			
+			DrawModel(wallModel, wallPosition, 1.0f, WHITE);
 
-			if (!IsKeyDown(KEY_C))
-			{
-				//DrawCubeWiresV(wallPosition, wallSize, BLACK);
-				//DrawCubeV(wallPosition, wallSize, BEIGE);
-				DrawModel(wallModel, wallPosition, 1.0f, WHITE);
-			}
 			});
 		return false;
 	};
@@ -180,7 +165,7 @@ public:
 			if (!IsKeyDown(KEY_X))
 			{
 				DrawCubeWiresV(buttonPosition, buttonSize, BLACK);
-				if (click.clicked)
+				if (click.color)
 				{
 					DrawCubeV(buttonPosition, buttonSize, LIME);
 				}
@@ -310,7 +295,7 @@ public:
 //System that removes the door when enough buttons have been pressed
 class Door1OpenSystem : public System
 {
-	int hej = 0;
+	bool ChangeColor = false;
 	lua_State* L;
 public:
 	Door1OpenSystem(lua_State* L) : L(L) {};
@@ -327,24 +312,10 @@ public:
 			}
 			});
 
-
-		auto doorView = registry.view<Door1State>();
-		doorView.each([&](Door1State& door) {
-			view.each([&](Button1click& click) {
-				if (click.clicked && !door.isClosing && buttonsClicked >= totalButtons )
-				{
-					click.clicked = false;
-
-				}
-				});
-			std::cout << "openAmount: " << door.openAmount << std::endl;
-			});
-
-
 		if (buttonsClicked == totalButtons)
 		{
-			auto view = registry.view<Door1, Door1State>();
-			for (auto entity : view)
+			auto buttonView = registry.view<Door1, Door1State>();
+			for (auto entity : buttonView)
 			{
 				
 				lua_getglobal(L, "openDoorCoroutine");
@@ -369,10 +340,25 @@ public:
 						registry.emplace_or_replace<CoroutineComponent>(entity, CoroutineComponent{ coroutineRef });
 					}
 				}
+				view.each([&](Button1click& click) {
+					click.clicked = false;
+					});
 
 			}
-			
+	
 		}
+		auto doorView = registry.view<Door1State>();
+		doorView.each([&](Door1State& door) {
+			view.each([&](Button1click& click) {
+				if (door.isClosing || click.clicked)
+				{
+					click.color = true;
+
+				}
+				else
+					click.color = false;
+				});
+			});
 		return false;
 	};
 };
@@ -518,11 +504,16 @@ public:
 			{
 				if (CheckCollisionBoxes(doorBBs[i], playerCollider))
 				{
+
 					player.Pos = this->lastValidPos;
 					timeSinceLastAdded += delta;
-					if (timeSinceLastAdded > 70.0f) {
+					if (timeSinceLastAdded > 90.0f) {
 
-						player.Pos = { 1, 2, 1 };
+						auto lossView = registry.view<LossTrigger>();
+						lossView.each([&](LossTrigger& trigger) {
+							*trigger.lossFlag = true;
+
+							});
 						timeSinceLastAdded = 0.0f;
 					}
 				}
@@ -683,6 +674,7 @@ public:
 				else if (IsKeyDown(KEY_SIX)) {
 					block = "setPlayer";
 				}
+
 				// Add row or collumn
 				else if (IsKeyPressed(KEY_SEVEN) && timeSinceLastAdd > 1.0f) {
 					timeSinceLastAdd = 0.0f;
@@ -839,17 +831,20 @@ public:
 							auto& goal = registry.get<Goal>(entity);
 							file << "entity: " << std::to_string(id) << " 'goal' posX: " << goal.PosX / MazeConstants::TILE_SIZE << " posZ: " << goal.PosZ / MazeConstants::TILE_SIZE << std::endl;
 						}
-						//else if (registry.all_of<Player>(entity))
-						//{
-						//	auto& player = registry.get<Player>(entity);
-						//	file << "entity: " << std::to_string(size + 1) << " 'player' posX: " << player.Pos.X << " posZ: " << player.Pos.Z << std::endl;
-						//	players++;
+						else if (registry.all_of<Player>(entity))
+						{
+							auto& player = registry.get<Player>(entity);
+							if (static_cast<uint32_t>(entity) != 25) {
+								file << "entity: " << std::to_string(size) << " 'player' posX: " << player.Pos.X << " posZ: " << player.Pos.Z << std::endl;
+									players++;
 
-						//}
+
+							}
+						}
 					});
 					
 					if(players == 0)
-						file << "entity: " << std::to_string(size + 1) << " 'player' posX: " << 1 << " posZ: " << 1 << std::endl;
+						file << "entity: " << std::to_string(size - 1) << " 'player' posX: " << 1 << " posZ: " << 1 << std::endl;
 
 
 					file.close();

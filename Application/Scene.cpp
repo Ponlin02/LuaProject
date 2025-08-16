@@ -244,7 +244,8 @@ int Scene::lua_GetComponent(lua_State* L)
 	{
 		Button1click& click = scene->GetComponent<Button1click>(entity);
 		lua_pushboolean(L, click.clicked);
-		return 1;
+		lua_pushboolean(L, click.color);
+		return 2;
 	}
 	else if (type == "goal" && scene->HasComponents<Goal>(entity))
 	{
@@ -365,6 +366,11 @@ int Scene::lua_SetComponent(lua_State* L)
 		float openAmount = lua_tonumber(L, 3);
 		bool isClosing = lua_toboolean(L, 4);
 		scene->SetComponent<Door1State>(entity, openAmount, isClosing);
+	}
+	else if (type == "losstrigger")
+	{
+		bool lossTrigger = lua_toboolean(L, 3);
+		scene->SetComponent<LossTrigger>(lossTrigger);
 	}
 	else if (type == "behaviour")
 	{

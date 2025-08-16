@@ -18,6 +18,7 @@ private:
 	player player;
 	Scene scene;
 	bool hasWon = false;
+	bool hasLost = false;
 
 	SelfVector3 wallBBsize = { MazeConstants::TILE_SIZE, MazeConstants::WALL_HEIGHT, MazeConstants::TILE_SIZE };
 };

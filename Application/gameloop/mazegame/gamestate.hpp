@@ -7,5 +7,6 @@ enum GameState
     EDIT,
     PAUSED,
     WIN,
+    LOSS,
     QUIT
 };

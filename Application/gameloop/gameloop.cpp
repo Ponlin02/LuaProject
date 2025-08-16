@@ -5,6 +5,7 @@
 #include "mazegame/game.hpp"
 #include "mazegame/paused.hpp"
 #include "mazegame/win_text.h"
+#include "mazegame/loss_text.h"
 #include "mazegame/edit.h"
 
 void Gameloop::run(lua_State* L)
@@ -19,6 +20,7 @@ void Gameloop::run(lua_State* L)
     Main_menu main_menu;
     Paused paused;
     Win_text win_text;
+    Loss_text loss_text;
     Game* game = nullptr;
     Edit edit(L);
 
@@ -52,6 +54,14 @@ void Gameloop::run(lua_State* L)
         case WIN:
             game->run(L);
             currentState = win_text.draw();
+            if (currentState == GameState::PLAYING)
+            {
+                delete game;
+                game = new Game(L);
+            }
+            break;
+        case LOSS:
+            currentState = loss_text.draw();
             if (currentState == GameState::PLAYING)
             {
                 delete game;

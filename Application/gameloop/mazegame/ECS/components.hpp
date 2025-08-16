@@ -65,6 +65,7 @@ struct Door1State
 struct Button1click
 {
 	bool clicked = false;
+	bool color = false;
 	Button1click() = default;
 };
 
@@ -81,6 +82,13 @@ struct WinTrigger
 	bool* winFlag = nullptr;
 	WinTrigger() = default;
 	WinTrigger(bool* ptr) : winFlag(ptr) {}
+};
+
+struct LossTrigger
+{
+	bool* lossFlag = nullptr;
+	LossTrigger() = default;
+	LossTrigger(bool* ptr) : lossFlag(ptr) {}
 };
 
 struct CoroutineComponent 

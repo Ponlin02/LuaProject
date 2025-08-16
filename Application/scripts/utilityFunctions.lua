@@ -31,6 +31,7 @@ end
 function setPlayer( entity, posX, posZ )
 	scene.RemoveComponent(entity, "floor")
 	scene.SetComponent(entity, "player", posX, 2, posZ)
+    scene.SetComponent(6, "floor", 1, 1)
 end
 
 function createAddCollumnCoroutine(x, z)
@@ -73,9 +74,7 @@ function openDoorCoroutine(entity)
         door = scene.GetComponent(entity, "door1state")
         scene.RemoveComponent(entity, "door1state")
         scene.SetComponent(entity, "door1state", 0.0 , true)
-        --coroutine.yield() -- låt dörren vara öppen minst 1 frame
-
-
+       
         for i = 1, steps do
 
             local openAmount = i / steps

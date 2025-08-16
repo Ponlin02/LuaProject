@@ -394,3 +394,31 @@
 //		scene.SetComponent(entity, "door1state", 1.0, false)
 //
 //		end
+
+
+//class BehaviourSystem : public System
+//{
+//	lua_State* L;
+//public:
+//	BehaviourSystem(lua_State* L) : L(L) {}
+//
+//	bool OnUpdate(entt::registry& registry, float delta) final
+//	{
+//		auto view = registry.view<BehaviourComponent>();
+//
+//		view.each([&](BehaviourComponent& script) {
+//			lua_rawgeti(L, LUA_REGISTRYINDEX, script.LuaRef);
+//			lua_getfield(L, -1, "OnUpdate");
+//			lua_pushvalue(L, -2);
+//			lua_pushnumber(L, delta);
+//
+//			if (lua_pcall(L, 2, 0, 0) != LUA_OK) {
+//				DumpError(L);
+//			}
+//
+//			lua_pop(L, 1);
+//			});
+//
+//		return false;
+//	}
+//};

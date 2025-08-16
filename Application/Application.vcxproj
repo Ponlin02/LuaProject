@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gameloop\gameloop.cpp" />
+    <ClCompile Include="gameloop\mazegame\loss_text.cpp" />
     <ClCompile Include="gameloop\mazegame\SaveFunctions.cpp" />
     <ClCompile Include="gameloop\maze\maze.cpp" />
     <ClCompile Include="gameloop\mazegame\edit.cpp" />
@@ -38,6 +39,7 @@
     <ClInclude Include="gameloop\mazegame\ECS\components.hpp" />
     <ClInclude Include="gameloop\mazegame\ECS\systemClass.hpp" />
     <ClInclude Include="gameloop\mazegame\ECS\systems.hpp" />
+    <ClInclude Include="gameloop\mazegame\loss_text.h" />
     <ClInclude Include="gameloop\mazegame\SaveFunctions.hpp" />
     <ClInclude Include="gameloop\maze\maze.hpp" />
     <ClInclude Include="gameloop\mazegame\constants.h" />

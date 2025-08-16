@@ -29,6 +29,7 @@ void SaveFileName(std::string &fileName) {
             }
 
             fileSaved = true;
+            running = false;
         }
 
         if (IsKeyPressed(KEY_ESCAPE)) {

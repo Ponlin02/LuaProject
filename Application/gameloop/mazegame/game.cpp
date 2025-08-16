@@ -21,6 +21,7 @@ Game::Game(lua_State* L)
             this->player.getCamera().target = { scene.GetComponent<Player>(i).Pos.X, 1, 100 };
             this->scene.SetComponent(i, CameraComponent{ &this->player.getCamera() });
             this->scene.SetComponent(i, WinTrigger{ &this->hasWon });
+            this->scene.SetComponent(i, LossTrigger{ &this->hasLost });
             break; //only ONE player!!
         }
     }
@@ -34,7 +35,6 @@ Game::Game(lua_State* L)
     scene.CreateSystem<GoalCollisionSystem>();
     scene.CreateSystem<Button1ClickSystem>();
     scene.CreateSystem<Door1OpenSystem>(L);
-    //scene.CreateSystem<BBSystem>();
     scene.CreateSystem<PlayerRenderSystem>();
     scene.CreateSystem<PlayerControllerSystem>();
     scene.CreateSystem<PlayerCollisionSystem>();
@@ -60,6 +60,10 @@ GameState Game::run(lua_State* L)
     if (this->hasWon)
     {
         return GameState::WIN;
+    }
+    if (this->hasLost)
+    {
+        return GameState::LOSS;
     }
 
     return GameState::PLAYING;
