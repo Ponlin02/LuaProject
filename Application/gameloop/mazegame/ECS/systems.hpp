@@ -3,7 +3,7 @@
 #include "systemClass.hpp"
 #include "components.hpp"
 #include <fstream>
-#include "SaveFunctions.hpp"
+#include "../SaveFunctions.hpp"
 
 //System that renders all of the floors in the scene
 class FloorRenderSystem : public System
