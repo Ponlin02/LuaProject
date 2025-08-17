@@ -11,9 +11,10 @@
 void Gameloop::run(lua_State* L)
 {
     //Preparing stuff
-    InitWindow(1280, 720, "Maze Game!");
+    InitWindow(1920, 1080, "Maze Game!");
     SetTargetFPS(60);
     SetExitKey(KEY_NULL);
+    ToggleFullscreen();
 
     GameState currentState = MAIN_MENU;
 
@@ -78,6 +79,7 @@ void Gameloop::run(lua_State* L)
 
         EndDrawing();
     }
+    ToggleFullscreen();
     delete game;
     CloseWindow();
 }
